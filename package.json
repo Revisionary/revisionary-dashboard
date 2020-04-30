@@ -1,7 +1,7 @@
 {
-  "name": "revisionary-frontend",
+  "name": "revisionary-dashboard",
   "version": "1.0.0",
-  "description": "Revisionary App dashboard",
+  "description": "Revisionary Dashboard App",
   "author": "Bilal TAS",
   "private": true,
   "scripts": {
@@ -16,5 +16,8 @@
     "@nuxtjs/pwa": "^3.0.0-0",
     "@nuxtjs/dotenv": "^1.4.0"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "node-sass": "^4.14.0",
+    "sass-loader": "^8.0.2"
+  }
 }

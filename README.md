@@ -1,6 +1,6 @@
-# revisionary-frontend
+# revisionary-dashboard
 
-> Revisionary App dashboard
+> Revisionary Dashboard App
 
 ## Build Setup
 

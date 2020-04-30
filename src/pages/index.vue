@@ -1,36 +1,30 @@
 <template>
   <div class="container">
-    <div>
 
-      <logo />
-      <h1 class="title">Revisionary App</h1>
-      <h2 class="subtitle">Revisionary App dashboard</h2>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          class="button--green"
-        >Documentation</a>
-        <nuxt-link class="button--grey" to="contact">Contact</nuxt-link>
-      </div>
+      <h1>Projects</h1>
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Magnam voluptatum facilis impedit similique! Vero repellat corporis omnis expedita eveniet dolores voluptatibus quod cum illum quia nulla, quasi amet quos velit?</p>
 
-      <ul style="text-align: left;">
-        <li v-for="post in posts" v-bind:key="post.id"><nuxt-link :to="`post/${post.slug}`">{{ post.title }}</nuxt-link></li>
+      <br><ul>
+        <li v-for="post in posts" v-bind:key="post.id"><nuxt-link :to="`post/${post.id}`">{{ post.title }}</nuxt-link></li>
       </ul>
 
-    </div>
+      
+      <br><br><nuxt-link to="/page">Go to a page</nuxt-link>
+
   </div>
 </template>
 
 <script>
-import Logo from '~/components/Logo.vue'
+// import Logo from '~/components/Logo.vue'
 
 export default {
   components: {
-    Logo
+    //Logo
   },
   data() {
-    return { posts: [] }
+    return {
+      posts: []
+    }
   },
   async created() {
 
@@ -40,8 +34,8 @@ export default {
   methods: {
     async fetchPosts() {
 
-      const resp = await this.$axios.$get('https://dapi.revisionary.co/v1/sad/sa');
-      this.posts = resp.posts
+      const resp = await this.$axios.$get('https://jsonplaceholder.typicode.com/posts');
+      this.posts = resp.splice(0,5);
 
     }
   },
@@ -49,4 +43,5 @@ export default {
 </script>
 
 <style>
+
 </style>
