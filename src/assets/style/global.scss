@@ -1,63 +1,66 @@
 html {
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-      "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
-      "Droid Sans", "Helvetica Neue", sans-serif;
-    font-size: 15px;
-    word-spacing: 1px;
-    -ms-text-size-adjust: 100%;
-    -webkit-text-size-adjust: 100%;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-font-smoothing: antialiased;
-    box-sizing: border-box;
-    background-color: #F5F7FA;
-  }
-  
-  *,
-  *:before,
-  *:after {
-    box-sizing: border-box;
-    margin: 0;
-  }
-  
-  .container {
-    width: 95%;
-    max-width: 1234px;
-    margin: 0 auto;
-    padding: 20px 0;
-  }
-  
-  .selectbox a {
-    border: 1px solid #EAEDF3;
-    border-radius: 3px;
-    padding: 8px 50px 8px 14px;
-    font-weight: 500;
-    font-size: 14px;
-    line-height: 17px;
-  }
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+		"Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+		"Helvetica Neue", sans-serif;
+	font-size: 15px;
+	word-spacing: 1px;
+	-ms-text-size-adjust: 100%;
+	-webkit-text-size-adjust: 100%;
+	-moz-osx-font-smoothing: grayscale;
+	-webkit-font-smoothing: antialiased;
+	box-sizing: border-box;
+	background-color: #f5f7fa;
+}
 
+*,
+*:before,
+*:after {
+	box-sizing: border-box;
+	margin: 0;
+}
 
+.container {
+	width: 95%;
+	max-width: 1234px;
+	margin: 0 auto;
+	padding: 20px 0;
+}
 
+a {
+	color: inherit;
+	text-decoration: none;
+}
 
-  .subtitle {
-    font-style: normal;
-    font-weight: bold;
-    font-size: 14px;
-    line-height: 17px;
-    letter-spacing: -0.3px;
-    color: #9F9F9F;
-  }
+.selectbox a {
+	border: 1px solid #eaedf3;
+	border-radius: 3px;
+	padding: 8px 50px 8px 14px;
+	font-weight: 500;
+	font-size: 14px;
+	line-height: 17px;
+}
 
-  h1 {
-    font-weight: bold;
-    font-size: 30px;
-    line-height: 36px;
-    letter-spacing: -0.3px;
-    color: #2D3137;
-  }
+.subtitle {
+	font-style: normal;
+	font-weight: bold;
+	font-size: 14px;
+	line-height: 17px;
+	letter-spacing: -0.3px;
+	color: #9f9f9f;
+	text-transform: uppercase;
+}
 
-  .project-description {
-    font-weight: normal;
-    font-size: 17px;
-    line-height: 23px;
-    color: #78808B;
-  }
+h1 {
+	font-weight: bold;
+	font-size: 30px;
+	line-height: 36px;
+	letter-spacing: -0.3px;
+	color: #2d3137;
+}
+
+.project-description {
+	font-weight: normal;
+	font-size: 17px;
+	line-height: 23px;
+	color: #78808b;
+}

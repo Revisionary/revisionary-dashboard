@@ -1,14 +1,12 @@
 <template>
-  <footer>
-    FOOTER
-  </footer>
+	<footer>FOOTER</footer>
 </template>
 <style lang="scss">
 footer {
-  padding: 20px;
-  text-align: right;
-  position: fixed;
-  right: 0;
-  bottom: 0;
+	padding: 20px;
+	text-align: right;
+	position: fixed;
+	right: 0;
+	bottom: 0;
 }
 </style>
