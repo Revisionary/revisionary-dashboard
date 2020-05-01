@@ -41,6 +41,8 @@ aside {
     padding: 14px 34px 14px 24px;
     text-decoration: none;
     color: #9EA5AB;
+    font-size: 15px;
+    line-height: 18px;
     font-weight: 600;
 
     & > svg {
