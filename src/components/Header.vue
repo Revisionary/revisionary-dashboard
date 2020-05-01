@@ -3,7 +3,7 @@
     <div class="left-side">
 
       <nuxt-link class="logo" to="/"><Logo /></nuxt-link>
-      <a href="#" class="menu-icon"><MenuIcon /></a>
+      <a href="#" class="menu-icon active"><MenuIcon /></a>
 
     </div>
     <div class="center-side">
@@ -104,6 +104,18 @@ header {
 
     & > svg {
       display: block;
+    }
+
+  }
+
+  .menu-icon {
+
+    &.active {
+
+      svg > rect:first-child {
+        fill: #037EF3;
+      }
+
     }
 
   }
