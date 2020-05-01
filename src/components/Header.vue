@@ -1,5 +1,5 @@
 <template>
-  <header>
+  <header id="main-header">
     <div class="left-side">
 
       <nuxt-link class="logo" to="/"><Logo /></nuxt-link>
@@ -42,7 +42,7 @@ export default {
 </script>
 
 <style lang="scss">
-header {
+header#main-header {
   background-color: #232830;
   background-color: white;
   display: flex;

@@ -24,10 +24,10 @@ export default {
 
 <style lang="scss">
 aside {
-  position: fixed;
-  left: 0;
-  top: 72px;
-  //width: 185px;
+  // position: fixed;
+  // left: 0;
+  // top: 72px;
+  width: 190px;
   height: calc(100vh - 72px);
   background-color: #FFFFFF;
   border: 1px solid #EAEDF3;
