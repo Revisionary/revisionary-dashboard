@@ -32,7 +32,7 @@ aside {
   background-color: #FFFFFF;
   border: 1px solid #EAEDF3;
   border-top: none;
-  padding: 42px 0;
+  padding: 28px 0;
 
   & > a {
     display: flex;
