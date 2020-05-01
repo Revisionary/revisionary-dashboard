@@ -16,7 +16,8 @@
     <div class="right-side">
 
       <a href="#">
-        <ProfilePic firstName="Bilal" lastName="TAS" email="bilaltas@me.com" />
+        <ProfilePic class="profile-pic" firstName="Bilal" lastName="TAS" email="bilaltas@me.com" />
+        <ChevronDownIcon />
       </a>
 
     </div>
@@ -25,14 +26,17 @@
 
 <script>
 import Logo from '~/components/Logo.vue'
-import MenuIcon from '~/components/atoms/icon-menu.vue'
 import ProfilePic from '~/components/atoms/profile-pic.vue'
+
+import MenuIcon from '~/components/atoms/icon-menu.vue'
+import ChevronDownIcon from '~/components/atoms/icon-chevron-down.vue'
 
 export default {
   components: {
     Logo,
     MenuIcon,
-    ProfilePic
+    ProfilePic,
+    ChevronDownIcon
   }
 }
 </script>
@@ -102,6 +106,10 @@ header {
       display: block;
     }
 
+  }
+
+  .profile-pic {
+    margin-right: 10px;
   }
 
 }
