@@ -12,13 +12,16 @@
 			>
 				<MenuIcon />
 			</a>
-		</div>
-		<div class="center-side">
-			<div class="dropdown selectbox">
+			<div class="dropdown selectbox jump-to">
 				<a href="#">Jump to...</a>
 			</div>
 		</div>
+		<div class="center-side"></div>
 		<div class="right-side">
+			<a href="#" class="plan-limitations">Free Plan</a>
+
+			<a href="#" class="button">Upgrade</a>
+
 			<a href="#">
 				<ProfilePic class="profile-pic" firstName="Bilal" lastName="TAS" email="bilaltas@me.com" />
 				<ChevronDownIcon />
@@ -110,6 +113,16 @@
 					fill: #037ef3;
 				}
 			}
+		}
+
+		.jump-to {
+			margin-left: 120px;
+		}
+
+		.plan-limitations {
+			text-transform: uppercase;
+			border-bottom: 1px dashed;
+			padding-bottom: 3px;
 		}
 
 		.profile-pic {
