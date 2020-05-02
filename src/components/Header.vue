@@ -4,7 +4,12 @@
 			<nuxt-link class="logo" to="/">
 				<Logo />
 			</nuxt-link>
-			<a href="#" class="menu-icon active">
+			<a
+				href="#"
+				class="menu-icon"
+				v-bind:class="{ active: $store.state.isSideBarOpen }"
+				@click="$store.commit('toggleSideBar')"
+			>
 				<MenuIcon />
 			</a>
 		</div>
@@ -15,12 +20,7 @@
 		</div>
 		<div class="right-side">
 			<a href="#">
-				<ProfilePic
-					class="profile-pic"
-					firstName="Bilal"
-					lastName="TAS"
-					email="bilaltas@me.com"
-				/>
+				<ProfilePic class="profile-pic" firstName="Bilal" lastName="TAS" email="bilaltas@me.com" />
 				<ChevronDownIcon />
 			</a>
 		</div>
@@ -28,92 +28,92 @@
 </template>
 
 <script>
-import Logo from "~/components/Logo.vue";
-import ProfilePic from "~/components/atoms/profile-pic.vue";
+	import Logo from "~/components/Logo.vue";
+	import ProfilePic from "~/components/atoms/profile-pic.vue";
 
-import MenuIcon from "~/components/atoms/icon-menu.vue";
-import ChevronDownIcon from "~/components/atoms/icon-chevron-down.vue";
+	import MenuIcon from "~/components/atoms/icon-menu.vue";
+	import ChevronDownIcon from "~/components/atoms/icon-chevron-down.vue";
 
-export default {
-	components: {
-		Logo,
-		MenuIcon,
-		ProfilePic,
-		ChevronDownIcon
-	}
-};
+	export default {
+		components: {
+			Logo,
+			MenuIcon,
+			ProfilePic,
+			ChevronDownIcon
+		}
+	};
 </script>
 
 <style lang="scss">
-header#main-header {
-	background-color: #232830;
-	background-color: white;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	align-items: center;
-	padding: 20px;
-	color: #9ea5ab;
-	border: 1px solid #eaedf3;
-
-	a {
-		color: #9ea5ab;
-		text-decoration: none;
-
-		&:hover {
-			color: #037ef3;
-
-			svg > rect {
-				fill: #037ef3;
-			}
-		}
-	}
-
-	& > * {
+	header#main-header {
+		background-color: #232830;
+		background-color: white;
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
 		align-items: center;
+		padding: 20px;
+		color: #9ea5ab;
+		border: 1px solid #eaedf3;
 
-		& > * {
-			margin-right: 24px;
-		}
-	}
-
-	&.dark {
 		a {
 			color: #9ea5ab;
 			text-decoration: none;
 
 			&:hover {
-				color: white;
+				color: #037ef3;
 
 				svg > rect {
-					fill: white;
+					fill: #037ef3;
 				}
 			}
 		}
-	}
 
-	.logo,
-	.menu-icon {
-		display: block;
+		& > * {
+			display: flex;
+			flex-direction: row;
+			justify-content: space-between;
+			align-items: center;
 
-		& > svg {
-			display: block;
-		}
-	}
-
-	.menu-icon {
-		&.active {
-			svg > rect:first-child {
-				fill: #037ef3;
+			& > * {
+				margin-right: 24px;
 			}
 		}
-	}
 
-	.profile-pic {
-		margin-right: 10px;
+		&.dark {
+			a {
+				color: #9ea5ab;
+				text-decoration: none;
+
+				&:hover {
+					color: white;
+
+					svg > rect {
+						fill: white;
+					}
+				}
+			}
+		}
+
+		.logo,
+		.menu-icon {
+			display: block;
+
+			& > svg {
+				display: block;
+			}
+		}
+
+		.menu-icon {
+			&.active {
+				svg > rect:first-child {
+					fill: #037ef3;
+				}
+			}
+		}
+
+		.profile-pic {
+			margin-right: 10px;
+		}
 	}
-}
 </style>
