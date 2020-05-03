@@ -14,7 +14,7 @@
 </template>
 
 <script>
-	import SubHeader from "~/components/molecules/SubHeader.vue";
+	import SubHeader from "~/components/SubHeader.vue";
 
 	export default {
 		components: {

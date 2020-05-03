@@ -8,13 +8,12 @@
 				href="#"
 				class="menu-icon"
 				v-bind:class="{ active: $store.state.isSideBarOpen }"
-				@click="$store.commit('toggleSideBar')"
+				@click.prevent="$store.commit('toggleSideBar')"
 			>
 				<MenuIcon />
 			</a>
-			<div class="dropdown selectbox jump-to">
-				<a href="#">Jump to...</a>
-			</div>
+
+			<JumpTo />
 		</div>
 		<div class="center-side"></div>
 		<div class="right-side">
@@ -32,6 +31,8 @@
 
 <script>
 	import Logo from "~/components/atoms/Logo.vue";
+	import JumpTo from "~/components/molecules/JumpTo.vue";
+
 	import ProfilePic from "~/components/atoms/ProfilePic.vue";
 
 	import MenuIcon from "~/components/atoms/icon-menu.vue";
@@ -40,6 +41,7 @@
 	export default {
 		components: {
 			Logo,
+			JumpTo,
 			MenuIcon,
 			ProfilePic,
 			ChevronDownIcon
@@ -113,10 +115,6 @@
 					fill: #037ef3;
 				}
 			}
-		}
-
-		.jump-to {
-			margin-left: 120px;
 		}
 
 		.plan-limitations {
