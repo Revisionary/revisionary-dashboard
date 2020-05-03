@@ -1,8 +1,15 @@
 <template>
-	<div class="selectbox jump-to">
-		<a href="#">Jump to...</a>
-		<CaretDownIcon />
-	</div>
+	<details class="jump-to">
+		<summary class="selectbox">
+			Jump to...
+			<CaretDownIcon />
+		</summary>
+		<div class="details-menu">
+			<ul>
+				<li>Project 1</li>
+			</ul>
+		</div>
+	</details>
 </template>
 
 <script>
@@ -20,21 +27,6 @@
 
 <style lang="scss">
 	.jump-to {
-		position: relative;
 		margin-left: 120px;
-
-		& > svg {
-			position: absolute;
-			right: 12px;
-			top: 50%;
-		}
-
-		&:hover {
-			color: #037ef3;
-
-			& > svg path {
-				fill: #037ef3;
-			}
-		}
 	}
 </style>

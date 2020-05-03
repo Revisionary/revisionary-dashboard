@@ -17,31 +17,21 @@
 </template>
 
 <script>
+	import { mapGetters } from "vuex";
 	import SubHeader from "~/components/SubHeader.vue";
 
 	export default {
 		components: {
 			SubHeader
 		},
-		data() {
-			return {
-				isLoaded: false,
-				project: {}
-			};
+		computed: {
+			...mapGetters({
+				project: "projects/getProject",
+				isLoaded: "projects/status"
+			})
 		},
-		async created() {
-			this.fetchPages();
-		},
-		methods: {
-			async fetchPages() {
-				const resp = await this.$axios.$get(
-					`https://jsonplaceholder.typicode.com/posts/${this.$route.params.id}`
-				);
-				if (resp) {
-					this.project = resp;
-					this.isLoaded = true;
-				}
-			}
+		created() {
+			this.$store.dispatch("projects/getProject", this.$route.params.id);
 		}
 	};
 </script>

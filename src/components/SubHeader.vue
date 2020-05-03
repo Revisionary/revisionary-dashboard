@@ -87,20 +87,22 @@
 				background-size: 300% 100%;
 				animation: gradientBG 3s ease infinite;
 
-				//background-color: #9ea5ab;
 				border-radius: 3px;
 				max-width: 200px;
+				height: 36px;
 				color: transparent;
 				opacity: 0.2;
 				pointer-events: none;
 
 				& > a {
 					opacity: 0;
+					display: none;
 				}
 			}
 
 			.description {
 				max-width: 500px;
+				height: 23px;
 				//opacity: 0.5;
 			}
 		}

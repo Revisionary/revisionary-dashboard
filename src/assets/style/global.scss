@@ -31,13 +31,25 @@ a {
 	text-decoration: none;
 }
 
-.selectbox a {
+.selectbox {
+	position: relative;
 	border: 1px solid #eaedf3;
 	border-radius: 3px;
 	padding: 8px 50px 8px 14px;
 	font-weight: 500;
 	font-size: 14px;
 	line-height: 17px;
+
+	& > svg.caret-down {
+		position: absolute;
+		right: 12px;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+
+	&:hover {
+		color: #037ef3;
+	}
 }
 
 .button {
@@ -56,5 +68,55 @@ a {
 
 	&:hover {
 		opacity: 1;
+	}
+}
+
+/* DROPDOWNS */
+details {
+	list-style-type: none;
+
+	& > summary {
+		outline: none;
+		cursor: pointer;
+		list-style-type: none;
+		user-select: none;
+
+		&:before {
+			display: none;
+		}
+
+		&::-webkit-details-marker {
+			display: none;
+		}
+	}
+
+	& > .details-menu {
+		position: absolute;
+		top: auto;
+		right: auto;
+		bottom: auto;
+		left: auto;
+		padding: 0;
+	}
+
+	&:not([open]) > *:not(summary) {
+		display: none !important;
+	}
+
+	&[open] {
+		& > summary {
+			&::before {
+				position: fixed;
+				top: 0;
+				right: 0;
+				bottom: 0;
+				left: 0;
+				z-index: 80;
+				display: block;
+				cursor: default;
+				content: " ";
+				background: transparent;
+			}
+		}
 	}
 }
