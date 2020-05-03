@@ -1,22 +1,12 @@
 <template>
-	<div class="content">
-		<header>
-			<div class="subtitle">Hub</div>
-			<h1>
-				<a href="#">
-					My Projects (3)
-					<ChevronDownIcon />
-				</a>
-			</h1>
-		</header>
+	<div id="projects" class="content">
+		<SubHeader subtitle="Hub" title="My Projects (3)" description />
 
 		<div class="blocks">
 			<div v-if="!isLoaded">Loading the projects...</div>
 			<ul>
 				<li v-for="project in projects" v-bind:key="project.id">
-					<nuxt-link :to="`project/${project.id}`">{{
-						project.title
-					}}</nuxt-link>
+					<nuxt-link :to="`project/${project.id}`">{{ project.title }}</nuxt-link>
 				</li>
 			</ul>
 		</div>
@@ -24,33 +14,33 @@
 </template>
 
 <script>
-import ChevronDownIcon from "~/components/atoms/icon-chevron-down.vue";
+	import SubHeader from "~/components/molecules/SubHeader.vue";
 
-export default {
-	components: {
-		ChevronDownIcon
-	},
-	data() {
-		return {
-			isLoaded: false,
-			projects: []
-		};
-	},
-	async created() {
-		this.fetchProjects();
-	},
-	methods: {
-		async fetchProjects() {
-			const resp = await this.$axios.$get(
-				"https://jsonplaceholder.typicode.com/posts"
-			);
-			if (resp) {
-				this.projects = resp.splice(0, 5);
-				this.isLoaded = true;
+	export default {
+		components: {
+			SubHeader
+		},
+		data() {
+			return {
+				isLoaded: false,
+				projects: []
+			};
+		},
+		async created() {
+			this.fetchProjects();
+		},
+		methods: {
+			async fetchProjects() {
+				const resp = await this.$axios.$get(
+					"https://jsonplaceholder.typicode.com/posts"
+				);
+				if (resp) {
+					this.projects = resp.splice(0, 5);
+					this.isLoaded = true;
+				}
 			}
 		}
-	}
-};
+	};
 </script>
 
 <style></style>

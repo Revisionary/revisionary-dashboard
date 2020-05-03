@@ -1,17 +1,11 @@
 <template>
-	<div class="content">
-		<header>
-			<div class="subtitle">Project</div>
-			<h1>
-				<a href="#">
-					{{ project.title }}
-					<ChevronDownIcon />
-				</a>
-			</h1>
-			<p class="project-description">
-				{{ project.body }}
-			</p>
-		</header>
+	<div id="pages" class="content">
+		<SubHeader
+			subtitle="Project"
+			:title="project.title"
+			:description="project.body"
+			:isLoading="!isLoaded"
+		/>
 
 		<div class="blocks">
 			<div v-if="!isLoaded">Loading the Pages...</div>
@@ -23,33 +17,33 @@
 </template>
 
 <script>
-import ChevronDownIcon from "~/components/atoms/icon-chevron-down.vue";
+	import SubHeader from "~/components/molecules/SubHeader.vue";
 
-export default {
-	components: {
-		ChevronDownIcon
-	},
-	data() {
-		return {
-			isLoaded: false,
-			project: {}
-		};
-	},
-	async created() {
-		this.fetchPages();
-	},
-	methods: {
-		async fetchPages() {
-			const resp = await this.$axios.$get(
-				`https://jsonplaceholder.typicode.com/posts/${this.$route.params.id}`
-			);
-			if (resp) {
-				this.project = resp;
-				this.isLoaded = true;
+	export default {
+		components: {
+			SubHeader
+		},
+		data() {
+			return {
+				isLoaded: false,
+				project: {}
+			};
+		},
+		async created() {
+			this.fetchPages();
+		},
+		methods: {
+			async fetchPages() {
+				const resp = await this.$axios.$get(
+					`https://jsonplaceholder.typicode.com/posts/${this.$route.params.id}`
+				);
+				if (resp) {
+					this.project = resp;
+					this.isLoaded = true;
+				}
 			}
 		}
-	}
-};
+	};
 </script>
 
 <style></style>

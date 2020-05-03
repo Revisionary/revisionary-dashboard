@@ -31,8 +31,8 @@
 </template>
 
 <script>
-	import Logo from "~/components/Logo.vue";
-	import ProfilePic from "~/components/atoms/profile-pic.vue";
+	import Logo from "~/components/atoms/Logo.vue";
+	import ProfilePic from "~/components/atoms/ProfilePic.vue";
 
 	import MenuIcon from "~/components/atoms/icon-menu.vue";
 	import ChevronDownIcon from "~/components/atoms/icon-chevron-down.vue";
