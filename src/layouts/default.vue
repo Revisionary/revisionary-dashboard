@@ -1,6 +1,6 @@
 <template>
 	<div id="page" v-bind:class="{ sidebarOpen: $store.state.isSideBarOpen }">
-		<Header />
+		<TopBar />
 		<main>
 			<SideBar />
 			<nuxt />
@@ -10,13 +10,13 @@
 </template>
 
 <script>
-	import Header from "~/components/Header.vue";
+	import TopBar from "~/components/TopBar.vue";
 	import SideBar from "~/components/SideBar.vue";
 	import Footer from "~/components/Footer.vue";
 
 	export default {
 		components: {
-			Header,
+			TopBar,
 			SideBar,
 			Footer
 		},

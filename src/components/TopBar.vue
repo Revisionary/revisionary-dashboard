@@ -1,5 +1,5 @@
 <template>
-	<header id="main-header">
+	<div id="top-bar">
 		<div class="left-side">
 			<nuxt-link class="logo" to="/">
 				<Logo />
@@ -26,7 +26,7 @@
 				<ChevronDownIcon />
 			</a>
 		</div>
-	</header>
+	</div>
 </template>
 
 <script>
@@ -50,14 +50,15 @@
 </script>
 
 <style lang="scss">
-	header#main-header {
+	#top-bar {
 		background-color: #232830;
 		background-color: white;
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
 		align-items: center;
-		padding: 20px;
+		padding: 0 20px;
+		height: 72px;
 		color: #9ea5ab;
 		border: 1px solid #eaedf3;
 
