@@ -55,7 +55,7 @@
 		vertical-align: top;
 
 		& > .wrapper {
-			height: calc(100vh - 73px);
+			height: calc(100vh - 78px);
 			display: flex;
 			flex-direction: column;
 			justify-content: space-between;
