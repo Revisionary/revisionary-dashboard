@@ -5,7 +5,7 @@
 		<div class="blocks">
 			<div v-if="!isLoaded">Loading the projects...</div>
 			<ol v-if="isLoaded">
-				<li v-for="project in projects" v-bind:key="project.project_ID">
+				<li v-for="project in projects" v-bind:key="project.id">
 					<Block :blockData="project" />
 				</li>
 			</ol>

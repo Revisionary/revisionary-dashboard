@@ -20,11 +20,12 @@ export const actions = {
 	async get({ commit }) {
 		await commit("setStatus", false);
 		await this.$axios
-			.get("https://dapi.revisionary.co/v1/projects")
+			//.get("https://dapi.revisionary.co/v1/projects")
+			.get("https://jsonplaceholder.typicode.com/posts")
 			.then((res) => {
 				if (res.status === 200) {
-					console.log(res.data);
-					commit("set", res.data);
+					//console.log(res.data);
+					commit("set", res.data.splice(0, 5));
 					commit("setStatus", true);
 				}
 			});
@@ -32,7 +33,8 @@ export const actions = {
 	async getProject({ commit }, projectID) {
 		await commit("setStatus", false);
 		await this.$axios
-			.get(`https://dapi.revisionary.co/v1/projects/${projectID}`)
+			//.get(`https://dapi.revisionary.co/v1/projects/${projectID}`)
+			.get(`https://jsonplaceholder.typicode.com/posts/${projectID}`)
 			.then((res) => {
 				if (res.status === 200) {
 					commit("setProject", res.data);

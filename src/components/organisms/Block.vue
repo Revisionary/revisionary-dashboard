@@ -3,12 +3,12 @@
 		<div class="top">IMAGE</div>
 		<div class="info">
 			<div class="title">
-				<nuxt-link :to="`project/${blockData.project_ID}`">
-					{{ blockData.project_name }}
+				<nuxt-link :to="`project/${blockData.id}`">
+					{{ blockData.title }}
 					<span class="count">(14)</span>
 				</nuxt-link>
 			</div>
-			<div class="description">Marc Pridmore’s new website and design overhaul on WordPress.</div>
+			<div class="description">{{ blockData.body }}</div>
 		</div>
 		<div class="bottom">
 			<div class="date">2 Days Ago</div>
