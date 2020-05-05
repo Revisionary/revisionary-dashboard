@@ -1,7 +1,7 @@
 export const state = () => ({
 	projects: [],
 	project: {},
-	isLoaded: false,
+	isLoaded: false
 });
 
 export const getters = {
@@ -13,7 +13,7 @@ export const getters = {
 	},
 	status(state) {
 		return state.isLoaded;
-	},
+	}
 };
 
 export const actions = {
@@ -22,10 +22,10 @@ export const actions = {
 		await this.$axios
 			//.get("https://dapi.revisionary.co/v1/projects")
 			.get("https://jsonplaceholder.typicode.com/posts")
-			.then((res) => {
+			.then(res => {
 				if (res.status === 200) {
 					//console.log(res.data);
-					commit("set", res.data.splice(0, 5));
+					commit("set", res.data.splice(0, 6));
 					commit("setStatus", true);
 				}
 			});
@@ -35,7 +35,7 @@ export const actions = {
 		await this.$axios
 			//.get(`https://dapi.revisionary.co/v1/projects/${projectID}`)
 			.get(`https://jsonplaceholder.typicode.com/posts/${projectID}`)
-			.then((res) => {
+			.then(res => {
 				if (res.status === 200) {
 					commit("setProject", res.data);
 					commit("setStatus", true);
@@ -47,7 +47,7 @@ export const actions = {
 	},
 	set({ commit }, project) {
 		commit("set", project);
-	},
+	}
 };
 
 export const mutations = {
@@ -65,5 +65,5 @@ export const mutations = {
 	},
 	setProject(state, project) {
 		state.project = project;
-	},
+	}
 };

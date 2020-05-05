@@ -4,11 +4,11 @@
 		<div class="info">
 			<div class="title">
 				<nuxt-link :to="`/project/${blockData.id}`">
-					{{ blockData.title }}
+					{{ blockData.title.substr(0, 15) }}
 					<span class="count">(14)</span>
 				</nuxt-link>
 			</div>
-			<div class="description">{{ blockData.body }}</div>
+			<div class="description">{{ blockData.body.substr(0, 35) }}</div>
 		</div>
 		<div class="bottom">
 			<div class="date">2 Days Ago</div>
