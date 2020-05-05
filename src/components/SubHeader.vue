@@ -3,7 +3,7 @@
 		<div class="subtitle">{{subtitle}}</div>
 		<h1 class="dropdown">
 			<a href="#">
-				{{title}}
+				{{ title.substr(0, 15) }}
 				<ChevronDownIcon />
 			</a>
 		</h1>
@@ -58,6 +58,7 @@
 			line-height: 36px;
 			letter-spacing: -0.3px;
 			color: #2d3137;
+			text-transform: capitalize;
 
 			& > a {
 				display: flex;
