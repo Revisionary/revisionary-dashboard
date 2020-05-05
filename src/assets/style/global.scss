@@ -92,6 +92,7 @@ details {
 
 	& > .details-menu {
 		position: absolute;
+		z-index: 11;
 		top: auto;
 		right: auto;
 		bottom: auto;
@@ -111,7 +112,7 @@ details {
 				right: 0;
 				bottom: 0;
 				left: 0;
-				z-index: 80;
+				z-index: 10;
 				display: block;
 				cursor: default;
 				content: " ";

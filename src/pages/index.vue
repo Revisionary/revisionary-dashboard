@@ -1,14 +1,14 @@
 <template>
 	<div id="projects" class="content">
-		<SubHeader subtitle="Hub" title="My Projects (3)" description />
+		<SubHeader subtitle="Hub" :title="'My Projects' + dataCount" description />
 
 		<div class="blocks">
 			<div v-if="!isLoaded">Loading the projects...</div>
-			<ul v-if="isLoaded">
-				<li v-for="project in projects" v-bind:key="project.id">
-					<nuxt-link :to="`project/${project.id}`">{{ project.title }}</nuxt-link>
+			<ol v-if="isLoaded">
+				<li v-for="project in projects" v-bind:key="project.project_ID">
+					<Block :blockData="project" />
 				</li>
-			</ul>
+			</ol>
 		</div>
 	</div>
 </template>
@@ -17,15 +17,22 @@
 	import { mapGetters } from "vuex";
 	import SubHeader from "~/components/SubHeader.vue";
 
+	import Block from "~/components/organisms/Block.vue";
+
 	export default {
 		components: {
-			SubHeader
+			SubHeader,
+			Block
 		},
 		computed: {
 			...mapGetters({
 				projects: "projects/get",
 				isLoaded: "projects/status"
-			})
+			}),
+			dataCount() {
+				if (this.projects.length) return " (" + this.projects.length + ")";
+				return "";
+			}
 		},
 		created() {
 			this.$store.dispatch("projects/get");
@@ -33,4 +40,15 @@
 	};
 </script>
 
-<style></style>
+<style lang="scss">
+	.blocks {
+		& > ol {
+			list-style-type: none;
+
+			& > li {
+				display: inline-block;
+				padding: 0 20px;
+			}
+		}
+	}
+</style>

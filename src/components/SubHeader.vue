@@ -8,6 +8,18 @@
 			</a>
 		</h1>
 		<p class="description">{{ description }}</p>
+
+		<div class="bottom">
+			<div class="tabs">
+				<a href="#" class="active">ALL</a>
+				<a href="#">MINE</a>
+				<a href="#">SHARED</a>
+				<a href="#">FAVORITES</a>
+				<a href="#">PERSONAL PROJECTS</a>
+
+				<a href="#">+</a>
+			</div>
+		</div>
 	</header>
 </template>
 
@@ -38,6 +50,8 @@
 
 <style lang="scss">
 	#sub-header {
+		position: relative;
+
 		h1 {
 			font-weight: bold;
 			font-size: 30px;
@@ -73,6 +87,7 @@
 			line-height: 23px;
 			color: #78808b;
 			margin-top: 5px;
+			margin-bottom: 30px;
 		}
 
 		&.loading {
@@ -104,6 +119,37 @@
 				max-width: 500px;
 				height: 23px;
 				//opacity: 0.5;
+			}
+		}
+
+		& > .bottom {
+			position: absolute;
+			bottom: -1px;
+			//background-color: red;
+
+			.tabs {
+				& > a {
+					color: #9296a0;
+					font-size: 13px;
+					line-height: 16px;
+					font-weight: 400;
+					letter-spacing: 0.1px;
+					text-transform: uppercase;
+					display: inline-block;
+					padding-bottom: 14px;
+					margin-right: 20px;
+					border-bottom: 1px solid transparent;
+
+					&.active {
+						color: #4d5058;
+						font-weight: 600;
+						border-color: #037ef3;
+					}
+
+					&:hover {
+						border-color: #037ef3;
+					}
+				}
 			}
 		}
 	}

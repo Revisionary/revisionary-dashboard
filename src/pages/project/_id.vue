@@ -2,7 +2,7 @@
 	<div id="pages" class="content">
 		<SubHeader
 			subtitle="Project"
-			:title="project.title"
+			:title="project.title + dataCount"
 			:description="project.body"
 			:isLoading="!isLoaded"
 		/>
@@ -28,7 +28,12 @@
 			...mapGetters({
 				project: "projects/getProject",
 				isLoaded: "projects/status"
-			})
+			}),
+			dataCount() {
+				var count = 3;
+				if (count) return " (" + count + ")";
+				return "";
+			}
 		},
 		created() {
 			this.$store.dispatch("projects/getProject", this.$route.params.id);

@@ -6,7 +6,9 @@
 		</summary>
 		<div class="details-menu">
 			<ul>
-				<li>Project 1</li>
+				<li>
+					<a href="#">Project 1</a>
+				</li>
 			</ul>
 		</div>
 	</details>
