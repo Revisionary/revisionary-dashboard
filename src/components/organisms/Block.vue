@@ -3,7 +3,7 @@
 		<div class="top">IMAGE</div>
 		<div class="info">
 			<div class="title">
-				<nuxt-link :to="`project/${blockData.id}`">
+				<nuxt-link :to="`/project/${blockData.id}`">
 					{{ blockData.title }}
 					<span class="count">(14)</span>
 				</nuxt-link>

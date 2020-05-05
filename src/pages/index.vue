@@ -36,6 +36,7 @@
 		},
 		created() {
 			this.$store.dispatch("projects/get");
+			this.$store.dispatch("projects/resetProject");
 		}
 	};
 </script>

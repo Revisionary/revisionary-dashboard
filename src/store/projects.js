@@ -42,8 +42,11 @@ export const actions = {
 				}
 			});
 	},
-	async set({ commit }, project) {
-		await commit("set", project);
+	resetProject({ commit }) {
+		commit("setProject", {});
+	},
+	set({ commit }, project) {
+		commit("set", project);
 	},
 };
 
