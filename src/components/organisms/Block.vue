@@ -41,7 +41,7 @@
 		display: inline-flex;
 		flex-direction: column;
 		background-color: white;
-		width: 266px;
+		width: 100%;
 		border-radius: 6px;
 		border: 1px solid #eaedf3;
 		box-shadow: 0px 2px 14px #edf1fa;

@@ -44,10 +44,6 @@
 				padding: 40px 55px;
 				border-bottom: 1px solid #eaedf3;
 			}
-
-			& > .blocks {
-				padding: 55px;
-			}
 		}
 	}
 

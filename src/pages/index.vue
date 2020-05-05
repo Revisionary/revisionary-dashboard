@@ -43,12 +43,16 @@
 
 <style lang="scss">
 	.blocks {
+		padding: 55px 35px;
+
 		& > ol {
 			list-style-type: none;
+			padding: 0;
 
 			& > li {
 				display: inline-block;
-				padding: 0 20px;
+				padding: 0 20px 40px;
+				width: 25%;
 			}
 		}
 	}
