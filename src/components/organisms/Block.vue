@@ -29,7 +29,11 @@
 				<div class="middle">
 					<div class="left"></div>
 					<div class="center">
-						<nuxt-link :to="`/project/${blockData.id}`" data-tooltip="Open this page">
+						<nuxt-link
+							:to="`/project/${blockData.id}`"
+							class="tooltip-not-contained"
+							data-tooltip="Open this project"
+						>
 							<ArrowRightIcon />
 						</nuxt-link>
 					</div>
