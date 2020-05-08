@@ -202,8 +202,8 @@
 					display: inline-flex;
 					justify-content: center;
 					align-items: center;
-					width: 38px;
-					height: 38px;
+					width: 39px;
+					height: 39px;
 					border-radius: 50%;
 					border: 1px solid #e6e6e6;
 					background-color: #fff;
