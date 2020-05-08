@@ -1,6 +1,6 @@
 <template>
 	<div id="projects" class="content">
-		<SubHeader subtitle="Hub" :title="'My Projects' + dataCount" description />
+		<SubHeader subtitle="Hub" title="My Projects" :dataCount="dataCount" description />
 
 		<div class="blocks">
 			<div v-if="!isProjectsLoaded">Loading the projects...</div>

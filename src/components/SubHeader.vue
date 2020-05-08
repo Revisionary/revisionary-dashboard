@@ -5,7 +5,7 @@
 			<summary>
 				<h1>
 					<span>
-						{{ title.substr(0, 15) }}
+						{{ title.substr(0, 15) + dataCount }}
 						<ChevronDownIcon />
 					</span>
 				</h1>
@@ -77,12 +77,15 @@
 			isLoading: {
 				default: false
 			},
-			subtitle: {
-				default: ""
-			},
 			title: {
 				default: "Loading...",
 				required: true
+			},
+			subtitle: {
+				default: ""
+			},
+			dataCount: {
+				default: ""
 			},
 			description: {
 				default: "Loading..."
