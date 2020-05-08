@@ -33,7 +33,24 @@
 				<a href="#">FAVORITES</a>
 				<a href="#">PERSONAL PROJECTS</a>
 
-				<a href="#" style="font-size: 15px;">+</a>
+				<a
+					href="#"
+					style="font-size: 15px;"
+					class="tooltip-not-contained"
+					data-tooltip="Create a Category"
+				>+</a>
+			</div>
+
+			<div class="actions">
+				<a href="#" class="tooltip-not-contained" data-tooltip="Search in Projects">
+					<SearchIcon />
+				</a>
+				<a href="#" class="tooltip-not-contained" data-tooltip="Settings">
+					<SortIcon />
+				</a>
+				<a href="#" class="dark" data-tooltip="Add New Project">
+					<PlusIcon />
+				</a>
 			</div>
 		</div>
 	</header>
@@ -41,10 +58,16 @@
 
 <script>
 	import ChevronDownIcon from "~/components/atoms/icon-chevron-down.vue";
+	import SearchIcon from "~/components/atoms/icon-search.vue";
+	import SortIcon from "~/components/atoms/icon-sort.vue";
+	import PlusIcon from "~/components/atoms/icon-plus.vue";
 
 	export default {
 		components: {
-			ChevronDownIcon
+			ChevronDownIcon,
+			SearchIcon,
+			SortIcon,
+			PlusIcon
 		},
 		props: {
 			isLoading: {
@@ -138,8 +161,13 @@
 
 		& > .bottom {
 			position: absolute;
+			left: 0;
+			right: 0;
 			bottom: -1px;
-			//background-color: red;
+			padding: 0 55px;
+			display: flex;
+			justify-content: space-between;
+			align-items: flex-end;
 
 			.tabs {
 				& > a {
@@ -162,6 +190,33 @@
 
 					&:hover {
 						border-color: #037ef3;
+					}
+				}
+			}
+
+			.actions {
+				transform: translateY(50%);
+				display: flex;
+
+				& > a {
+					display: inline-flex;
+					justify-content: center;
+					align-items: center;
+					width: 38px;
+					height: 38px;
+					border-radius: 50%;
+					border: 1px solid #e6e6e6;
+					background-color: #fff;
+					box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.06);
+					margin-left: 16px;
+					transition: 500ms;
+
+					&.dark {
+						background-color: #037ef3;
+					}
+
+					&:hover {
+						box-shadow: none;
 					}
 				}
 			}
