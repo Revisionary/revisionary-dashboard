@@ -3,16 +3,24 @@
 		<div class="top" :style="'background-image: url(' + sampleImage + ');'">
 			<div class="actions">
 				<div class="top">
-					<div class="left">LEFT</div>
+					<div class="left">USERS</div>
 					<div class="center"></div>
 					<div class="right">
 						<details>
 							<summary>
 								<MoreIcon />
 							</summary>
-							<div class="details-menu">
+							<div class="details-menu sub-menu compact right">
 								<ul>
-									<li>Test</li>
+									<li>
+										<a href="#">Edit</a>
+									</li>
+									<li>
+										<a href="#">Archive</a>
+									</li>
+									<li>
+										<a href="#">Delete</a>
+									</li>
 								</ul>
 							</div>
 						</details>
@@ -28,9 +36,9 @@
 					<div class="right"></div>
 				</div>
 				<div class="bottom">
-					<div class="left">LEFT</div>
+					<div class="left">VERSIONS</div>
 					<div class="center"></div>
-					<div class="right">RIGHT</div>
+					<div class="right">PINS</div>
 				</div>
 			</div>
 		</div>

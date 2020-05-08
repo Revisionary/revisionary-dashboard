@@ -4,8 +4,9 @@
 		<main>
 			<SideBar />
 			<nuxt />
+
+			<Footer />
 		</main>
-		<Footer />
 	</div>
 </template>
 
@@ -40,6 +41,8 @@
 	main {
 		width: 100%;
 		display: table;
+		position: relative;
+		min-height: calc(100vh - 73px);
 
 		& > .content {
 			display: table-cell;

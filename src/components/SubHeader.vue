@@ -1,12 +1,28 @@
 <template>
 	<header id="sub-header" :class="{ loading: isLoading }">
 		<div class="subtitle">{{subtitle}}</div>
-		<h1 class="dropdown">
-			<a href="#">
-				{{ title.substr(0, 15) }}
-				<ChevronDownIcon />
-			</a>
-		</h1>
+		<details>
+			<summary>
+				<h1>
+					{{ title.substr(0, 15) }}
+					<ChevronDownIcon />
+				</h1>
+			</summary>
+			<div class="details-menu sub-menu right">
+				<ul>
+					<li class="active">
+						<a href="#">All Projects (3)</a>
+					</li>
+					<li>
+						<a href="#">Archived Projects (2)</a>
+					</li>
+					<li>
+						<a href="#">Deleted Projects (0)</a>
+					</li>
+				</ul>
+			</div>
+		</details>
+
 		<p class="description">{{ description }}</p>
 
 		<div class="bottom">
@@ -17,7 +33,7 @@
 				<a href="#">FAVORITES</a>
 				<a href="#">PERSONAL PROJECTS</a>
 
-				<a href="#">+</a>
+				<a href="#" style="font-size: 15px;">+</a>
 			</div>
 		</div>
 	</header>
@@ -59,15 +75,12 @@
 			letter-spacing: -0.3px;
 			color: #2d3137;
 			text-transform: capitalize;
+			display: inline-flex;
+			align-items: center;
 
-			& > a {
-				display: flex;
-				align-items: center;
-
-				& > svg {
-					margin-left: 4px;
-					margin-top: 5px;
-				}
+			& > svg {
+				margin-left: 4px;
+				margin-top: 5px;
 			}
 		}
 

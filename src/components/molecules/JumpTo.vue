@@ -4,7 +4,7 @@
 			<span class="current">{{ current }}</span>
 			<CaretDownIcon />
 		</summary>
-		<div class="details-menu">
+		<div class="details-menu sub-menu">
 			<ul>
 				<li
 					:class="{active : this.$route.name === 'index'}"
@@ -75,38 +75,6 @@
 
 		.current {
 			text-transform: capitalize;
-		}
-
-		.details-menu {
-			background-color: #fff;
-			border: 1px solid #eaedf3;
-			border-radius: 4px;
-			padding: 8px 0;
-			margin-top: 5px;
-
-			& > ul {
-				list-style-type: none;
-				padding: 0;
-
-				& > li {
-					& > a {
-						font-size: 15px;
-						line-height: 18px;
-						font-weight: 500;
-						display: block;
-						padding: 8px 12px;
-						text-transform: capitalize;
-					}
-
-					&.active {
-						& > a {
-							font-weight: 600;
-							color: #333333 !important;
-							//background-color: red;
-						}
-					}
-				}
-			}
 		}
 	}
 </style>
