@@ -21,10 +21,28 @@
 
 			<a href="#" class="button">Upgrade</a>
 
-			<a href="#">
-				<ProfilePic class="profile-pic" firstName="Bilal" lastName="TAS" email="bilaltas@me.com" />
-				<ChevronDownIcon />
-			</a>
+			<details>
+				<summary>
+					<ProfilePic class="profile-pic" firstName="Bilal" lastName="TAS" email="bilaltas@me.com" />
+					<ChevronDownIcon />
+				</summary>
+				<div class="details-menu sub-menu right">
+					<ul>
+						<li>
+							<a href="#">Account</a>
+						</li>
+						<li>
+							<a href="#">Help</a>
+						</li>
+						<li>
+							<a href="#">Feedback</a>
+						</li>
+						<li>
+							<a href="#">Logout</a>
+						</li>
+					</ul>
+				</div>
+			</details>
 		</div>
 	</div>
 </template>
