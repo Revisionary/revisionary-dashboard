@@ -37,6 +37,11 @@
 		},
 		created() {
 			this.$store.dispatch("projects/getProject", this.$route.params.id);
+		},
+		data() {
+			return {
+				//isProjectLoaded: false
+			};
 		}
 	};
 </script>

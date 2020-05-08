@@ -1,11 +1,13 @@
 <template>
 	<header id="sub-header" :class="{ loading: isLoading }">
 		<div class="subtitle">{{subtitle}}</div>
-		<details>
+		<details class="unselectable-when-loading">
 			<summary>
 				<h1>
-					{{ title.substr(0, 15) }}
-					<ChevronDownIcon />
+					<span>
+						{{ title.substr(0, 15) }}
+						<ChevronDownIcon />
+					</span>
 				</h1>
 			</summary>
 			<div class="details-menu sub-menu right">
@@ -23,7 +25,9 @@
 			</div>
 		</details>
 
-		<p class="description">{{ description }}</p>
+		<p class="description">
+			<span>{{ description }}</span>
+		</p>
 
 		<div class="bottom">
 			<div class="tabs">
@@ -98,12 +102,15 @@
 			letter-spacing: -0.3px;
 			color: #2d3137;
 			text-transform: capitalize;
-			display: inline-flex;
-			align-items: center;
 
-			& > svg {
-				margin-left: 4px;
-				margin-top: 5px;
+			& > span {
+				display: inline-flex;
+				align-items: center;
+
+				& > svg {
+					margin-left: 4px;
+					margin-top: 5px;
+				}
 			}
 		}
 
@@ -140,22 +147,25 @@
 				animation: gradientBG 3s ease infinite;
 
 				border-radius: 3px;
-				max-width: 200px;
+				width: 200px;
 				height: 36px;
 				color: transparent;
 				opacity: 0.2;
 				pointer-events: none;
 
-				& > a {
+				& > span {
 					opacity: 0;
 					display: none;
 				}
 			}
 
 			.description {
-				max-width: 500px;
+				width: 500px;
 				height: 23px;
-				//opacity: 0.5;
+			}
+
+			.unselectable-when-loading {
+				pointer-events: none;
 			}
 		}
 
