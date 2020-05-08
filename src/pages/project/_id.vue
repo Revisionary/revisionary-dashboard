@@ -4,11 +4,11 @@
 			subtitle="Project"
 			:title="project.title + dataCount"
 			:description="project.body"
-			:isLoading="!isLoaded"
+			:isLoading="!isProjectLoaded"
 		/>
 
 		<div class="blocks">
-			<div v-if="!isLoaded">Loading the Pages...</div>
+			<div v-if="!isProjectLoaded">Loading the Pages...</div>
 			<br />
 			<br />
 			<nuxt-link to="/">&lt; Projects</nuxt-link>
@@ -27,7 +27,7 @@
 		computed: {
 			...mapGetters({
 				project: "projects/getProject",
-				isLoaded: "projects/status"
+				isProjectLoaded: "projects/status"
 			}),
 			dataCount() {
 				var count = 3;

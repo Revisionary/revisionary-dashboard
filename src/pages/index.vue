@@ -3,8 +3,8 @@
 		<SubHeader subtitle="Hub" :title="'My Projects' + dataCount" description />
 
 		<div class="blocks">
-			<div v-if="!isLoaded">Loading the projects...</div>
-			<ol v-if="isLoaded">
+			<div v-if="!isProjectsLoaded">Loading the projects...</div>
+			<ol v-if="isProjectsLoaded">
 				<li v-for="project in projects" v-bind:key="project.id">
 					<Block :blockData="project" />
 				</li>
@@ -27,7 +27,7 @@
 		computed: {
 			...mapGetters({
 				projects: "projects/get",
-				isLoaded: "projects/status"
+				isProjectsLoaded: "projects/status"
 			}),
 			dataCount() {
 				if (this.projects.length) return " (" + this.projects.length + ")";
