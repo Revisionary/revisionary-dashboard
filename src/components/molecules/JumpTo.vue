@@ -52,7 +52,6 @@
 		},
 		methods: {
 			toggleJumper() {
-				console.log("HEYYY", this.jumperOpen);
 				if (this.jumperOpen) this.jumperOpen = false;
 				else {
 					if (!this.projects.length && !this.jumperOpen)

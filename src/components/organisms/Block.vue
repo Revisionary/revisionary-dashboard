@@ -1,6 +1,39 @@
 <template>
 	<div class="block">
-		<div class="top">IMAGE</div>
+		<div class="top" :style="'background-image: url(' + sampleImage + ');'">
+			<div class="actions">
+				<div class="top">
+					<div class="left">LEFT</div>
+					<div class="center"></div>
+					<div class="right">
+						<details>
+							<summary>
+								<MoreIcon />
+							</summary>
+							<div class="details-menu">
+								<ul>
+									<li>Test</li>
+								</ul>
+							</div>
+						</details>
+					</div>
+				</div>
+				<div class="middle">
+					<div class="left"></div>
+					<div class="center">
+						<nuxt-link :to="`/project/${blockData.id}`">
+							<ArrowRightIcon />
+						</nuxt-link>
+					</div>
+					<div class="right"></div>
+				</div>
+				<div class="bottom">
+					<div class="left">LEFT</div>
+					<div class="center"></div>
+					<div class="right">RIGHT</div>
+				</div>
+			</div>
+		</div>
 		<div class="info">
 			<div class="title">
 				<nuxt-link :to="`/project/${blockData.id}`">
@@ -22,16 +55,25 @@
 </template>
 
 <script>
+	import ArrowRightIcon from "~/components/atoms/icon-arrow-right.vue";
+	import MoreIcon from "~/components/atoms/icon-more.vue";
 	import StarIcon from "~/components/atoms/icon-star.vue";
 
 	export default {
 		components: {
+			ArrowRightIcon,
+			MoreIcon,
 			StarIcon
 		},
 		props: {
 			blockData: {
 				type: Object
 			}
+		},
+		data() {
+			return {
+				sampleImage: "https://placeimg.com/640/480/any"
+			};
 		}
 	};
 </script>
@@ -46,16 +88,55 @@
 		border: 1px solid #eaedf3;
 		box-shadow: 0px 2px 14px #edf1fa;
 
-		.top {
+		& > .top {
+			position: relative;
 			height: 165px;
 			padding: 12px;
-			background: #0e1117;
+			background-color: #0e1117;
+			background-size: cover;
+			background-repeat: no-repeat;
 			color: white;
 			border-top-left-radius: 6px;
 			border-top-right-radius: 6px;
+
+			&::before {
+				content: "";
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background-color: #1d222f;
+				opacity: 0.5;
+				border-top-left-radius: inherit;
+				border-top-right-radius: inherit;
+			}
+
+			& > .actions {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background-color: rgba(29, 34, 47, 0.5);
+				display: flex;
+				flex-direction: column;
+				justify-content: space-between;
+				padding: 12px 14px;
+				opacity: 0;
+				transition: 500ms;
+				border-top-left-radius: inherit;
+				border-top-right-radius: inherit;
+
+				& > * {
+					display: flex;
+					justify-content: space-between;
+					align-items: center;
+				}
+			}
 		}
 
-		.info {
+		& > .info {
 			padding: 20px;
 
 			.title {
@@ -77,7 +158,7 @@
 			}
 		}
 
-		.bottom {
+		& > .bottom {
 			display: flex;
 			justify-content: space-between;
 			padding: 14px 20px;
@@ -93,7 +174,13 @@
 		}
 
 		&:hover {
-			box-shadow: 0px 2px 14px #e7ecf5;
+			box-shadow: 0px 3px 24px #e0eafb;
+
+			& > .top {
+				& > .actions {
+					opacity: 1;
+				}
+			}
 		}
 	}
 </style>

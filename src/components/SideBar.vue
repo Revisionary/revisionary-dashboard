@@ -51,7 +51,7 @@
 		background-color: #ffffff;
 		border: 1px solid #eaedf3;
 		border-top: none;
-		display: none;
+		display: table-cell;
 		vertical-align: top;
 
 		& > .wrapper {

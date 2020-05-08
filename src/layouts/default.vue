@@ -1,5 +1,5 @@
 <template>
-	<div id="page" v-bind:class="{ sidebarOpen: $store.state.isSideBarOpen }">
+	<div id="page" v-bind:class="{ sidebarClosed: !$store.state.isSideBarOpen }">
 		<TopBar />
 		<main>
 			<SideBar />
@@ -53,10 +53,10 @@
 		}
 	}
 
-	.sidebarOpen {
+	.sidebarClosed {
 		main {
 			& > aside {
-				display: table-cell;
+				display: none;
 			}
 		}
 	}
