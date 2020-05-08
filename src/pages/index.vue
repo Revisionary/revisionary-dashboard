@@ -10,23 +10,18 @@
 				</li>
 			</ol>
 		</div>
-
-		<Footer />
 	</div>
 </template>
 
 <script>
 	import { mapGetters } from "vuex";
 	import SubHeader from "~/components/SubHeader.vue";
-	import Footer from "~/components/Footer.vue";
-
 	import Block from "~/components/organisms/Block.vue";
 
 	export default {
 		components: {
 			SubHeader,
-			Block,
-			Footer
+			Block
 		},
 		computed: {
 			...mapGetters({
