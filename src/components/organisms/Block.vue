@@ -29,7 +29,7 @@
 				<div class="middle">
 					<div class="left"></div>
 					<div class="center">
-						<nuxt-link :to="`/project/${blockData.id}`">
+						<nuxt-link :to="`/project/${blockData.id}`" data-tooltip="Open this page">
 							<ArrowRightIcon />
 						</nuxt-link>
 					</div>
@@ -54,7 +54,7 @@
 		<div class="bottom">
 			<div class="date">2 Days Ago</div>
 			<div class="favorites">
-				<a href="#">
+				<a href="#" data-tooltip="Add to Favorites">
 					<StarIcon />
 				</a>
 			</div>

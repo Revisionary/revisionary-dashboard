@@ -178,3 +178,93 @@ details {
 		}
 	}
 }
+
+/* TOOLTIPS */
+[data-tooltip] {
+	position: relative;
+
+	&.tooltip {
+		cursor: help;
+	}
+
+	&::after {
+		content: attr(data-tooltip);
+		pointer-events: none;
+		position: absolute;
+		z-index: 999;
+		display: inline-table;
+		padding: 4px;
+		width: 120px;
+		min-height: fit-content;
+		border-radius: 4px;
+		background-color: #232830;
+		color: white;
+		box-shadow: 0px 0px 3px 0px rgba(255, 255, 255, 0.5);
+		text-transform: initial;
+		font-size: 13px;
+		line-height: 15px;
+		font-weight: 500;
+		letter-spacing: normal;
+		white-space: normal;
+		text-align: center;
+		opacity: 0;
+		transition: 500ms;
+		transition-delay: 0;
+
+		bottom: 90%;
+		right: auto;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+
+	&.tooltip-active:after,
+	&:hover:after {
+		opacity: 1;
+		bottom: calc(100% + 5px);
+		transition-delay: 0;
+	}
+
+	&.tooltip-delay {
+		&.tooltip-active:after,
+		&:hover:after {
+			transition-delay: 500ms;
+		}
+	}
+
+	&.bottom-tooltip {
+		&::after {
+			bottom: auto;
+			top: 90%;
+		}
+
+		&:hover::after {
+			top: calc(100% + 5px);
+		}
+	}
+
+	&.left-tooltip {
+		&::after {
+			right: 90%;
+			left: auto;
+			top: 50%;
+			transform: translateY(-50%);
+		}
+
+		&:hover::after {
+			right: calc(100% + 5px);
+		}
+	}
+
+	&.right-tooltip {
+		&::after {
+			right: auto;
+			left: 90%;
+			top: 50%;
+			transform: translateY(-50%);
+		}
+
+		&:hover::after {
+			left: calc(100% + 5px);
+		}
+	}
+}
