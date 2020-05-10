@@ -99,9 +99,9 @@
 		position: relative;
 
 		h1 {
-			font-weight: bold;
 			font-size: 30px;
 			line-height: 36px;
+			font-weight: 600;
 			letter-spacing: -0.3px;
 			color: #2d3137;
 			text-transform: capitalize;
