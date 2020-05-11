@@ -2,7 +2,7 @@
 	<div id="pages" class="content">
 		<SubHeader
 			subtitle="Project"
-			:title="project.title"
+			:title="project.project_title"
 			:dataCount="dataCount"
 			:description="project.body"
 			:isLoading="!isProjectLoaded"

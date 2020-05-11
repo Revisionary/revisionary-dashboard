@@ -25,7 +25,22 @@ export const actions = {
 			.then(res => {
 				if (res.status === 200) {
 					//console.log(res.data);
-					commit("set", res.data.splice(0, 6));
+
+					// Sample data
+					const sampleData = [
+						{
+							project_ID: 0,
+							project_title: "Marc Pridmore",
+							project_description: "Lorem ipsum dolor sit amet.",
+							project_image_url:
+								"https://placeimg.com/640/480/any",
+							project_user_ID: 6,
+							project_order: 1
+						}
+					];
+
+					//commit("set", res.data.splice(0, 6));
+					commit("set", sampleData);
 					commit("setStatus", true);
 				}
 			});
