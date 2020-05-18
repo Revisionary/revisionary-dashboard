@@ -55,7 +55,7 @@
 				if (this.jumperOpen) this.jumperOpen = false;
 				else {
 					if (!this.projects.length && !this.jumperOpen)
-						this.$store.dispatch("projects/get");
+						this.$store.dispatch("projects/fetch");
 
 					this.jumperOpen = true;
 				}

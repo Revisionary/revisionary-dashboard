@@ -2,14 +2,14 @@
 	<div id="pages" class="content">
 		<SubHeader
 			subtitle="Project"
-			:title="project.project_title"
+			:title="project.title"
 			:dataCount="dataCount"
-			:description="project.body"
+			:description="project.description"
 			:isLoading="!isProjectLoaded"
 		/>
 
 		<div class="blocks">
-			<div v-if="!isProjectLoaded">Loading the Pages...</div>
+			<div v-if="!isPageLoaded">Loading the Pages...</div>
 			<br />
 			<br />
 			<nuxt-link to="/">&lt; Projects</nuxt-link>
@@ -37,11 +37,11 @@
 			}
 		},
 		created() {
-			this.$store.dispatch("projects/getProject", this.$route.params.id);
+			this.$store.dispatch("projects/fetchProject", this.$route.params.id);
 		},
 		data() {
 			return {
-				//isProjectLoaded: false
+				isPageLoaded: false
 			};
 		}
 	};
