@@ -15,13 +15,11 @@
 				</li>
 				<li
 					v-for="eachProject in projects"
-					v-bind:key="eachProject.project_ID"
-					:class="{active : project.project_ID == eachProject.project_ID}"
+					v-bind:key="eachProject.ID"
+					:class="{active : project.ID == eachProject.ID}"
 					@click="toggleJumper"
 				>
-					<nuxt-link
-						:to="`/project/${eachProject.project_ID}`"
-					>{{ eachProject.project_title.substr(0, 15) }}</nuxt-link>
+					<nuxt-link :to="`/project/${eachProject.ID}`">{{ eachProject.title.substr(0, 15) }}</nuxt-link>
 				</li>
 			</ul>
 		</div>

@@ -1,6 +1,6 @@
 <template>
 	<div class="block">
-		<div class="top" :style="'background-image: url(' + blockData.project_image_url + ');'">
+		<div class="top" :style="'background-image: url(' + blockData.image_url + ');'">
 			<div class="actions">
 				<div class="top">
 					<div class="left">USERS</div>
@@ -29,7 +29,7 @@
 				<div class="middle">
 					<div class="left"></div>
 					<div class="center tooltip-not-contained" data-tooltip="Open this project">
-						<nuxt-link :to="`/project/${blockData.project_ID}`">
+						<nuxt-link :to="`/project/${blockData.ID}`">
 							<ArrowRightIcon />
 						</nuxt-link>
 					</div>
@@ -44,18 +44,18 @@
 		</div>
 		<div class="info">
 			<div class="title">
-				<nuxt-link :to="`/project/${blockData.project_ID}`">
-					{{ blockData.project_title.substr(0, 15) }}
+				<nuxt-link :to="`/project/${blockData.ID}`">
+					{{ blockData.title.substr(0, 15) }}
 					<span class="count">(14)</span>
 				</nuxt-link>
 			</div>
-			<div class="description">{{ blockData.project_description.substr(0, 35) }}</div>
+			<div class="description">{{ blockData.description.substr(0, 35) }}</div>
 		</div>
 		<div class="bottom">
 			<div class="date">2 Days Ago</div>
 			<div class="favorites">
 				<a href="#" data-tooltip="Add to Favorites">
-					<StarIcon />
+					<StarIcon :active="blockData.favorite" />
 				</a>
 			</div>
 		</div>
