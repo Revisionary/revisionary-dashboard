@@ -16,7 +16,7 @@
 					<draggable
 						class="blocks"
 						v-model="projects"
-						group="projects"
+						group="favorite-blocks"
 						v-if="isProjectsLoaded"
 						draggable=".sortable"
 					>
