@@ -3,6 +3,7 @@
 		<TopBar />
 		<main>
 			<SideBar />
+
 			<nuxt />
 
 			<Footer />

@@ -81,7 +81,7 @@ export const actions = {
 				image_url: "https://placeimg.com/640/480/any",
 				user_ID: 6,
 				order: 1,
-				cat_ID: 0,
+				cat_ID: 2,
 				favorite: true,
 				users: [1, 2, 3]
 			}
@@ -109,7 +109,7 @@ export const actions = {
 			},
 			{
 				ID: 1,
-				title: "Favorites"
+				title: "Cat 0"
 			},
 			{
 				ID: 2,
@@ -134,6 +134,7 @@ export const actions = {
 		const projectFound = state.projects.find(function (project) {
 			return project.ID == projectID;
 		});
+
 		if (projectFound) {
 			commit("setProject", projectFound);
 			return;

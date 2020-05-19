@@ -1,5 +1,5 @@
 <template>
-	<div class="block">
+	<div class="card">
 		<div class="top" :style="'background-image: url(' + blockData.image_url + ');'">
 			<div class="actions">
 				<div class="top">
@@ -87,7 +87,7 @@
 </script>
 
 <style lang="scss">
-	.block {
+	.card {
 		display: inline-flex;
 		flex-direction: column;
 		background-color: white;

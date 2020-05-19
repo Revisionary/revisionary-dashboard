@@ -2,33 +2,56 @@
 	<div id="projects" class="content">
 		<SubHeader subtitle="Hub" title="My Projects" :dataCount="dataCount" description />
 
-		<draggable
-			class="categories"
-			v-model="categories"
-			group="categories"
-			@start="drag = true"
-			@end="drag = false"
-			v-if="isProjectsLoaded"
-			draggable=".sortable"
-		>
-			<div :class="{sortable : category.ID != 0}" v-for="category in categories" :key="category.ID">
-				<div class="cat-title">{{ category.title }}</div>
+		<div class="scrollable">
+			<draggable
+				class="categories"
+				v-model="categories"
+				group="categories"
+				v-if="isProjectsLoaded"
+				draggable=".catsortable"
+			>
+				<div class="category favorites" v-if="favoriteBlocks.length">
+					<div class="category-title">Favorites</div>
 
-				<draggable
-					class="blocks"
-					v-model="projects"
-					group="projects"
-					@start="drag = true"
-					@end="drag = false"
-					v-if="isProjectsLoaded"
-					draggable=".sortable"
+					<draggable
+						class="blocks"
+						v-model="projects"
+						group="projects"
+						v-if="isProjectsLoaded"
+						draggable=".sortable"
+					>
+						<div class="block sortable" v-for="project in favoriteBlocks" :key="project.ID">
+							<Block :blockData="project" />
+						</div>
+					</draggable>
+				</div>
+
+				<div
+					class="category"
+					:class="{catsortable : category.ID != 0}"
+					v-for="category in categories"
+					:key="category.ID"
 				>
-					<div class="sortable" v-for="project in projects" :key="project.ID">
-						<Block :blockData="project" />
-					</div>
-				</draggable>
-			</div>
-		</draggable>
+					<div class="category-title">{{ category.title }}</div>
+
+					<draggable
+						class="blocks"
+						v-model="projects"
+						group="projects"
+						v-if="isProjectsLoaded"
+						draggable=".sortable"
+					>
+						<div
+							class="block sortable"
+							v-for="project in blocksOfCategory(category.ID)"
+							:key="project.ID"
+						>
+							<Block :blockData="project" />
+						</div>
+					</draggable>
+				</div>
+			</draggable>
+		</div>
 	</div>
 </template>
 
@@ -63,13 +86,27 @@
 				}
 			},
 			...mapGetters({
-				//categories: "projects/getCategories",
-				//projects: "projects/get",
 				isProjectsLoaded: "projects/status"
 			}),
 			dataCount() {
 				if (this.projects.length) return " (" + this.projects.length + ")";
 				return "";
+			},
+			favoriteBlocks() {
+				var blocks = this.projects.filter(function(block) {
+					return block.favorite;
+				});
+
+				return blocks;
+			}
+		},
+		methods: {
+			blocksOfCategory(cat_ID) {
+				var blocksOfCat = this.projects.filter(function(block) {
+					return block.cat_ID == cat_ID;
+				});
+
+				return blocksOfCat;
 			}
 		},
 		created() {
@@ -86,16 +123,38 @@
 </script>
 
 <style lang="scss">
-	.blocks {
-		padding: 55px 35px;
+	.scrollable {
+		padding-top: 55px;
+		padding-bottom: 55px;
+		padding-left: 55px;
+		padding-right: 55px;
+	}
 
-		& > .sortable {
+	.categories {
+		& > .category {
+			padding-bottom: 15px;
+
+			.category-title {
+			}
+
+			&.sortable-ghost {
+				opacity: 0.2;
+			}
+		}
+	}
+
+	.blocks {
+		padding-top: 20px;
+		margin-left: -20px;
+		margin-right: -20px;
+
+		& > .block {
 			display: inline-block;
 			padding: 0 20px 40px;
 			width: 25%;
 
 			&.sortable-ghost {
-				& > .block {
+				& > .card {
 					opacity: 0.2;
 				}
 			}
