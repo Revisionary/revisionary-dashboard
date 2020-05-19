@@ -26,6 +26,35 @@ export const getters = {
 };
 
 export const actions = {
+
+	// Fetch Project Categories
+	async fetchCategories({ commit }) {
+		await commit("setLoaded", false);
+		await commit("setCategories", [
+			{
+				ID: 0,
+				title: "Uncategorized"
+			},
+			{
+				ID: 1,
+				title: "Personal Projects"
+			},
+			{
+				ID: 2,
+				title: "Cat 1"
+			},
+			{
+				ID: 3,
+				title: "Cat 2"
+			},
+			{
+				ID: 4,
+				title: "Cat 33"
+			}
+		]);
+		await commit("setLoaded", true);
+	},
+
 	// Fetch Projects
 	async fetch({ commit }) {
 		await commit("setLoaded", false);
@@ -38,7 +67,7 @@ export const actions = {
 				user_ID: 6,
 				order: 1,
 				cat_ID: 0,
-				favorite: true,
+				favorite: false,
 				users: [1, 2, 3]
 			},
 			{
@@ -59,7 +88,7 @@ export const actions = {
 				image_url: "https://placeimg.com/640/480/any",
 				user_ID: 6,
 				order: 1,
-				cat_ID: 0,
+				cat_ID: 1,
 				favorite: false,
 				users: [1, 2, 3]
 			},
@@ -81,8 +110,30 @@ export const actions = {
 				image_url: "https://placeimg.com/640/480/any",
 				user_ID: 6,
 				order: 1,
+				cat_ID: 1,
+				favorite: true,
+				users: [1, 2, 3]
+			},
+			{
+				ID: 5,
+				title: "6 Marc Pridmore",
+				description: "Lorem ipsum dolor sit amet.",
+				image_url: "https://placeimg.com/640/480/any",
+				user_ID: 6,
+				order: 1,
 				cat_ID: 2,
 				favorite: true,
+				users: [1, 2, 3]
+			},
+			{
+				ID: 6,
+				title: "7 Marc Pridmore",
+				description: "Lorem ipsum dolor sit amet.",
+				image_url: "https://placeimg.com/640/480/any",
+				user_ID: 6,
+				order: 1,
+				cat_ID: 0,
+				favorite: false,
 				users: [1, 2, 3]
 			}
 		]);
@@ -97,34 +148,6 @@ export const actions = {
 		// 			commit("setLoaded", true);
 		// 		}
 		// 	});
-	},
-
-	// Fetch Project Categories
-	async fetchCategories({ commit }) {
-		await commit("setLoaded", false);
-		await commit("setCategories", [
-			{
-				ID: 0,
-				title: "Uncategorized"
-			},
-			{
-				ID: 1,
-				title: "Cat 0"
-			},
-			{
-				ID: 2,
-				title: "Cat 1"
-			},
-			{
-				ID: 3,
-				title: "Cat 2"
-			},
-			{
-				ID: 4,
-				title: "Cat 33"
-			}
-		]);
-		await commit("setLoaded", true);
 	},
 
 	// Get singular project
