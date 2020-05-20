@@ -5,22 +5,15 @@
 		<div class="scrollable">
 			<draggable
 				class="categories"
-				v-model="categories"
 				group="categories"
 				v-if="isProjectsLoaded"
 				draggable=".catsortable"
+				animation="200"
 			>
 				<div class="category favorites" v-if="favoriteBlocks.length">
 					<div class="category-title">Favorites</div>
 
-					<draggable
-						class="blocks"
-						v-model="projects"
-						group="favorite-blocks"
-						v-if="isProjectsLoaded"
-						draggable=".sortable"
-						animation="200"
-					>
+					<draggable class="blocks" group="favorite-blocks" draggable=".sortable" animation="200">
 						<div class="block sortable" v-for="project in favoriteBlocks" :key="project.ID">
 							<Block :blockData="project" />
 						</div>
@@ -35,20 +28,16 @@
 				>
 					<div class="category-title">{{ category.title }}</div>
 
-					<draggable
-						class="blocks"
-						v-model="projects"
-						group="blocks"
-						v-if="isProjectsLoaded"
-						draggable=".sortable"
-						animation="200"
-					>
+					<draggable class="blocks" group="blocks" draggable=".sortable" animation="200">
 						<div
 							class="block sortable"
 							v-for="project in blocksOfCategory(category.ID)"
 							:key="project.ID"
 						>
 							<Block :blockData="project" />
+						</div>
+						<div class="block add-new">
+							<Block type="new" />
 						</div>
 					</draggable>
 				</div>
