@@ -27,9 +27,18 @@
 					v-for="category in categories"
 					:key="category.ID"
 				>
-					<div class="category-title">{{ category.title }}</div>
+					<div
+						class="category-title"
+						v-if="(category.ID == 0 && blocksOfCategory(category.ID).length) || category.ID != 0"
+					>{{ category.title }}</div>
 
-					<draggable class="blocks" group="blocks" draggable=".sortable" animation="200">
+					<draggable
+						class="blocks"
+						group="blocks"
+						draggable=".sortable"
+						animation="200"
+						v-if="(category.ID == 0 && blocksOfCategory(category.ID).length) || category.ID != 0"
+					>
 						<div
 							class="block sortable"
 							v-for="project in blocksOfCategory(category.ID)"
