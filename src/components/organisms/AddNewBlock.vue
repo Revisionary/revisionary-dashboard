@@ -7,7 +7,19 @@
 			</div>
 		</div>
 		<div class="info" v-show="isOpen">
-			<input ref="url" type="url" placeholder="Enter a website URL..." />
+			<form>
+				<input ref="url" type="url" placeholder="Enter a website URL..." required />
+				<button>
+					<ChevronRightIcon />
+				</button>
+			</form>
+			<p>
+				or
+				<a href="#">upload your page design</a>
+				<span class="bottom-tooltip" data-tooltip="Some info here...">
+					<InfoIcon />
+				</span>
+			</p>
 		</div>
 		<div class="bottom" v-show="isOpen">Advanced Options</div>
 	</div>
@@ -15,10 +27,14 @@
 
 <script>
 	import PlusIconLarge from "~/components/atoms/icon-plus-large.vue";
+	import ChevronRightIcon from "~/components/atoms/icon-chevron-right.vue";
+	import InfoIcon from "~/components/atoms/icon-info.vue";
 
 	export default {
 		components: {
-			PlusIconLarge
+			PlusIconLarge,
+			ChevronRightIcon,
+			InfoIcon
 		},
 		props: {
 			blockData: {
@@ -72,13 +88,41 @@
 
 		& > .info {
 			box-shadow: inset 0px 12px 18px rgba(0, 0, 0, 0.02);
+			font-weight: 500;
+			font-size: 12px;
+			line-height: 14px;
+			color: #9e9e9e;
+			letter-spacing: -0.1px;
 
-			input {
-				min-height: 35px;
-				font-weight: normal;
-				font-size: 12px;
-				line-height: 14px;
-				padding: 5px 12px;
+			a {
+				color: black;
+				border-bottom: 1px solid #e0e0e0;
+				padding-bottom: 2px;
+			}
+
+			p {
+				margin-bottom: 20px;
+			}
+
+			form {
+				display: flex;
+
+				input {
+					min-height: 35px;
+					font-weight: normal;
+					font-size: 12px;
+					line-height: 14px;
+					padding: 5px 12px;
+					flex: 1;
+				}
+
+				button {
+					width: 35px;
+					height: 35px;
+					margin-left: 10px;
+					background: #f0f0f0;
+					border: none;
+				}
 			}
 		}
 
