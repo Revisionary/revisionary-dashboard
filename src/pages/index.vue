@@ -19,6 +19,7 @@
 						group="favorite-blocks"
 						v-if="isProjectsLoaded"
 						draggable=".sortable"
+						animation="200"
 					>
 						<div class="block sortable" v-for="project in favoriteBlocks" :key="project.ID">
 							<Block :blockData="project" />
@@ -37,9 +38,10 @@
 					<draggable
 						class="blocks"
 						v-model="projects"
-						group="projects"
+						group="blocks"
 						v-if="isProjectsLoaded"
 						draggable=".sortable"
+						animation="200"
 					>
 						<div
 							class="block sortable"
