@@ -7,7 +7,7 @@
 			<a
 				href="#"
 				class="menu-icon"
-				v-bind:class="{ active: $store.state.isSideBarOpen }"
+				:class="{ active: $store.state.isSideBarOpen }"
 				@click.prevent="$store.commit('toggleSideBar')"
 			>
 				<MenuIcon />

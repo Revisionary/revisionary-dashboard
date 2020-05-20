@@ -79,9 +79,7 @@
 			}
 		},
 		data() {
-			return {
-				sampleImage: "https://placeimg.com/640/480/any"
-			};
+			return {};
 		}
 	};
 </script>
@@ -92,12 +90,14 @@
 		flex-direction: column;
 		background-color: white;
 		width: 100%;
+		height: 100%;
 		border-radius: 6px;
 		border: 1px solid #eaedf3;
 		box-shadow: 0px 2px 14px #edf1fa;
 
 		& > .top {
 			position: relative;
+			display: flex;
 			height: 165px;
 			padding: 12px;
 			background-color: #0e1117;
@@ -106,6 +106,7 @@
 			color: white;
 			border-top-left-radius: 6px;
 			border-top-right-radius: 6px;
+			box-shadow: inset 0px 12px 18px rgba(0, 0, 0, 0.02);
 
 			&::before {
 				content: "";

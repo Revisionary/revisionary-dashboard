@@ -77,7 +77,7 @@ export const actions = {
 				image_url: "https://placeimg.com/640/480/any",
 				user_ID: 6,
 				order: 1,
-				cat_ID: 0,
+				cat_ID: 4,
 				favorite: false,
 				users: [1, 2, 3]
 			},

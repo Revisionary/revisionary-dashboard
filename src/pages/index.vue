@@ -9,6 +9,7 @@
 				v-if="isProjectsLoaded"
 				draggable=".catsortable"
 				animation="200"
+				handle=".category-title"
 			>
 				<div class="category favorites" v-if="favoriteBlocks.length">
 					<div class="category-title">Favorites</div>
@@ -37,7 +38,7 @@
 							<Block :blockData="project" />
 						</div>
 						<div class="block add-new">
-							<Block type="new" />
+							<AddNewBlock />
 						</div>
 					</draggable>
 				</div>
@@ -52,12 +53,14 @@
 
 	import SubHeader from "~/components/SubHeader.vue";
 	import Block from "~/components/organisms/Block.vue";
+	import AddNewBlock from "~/components/organisms/AddNewBlock.vue";
 
 	export default {
 		components: {
 			draggable,
 			SubHeader,
-			Block
+			Block,
+			AddNewBlock
 		},
 		computed: {
 			categories: {
@@ -126,10 +129,17 @@
 			padding-bottom: 15px;
 
 			.category-title {
+				color: black;
+				font-weight: 500;
+				font-size: 14px;
+				line-height: 17px;
+				letter-spacing: -0.0933333px;
+				border-bottom: 2px solid #e7e9eb;
+				padding-bottom: 10px;
 			}
 
 			&.sortable-ghost {
-				opacity: 0.2;
+				opacity: 0.3;
 			}
 		}
 	}
@@ -138,15 +148,19 @@
 		padding-top: 20px;
 		margin-left: -20px;
 		margin-right: -20px;
+		display: flex;
+		flex-wrap: wrap;
 
 		& > .block {
 			display: inline-block;
 			padding: 0 20px 40px;
 			width: 25%;
+			min-height: 340px;
+			vertical-align: top;
 
 			&.sortable-ghost {
 				& > .card {
-					opacity: 0.2;
+					opacity: 0.3;
 				}
 			}
 		}
