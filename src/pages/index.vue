@@ -2,7 +2,7 @@
 	<div id="projects" class="content">
 		<SubHeader subtitle="Hub" title="My Projects" :dataCount="dataCount" description />
 
-		<div class="scrollable">
+		<div class="content-wrapper">
 			<draggable
 				class="categories"
 				group="categories"
@@ -44,6 +44,8 @@
 				</div>
 			</draggable>
 		</div>
+
+		<Footer />
 	</div>
 </template>
 
@@ -54,11 +56,13 @@
 	import SubHeader from "~/components/SubHeader.vue";
 	import Block from "~/components/organisms/Block.vue";
 	import AddNewBlock from "~/components/organisms/AddNewBlock.vue";
+	import Footer from "~/components/Footer.vue";
 
 	export default {
 		components: {
 			draggable,
 			SubHeader,
+			Footer,
 			Block,
 			AddNewBlock
 		},
@@ -117,7 +121,7 @@
 </script>
 
 <style lang="scss">
-	.scrollable {
+	.content-wrapper {
 		padding-top: 55px;
 		padding-bottom: 55px;
 		padding-left: 55px;

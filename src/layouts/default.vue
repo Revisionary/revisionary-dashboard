@@ -3,10 +3,7 @@
 		<TopBar />
 		<main>
 			<SideBar />
-
 			<nuxt />
-
-			<Footer />
 		</main>
 	</div>
 </template>
@@ -14,7 +11,6 @@
 <script>
 	import TopBar from "~/components/TopBar.vue";
 	import SideBar from "~/components/SideBar.vue";
-	import Footer from "~/components/Footer.vue";
 
 	export default {
 		mounted() {
@@ -25,8 +21,7 @@
 		},
 		components: {
 			TopBar,
-			SideBar,
-			Footer
+			SideBar
 		},
 		data() {
 			return {
@@ -41,26 +36,20 @@
 
 	main {
 		width: 100%;
-		display: table;
+		display: flex;
 		position: relative;
-		min-height: calc(100vh - 73px);
+		height: calc(100vh - 61px);
 
 		& > .content {
-			display: table-cell;
+			flex: 1;
 			vertical-align: top;
+			height: inherit;
+			overflow-y: auto;
 
 			& > header {
 				background-color: #fff;
 				padding: 40px 55px;
 				border-bottom: 1px solid #eaedf3;
-			}
-		}
-	}
-
-	.sidebarClosed {
-		main {
-			& > aside {
-				display: none;
 			}
 		}
 	}

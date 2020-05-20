@@ -13,7 +13,7 @@
 			<div class="details-menu sub-menu right">
 				<ul>
 					<li class="active">
-						<a href="#">All Projects (3)</a>
+						<a href="#">All Projects {{ dataCount }}</a>
 					</li>
 					<li>
 						<a href="#">Archived Projects (2)</a>

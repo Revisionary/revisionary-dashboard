@@ -44,18 +44,16 @@
 
 <style lang="scss">
 	aside {
-		// position: fixed;
-		// left: 0;
-		// top: 72px;
 		width: 190px;
+		height: inherit;
+		opacity: 1;
 		background-color: #ffffff;
 		border: 1px solid #eaedf3;
 		border-top: none;
-		display: table-cell;
-		vertical-align: top;
+		transition: 500ms;
 
 		& > .wrapper {
-			height: calc(100vh - 73px);
+			height: inherit;
 			display: flex;
 			flex-direction: column;
 			justify-content: space-between;
@@ -103,6 +101,13 @@
 					justify-content: center;
 				}
 			}
+		}
+	}
+
+	.sidebarClosed {
+		aside {
+			width: 0;
+			opacity: 0;
 		}
 	}
 </style>

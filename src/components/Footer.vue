@@ -8,10 +8,10 @@
 </template>
 <style lang="scss">
 	footer {
-		position: absolute;
-		right: 0;
-		bottom: 0;
-		width: calc(100% - 188px);
+		// position: absolute;
+		// right: 0;
+		// bottom: 0;
+		width: 100%;
 		padding: 0 55px;
 
 		& > .container {
@@ -28,7 +28,6 @@
 		}
 
 		.sidebarClosed & {
-			width: 100%;
 		}
 	}
 </style>

@@ -4,14 +4,13 @@
 			<nuxt-link class="logo" to="/">
 				<Logo />
 			</nuxt-link>
-			<a
-				href="#"
+			<span
 				class="menu-icon"
 				:class="{ active: $store.state.isSideBarOpen }"
 				@click.prevent="$store.commit('toggleSideBar')"
 			>
 				<MenuIcon />
-			</a>
+			</span>
 
 			<JumpTo />
 		</div>
@@ -76,7 +75,7 @@
 		justify-content: space-between;
 		align-items: center;
 		padding: 0 20px;
-		height: 72px;
+		height: 60px;
 		color: #9ea5ab;
 		border: 1px solid #eaedf3;
 
@@ -129,6 +128,8 @@
 		}
 
 		.menu-icon {
+			cursor: pointer;
+
 			&.active {
 				svg > rect:first-child {
 					fill: #037ef3;
