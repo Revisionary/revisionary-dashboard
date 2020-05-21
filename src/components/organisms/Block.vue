@@ -88,9 +88,11 @@
 	.card {
 		display: inline-flex;
 		flex-direction: column;
+		justify-content: space-between;
 		background-color: white;
 		width: 100%;
 		height: 100%;
+		//min-height: 300px;
 		border-radius: 6px;
 		border: 1px solid #eaedf3;
 		box-shadow: 0px 2px 14px #edf1fa;
