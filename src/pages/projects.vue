@@ -29,16 +29,10 @@
 				>
 					<div
 						class="category-title"
-						v-if="(category.ID == 0 && blocksOfCategory(category.ID).length) || category.ID != 0"
+						v-if="(category.ID == 0 && blocksOfCategory(category.ID).length) && categories.length > 1 || category.ID != 0"
 					>{{ category.title }}</div>
 
-					<draggable
-						class="blocks"
-						group="blocks"
-						draggable=".sortable"
-						animation="200"
-						v-if="(category.ID == 0 && blocksOfCategory(category.ID).length) || category.ID != 0"
-					>
+					<draggable class="blocks" group="blocks" draggable=".sortable" animation="200">
 						<div
 							class="block sortable"
 							v-for="project in blocksOfCategory(category.ID)"

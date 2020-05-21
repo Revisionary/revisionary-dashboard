@@ -7,11 +7,11 @@
 		<div class="details-menu sub-menu">
 			<ul>
 				<li
-					:class="{active : this.$route.name === 'index'}"
-					v-if="this.$route.name !== 'index'"
+					:class="{active : this.$route.name === 'projects'}"
+					v-if="this.$route.name !== 'projects'"
 					@click="toggleJumper"
 				>
-					<nuxt-link to="/">All Projects</nuxt-link>
+					<nuxt-link to="/projects/">All Projects</nuxt-link>
 				</li>
 				<li
 					v-for="eachProject in projects"

@@ -1,7 +1,7 @@
 <template>
 	<div id="top-bar">
 		<div class="left-side">
-			<nuxt-link class="logo" to="/">
+			<nuxt-link class="logo" to="/projects/">
 				<Logo />
 			</nuxt-link>
 			<span

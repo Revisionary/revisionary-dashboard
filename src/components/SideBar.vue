@@ -2,7 +2,7 @@
 	<aside>
 		<div class="wrapper">
 			<div class="top-section">
-				<nuxt-link to="/" v-bind:class="{ active: this.$route.name === 'index' }">
+				<nuxt-link to="/projects/" v-bind:class="{ active: this.$route.name === 'projects' }">
 					<DashboardIcon />Dashboard
 				</nuxt-link>
 				<a href="#">
