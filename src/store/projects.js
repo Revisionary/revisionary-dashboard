@@ -60,7 +60,7 @@ export const actions = {
 		await commit("setLoaded", false);
 		await commit("set", [
 			{
-				ID: 0,
+				ID: 21,
 				title: "1 Marc Pridmore",
 				description: "Lorem ipsum dolor sit amet.",
 				image_url: "https://placeimg.com/640/480/any",
@@ -71,7 +71,7 @@ export const actions = {
 				users: [1, 2, 3]
 			},
 			{
-				ID: 1,
+				ID: 32,
 				title: "2 Marc Pridmore",
 				description: "Lorem ipsum dolor sit amet.",
 				image_url: "https://placeimg.com/640/480/any",
@@ -82,7 +82,7 @@ export const actions = {
 				users: [1, 2, 3]
 			},
 			{
-				ID: 2,
+				ID: 43,
 				title: "3 Marc Pridmore",
 				description: "Lorem ipsum dolor sit amet.",
 				image_url: "https://placeimg.com/640/480/any",
@@ -93,7 +93,7 @@ export const actions = {
 				users: [1, 2, 3]
 			},
 			{
-				ID: 3,
+				ID: 54,
 				title: "4 Marc Pridmore",
 				description: "Lorem ipsum dolor sit amet.",
 				image_url: "https://placeimg.com/640/480/any",
@@ -104,7 +104,7 @@ export const actions = {
 				users: [1, 2, 3]
 			},
 			{
-				ID: 4,
+				ID: 65,
 				title: "5 Marc Pridmore",
 				description: "Lorem ipsum dolor sit amet.",
 				image_url: "https://placeimg.com/640/480/any",
@@ -115,7 +115,7 @@ export const actions = {
 				users: [1, 2, 3]
 			},
 			{
-				ID: 5,
+				ID: 76,
 				title: "6 Marc Pridmore",
 				description: "Lorem ipsum dolor sit amet.",
 				image_url: "https://placeimg.com/640/480/any",
@@ -126,7 +126,7 @@ export const actions = {
 				users: [1, 2, 3]
 			},
 			{
-				ID: 6,
+				ID: 78,
 				title: "7 Marc Pridmore",
 				description: "Lorem ipsum dolor sit amet.",
 				image_url: "https://placeimg.com/640/480/any",
@@ -190,14 +190,19 @@ export const actions = {
 		// 	});
 	},
 
-	// Set Selected Project
-	set({ commit }, project) {
-		commit("set", project);
-	},
-
 	// Reset Selected Project
 	resetProject({ commit }) {
 		commit("setProject", {});
+	},
+
+	// Reset Selected Project
+	updateProject({ commit }, payload) {
+
+		// DO IT ON BACKEND !!!
+
+		// If successful
+		commit("update", payload);
+
 	}
 };
 
@@ -205,13 +210,38 @@ export const mutations = {
 	set(state, projects) {
 		state.projects = projects;
 	},
+	update(state, payload) {
+
+		const projectID = payload.ID;
+		const name = payload.name;
+		const value = payload.value;
+
+		// Get the current state of the projects
+		let currentProjects = state.projects;
+
+		// Find the index
+		const index = currentProjects.findIndex(project => project.ID === projectID);
+
+		if (index > -1) {
+
+			// Modify the project
+			currentProjects[index][name] = value;
+
+			// Commit the change
+			state.projects = currentProjects;
+			return;
+		}
+
+		return false;
+
+	},
 	setCategories(state, categories) {
 		state.projectCategories = categories;
 	},
 	add(state, project) {
 		merge(state.projects, project);
 	},
-	remove(state, { project }) {
+	remove(state, project) {
 		state.projects.splice(state.project.indexOf(project), 1);
 	},
 	setProject(state, project) {

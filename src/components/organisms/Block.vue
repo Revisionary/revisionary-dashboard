@@ -53,10 +53,12 @@
 		</div>
 		<div class="bottom">
 			<div class="date">2 Days Ago</div>
-			<div class="favorites">
-				<a href="#" data-tooltip="Add to Favorites">
-					<StarIcon :active="blockData.favorite" />
-				</a>
+			<div
+				class="favorite"
+				:data-tooltip="blockData.favorite ? 'Remove from Favorites' : 'Add to Favorites'"
+				@click="toggleFavorite"
+			>
+				<StarIcon :active="blockData.favorite" />
 			</div>
 		</div>
 	</div>
@@ -72,6 +74,18 @@
 			ArrowRightIcon,
 			MoreIcon,
 			StarIcon
+		},
+		methods: {
+			toggleFavorite() {
+				const blockID = this.blockData.ID;
+				const blockFavorite = this.blockData.favorite;
+
+				this.$store.dispatch("projects/updateProject", {
+					ID: blockID,
+					name: "favorite",
+					value: !blockFavorite
+				});
+			}
 		},
 		props: {
 			blockData: {
@@ -92,7 +106,6 @@
 		background-color: white;
 		width: 100%;
 		height: 100%;
-		//min-height: 300px;
 		border-radius: 6px;
 		border: 1px solid #eaedf3;
 		box-shadow: 0px 2px 14px #edf1fa;
@@ -181,6 +194,10 @@
 				line-height: normal;
 				font-weight: 500;
 				text-transform: uppercase;
+			}
+
+			.favorite {
+				cursor: pointer;
 			}
 		}
 
