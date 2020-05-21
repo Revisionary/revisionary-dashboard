@@ -29,7 +29,7 @@
 				<div class="middle">
 					<div class="left"></div>
 					<div class="center tooltip-not-contained" data-tooltip="Open this project">
-						<nuxt-link :to="`/project/${blockData.ID}`">
+						<nuxt-link :to="`/project/${blockData.ID}`" no-prefetch>
 							<ArrowRightIcon />
 						</nuxt-link>
 					</div>
@@ -44,7 +44,7 @@
 		</div>
 		<div class="info">
 			<div class="title">
-				<nuxt-link :to="`/project/${blockData.ID}`">
+				<nuxt-link :to="`/project/${blockData.ID}`" no-prefetch>
 					{{ blockData.title.substr(0, 15) }}
 					<span class="count">(14)</span>
 				</nuxt-link>

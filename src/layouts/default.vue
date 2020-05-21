@@ -1,5 +1,5 @@
 <template>
-	<div id="page" v-bind:class="{ sidebarClosed: !$store.state.isSideBarOpen }">
+	<div id="page" :class="{ sidebarClosed: !$store.state.isSideBarOpen }">
 		<TopBar />
 		<main>
 			<SideBar />
@@ -32,7 +32,7 @@
 </script>
 
 <style lang="scss">
-	@import "~/assets/style/global";
+	@import "~/assets/style/blockLayout";
 
 	main {
 		width: 100%;

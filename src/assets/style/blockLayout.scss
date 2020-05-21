@@ -1,0 +1,48 @@
+.content-wrapper {
+	padding-top: 55px;
+	padding-bottom: 55px;
+	padding-left: 55px;
+	padding-right: 55px;
+}
+
+.categories {
+	& > .category {
+		padding-bottom: 15px;
+
+		.category-title {
+			color: black;
+			font-weight: 500;
+			font-size: 14px;
+			line-height: 17px;
+			letter-spacing: -0.0933333px;
+			border-bottom: 2px solid #e7e9eb;
+			padding-bottom: 10px;
+		}
+
+		&.sortable-ghost {
+			opacity: 0.3;
+		}
+	}
+}
+
+.blocks {
+	padding-top: 20px;
+	margin-left: -20px;
+	margin-right: -20px;
+	display: flex;
+	flex-wrap: wrap;
+
+	& > .block {
+		display: inline-block;
+		padding: 0 20px 40px;
+		width: 25%;
+		min-height: 340px;
+		vertical-align: top;
+
+		&.sortable-ghost {
+			& > .card {
+				opacity: 0.3;
+			}
+		}
+	}
+}

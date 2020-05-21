@@ -1,8 +1,8 @@
 <template>
-	<aside>
+	<aside id="sidebar">
 		<div class="wrapper">
 			<div class="top-section">
-				<nuxt-link to="/projects/" v-bind:class="{ active: this.$route.name === 'projects' }">
+				<nuxt-link to="/projects/" :class="{ active: this.$route.name === 'projects' }" no-prefetch>
 					<DashboardIcon />Dashboard
 				</nuxt-link>
 				<a href="#">
@@ -43,7 +43,7 @@
 </script>
 
 <style lang="scss">
-	aside {
+	aside#sidebar {
 		width: 190px;
 		height: inherit;
 		opacity: 1;
@@ -105,7 +105,7 @@
 	}
 
 	.sidebarClosed {
-		aside {
+		aside#sidebar {
 			width: 0;
 			opacity: 0;
 		}

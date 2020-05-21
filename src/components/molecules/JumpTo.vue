@@ -1,5 +1,5 @@
 <template>
-	<details class="jump-to" :open="jumperOpen ? true : null">
+	<details id="jump-to" :open="jumperOpen ? true : null">
 		<summary class="selectbox" @click.prevent="toggleJumper">
 			<span class="current">{{ current }}</span>
 			<CaretDownIcon />
@@ -11,15 +11,15 @@
 					v-if="this.$route.name !== 'projects'"
 					@click="toggleJumper"
 				>
-					<nuxt-link to="/projects/">All Projects</nuxt-link>
+					<nuxt-link to="/projects/" no-prefetch>All Projects</nuxt-link>
 				</li>
 				<li
 					v-for="eachProject in projects"
-					v-bind:key="eachProject.ID"
+					:key="eachProject.ID"
 					:class="{active : project.ID == eachProject.ID}"
 					@click="toggleJumper"
 				>
-					<nuxt-link :to="`/project/${eachProject.ID}`">{{ eachProject.title.substr(0, 15) }}</nuxt-link>
+					<nuxt-link :to="`/project/${eachProject.ID}`" no-prefetch>{{ eachProject.title.substr(0, 15) }}</nuxt-link>
 				</li>
 			</ul>
 		</div>
@@ -70,7 +70,7 @@
 </script>
 
 <style lang="scss">
-	.jump-to {
+	#jump-to {
 		margin-left: 120px;
 
 		.current {
