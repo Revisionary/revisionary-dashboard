@@ -63,6 +63,8 @@
 
 <style lang="scss">
 	.card.add-new {
+		overflow: hidden;
+
 		& > .top {
 			height: 100%;
 			background-color: #fff;
