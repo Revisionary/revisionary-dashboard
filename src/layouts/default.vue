@@ -13,7 +13,10 @@
 	import SideBar from "~/components/SideBar.vue";
 
 	export default {
+		middleware: "authenticated",
 		mounted() {
+			//console.log("MOUNTED");
+
 			this.$nextTick(() => {
 				this.$nuxt.$loading.start();
 				setTimeout(() => this.$nuxt.$loading.finish(), 500);
