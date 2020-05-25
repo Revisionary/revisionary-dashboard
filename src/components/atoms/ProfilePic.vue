@@ -242,31 +242,18 @@
 				type: String
 			}
 		},
-		data() {
-			return {
-				pictureUrl: "",
-				fullName: "",
-				abbreviation: ""
-			};
-		},
-		created() {
-			this.getPicUrl();
-			this.getFullName();
-			this.getAbbr();
-		},
-		methods: {
-			getPicUrl() {
-				this.pictureUrl = get_gravatar(this.email);
-				if (this.picture != "") this.pictureUrl = this.picture;
+		computed: {
+			pictureUrl() {
+				if (this.picture != "") return this.picture;
+				return get_gravatar(this.email);
 			},
 
-			getFullName() {
-				this.fullName = this.firstName + " " + this.lastName;
+			fullName() {
+				return this.firstName + " " + this.lastName;
 			},
 
-			getAbbr() {
-				this.abbreviation =
-					this.firstName.substr(0, 1) + this.lastName.substr(0, 1);
+			abbreviation() {
+				return this.firstName.substr(0, 1) + this.lastName.substr(0, 1);
 			}
 		}
 	};

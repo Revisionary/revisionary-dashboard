@@ -1,5 +1,4 @@
 export const state = () => ({
-	currentUser: {},
 	user: {},
 	users: [],
 	fetching: false

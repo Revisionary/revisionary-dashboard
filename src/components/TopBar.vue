@@ -8,14 +8,15 @@
 				class="menu-icon"
 				:class="{ active: $store.state.isSideBarOpen }"
 				@click.prevent="$store.commit('toggleSideBar')"
+				v-if="this.$store.state.authenticated"
 			>
 				<MenuIcon />
 			</span>
 
-			<JumpTo />
+			<JumpTo v-if="this.$store.state.authenticated" />
 		</div>
 		<div class="center-side"></div>
-		<div class="right-side">
+		<div class="right-side" v-if="this.$store.state.authenticated">
 			<a href="#" class="plan-limitations">Free Plan</a>
 
 			<a href="#" class="button">Upgrade</a>
@@ -37,11 +38,14 @@
 							<a href="#">Feedback</a>
 						</li>
 						<li>
-							<a href="#">Logout</a>
+							<a href="#" @click.prevent="logout">Logout</a>
 						</li>
 					</ul>
 				</div>
 			</details>
+		</div>
+		<div class="right-side" v-else>
+			<a href="#" class="button" @click.prevent="login">Login</a>
 		</div>
 	</div>
 </template>
@@ -62,6 +66,22 @@
 			MenuIcon,
 			ProfilePic,
 			ChevronDownIcon
+		},
+		created() {
+			if (!this.$store.state.authenticated)
+				this.$store.commit("toggleSideBar", false);
+		},
+		methods: {
+			login() {
+				this.$store.dispatch("generateToken");
+				this.$router.push("/");
+				this.$store.commit("toggleSideBar", true);
+			},
+			logout() {
+				this.$store.dispatch("invalidateToken");
+				this.$router.push("/");
+				this.$store.commit("toggleSideBar", false);
+			}
 		}
 	};
 </script>

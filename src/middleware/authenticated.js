@@ -2,9 +2,9 @@ export default function ({ store, redirect, route }) {
 
 
 	// Login
-	store.dispatch("generateToken");
+	//store.dispatch("generateToken");
 
-	// // Logout
+	// Logout
 	//store.dispatch("invalidateToken");
 
 
@@ -18,10 +18,8 @@ export default function ({ store, redirect, route }) {
 			// Set the token
 			store.commit("setToken", localStorage.getItem('revisionaryToken'));
 
-
 			// Try authentication
 			store.dispatch("authenticate");
-
 
 		}
 
@@ -30,8 +28,8 @@ export default function ({ store, redirect, route }) {
 
 
 
-	console.log('AUTHENTICATED? ', store.state.authenticated);
-	console.log('TOKEN? ', store.state.token);
+	console.log('Authenticated: ', store.state.authenticated);
+	console.log('Token: ', store.state.token);
 
 
 

@@ -1,7 +1,7 @@
 export const state = () => ({
 	token: null,
 	authenticated: false,
-	initialAuthCheck: false,
+	authUser: null,
 	isSideBarOpen: true,
 	fetching: false
 });
@@ -11,6 +11,7 @@ export const getters = {
 
 		if (state.token === null && localStorage.getItem('revisionaryToken'))
 			return state.token;
+
 		else if (localStorage.getItem('revisionaryToken'))
 			return localStorage.getItem('revisionaryToken');
 
@@ -24,13 +25,7 @@ export const actions = {
 	// Check Authentication with existing token
 	authenticate({ commit, state }) {
 
-		// Fetching started
 		commit("setFetching", true);
-
-
-		// Authenticate with the existing token !!!
-		if (state.token)
-			commit("setAuthenticated", true); console.log('ALREADY AUTHENTICATED.');
 
 
 		// await this.$axios
@@ -42,6 +37,29 @@ export const actions = {
 		// 			commit("setFetching", true);
 		// 		}
 		// 	});
+
+
+		// Authenticate with the existing token !!!
+		if (state.token)
+			commit("setAuthenticated", true); console.log('ALREADY AUTHENTICATED.');
+
+
+		const user = {
+			ID: 5,
+			email: "bilaltas@me.com",
+			first_name: "Bilal",
+			last_name: "TAS",
+			job_title: "Project Manager",
+			department: "Web Development",
+			company: "Twelve12",
+			picture: null,
+			email_notifications: false,
+			trial_started_for: null,
+			trial_expire_date: null,
+			trial_expire_notified: 0,
+			user_level_ID: 2
+		};
+		commit("setUser", user);
 
 
 		commit("setFetching", false);
@@ -52,6 +70,8 @@ export const actions = {
 	generateToken({ commit }, payload) {
 
 		commit("setFetching", true);
+
+
 		// await this.$axios
 		// 	.post("https://dapi.revisionary.co/v1/projects")
 		// 	.then(res => {
@@ -61,10 +81,30 @@ export const actions = {
 		// 			commit("setFetching", true);
 		// 		}
 		// 	});
+
+
 		const token = "abcd123";
+		const user = {
+			ID: 5,
+			email: "bilaltas@me.com",
+			first_name: "Bilal",
+			last_name: "TAS",
+			job_title: "Project Manager",
+			department: "Web Development",
+			company: "Twelve12",
+			picture: null,
+			email_notifications: false,
+			trial_started_for: null,
+			trial_expire_date: null,
+			trial_expire_notified: 0,
+			user_level_ID: 2
+		};
 		localStorage.setItem("revisionaryToken", token);
 		commit("setToken", token);
 		commit("setAuthenticated", true); console.log('NEW LOGIN: AUTHENTICATED.');
+		commit("setUser", user);
+
+
 		commit("setFetching", false);
 
 	},
@@ -98,10 +138,14 @@ export const mutations = {
 	setToken(state, token) {
 		state.token = token;
 	},
+	setUser(state, user) {
+		state.authUser = user;
+	},
 	setFetching(state, status) {
 		state.fetching = status;
 	},
-	toggleSideBar(state) {
+	toggleSideBar(state, forceState = null) {
 		state.isSideBarOpen = !state.isSideBarOpen;
+		if (forceState !== null) state.isSideBarOpen = forceState;
 	}
 };
