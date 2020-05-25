@@ -85,7 +85,7 @@ input[type="reset"] {
 		background: none;
 		height: 25px;
 		border-radius: 25px;
-		font-size: 10px;
+		font-size: 11px;
 		line-height: 12px;
 		padding: 0 10px;
 	}
@@ -324,10 +324,12 @@ details {
 	}
 }
 
+/* SORTABLES */
 .sortable-ghost {
 	opacity: 0.3;
 }
 
+/* PROFILES */
 .multiple-profiles {
 	display: flex;
 	flex-direction: row;
@@ -361,6 +363,35 @@ details {
 		}
 
 		&:nth-child(5) {
+			z-index: 1;
+		}
+	}
+}
+
+/* TASKS */
+.tasks-count {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+
+	& > * {
+		width: 25px;
+		height: 25px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		background-color: #79838c;
+		border-radius: 50%;
+		font-weight: 500;
+		font-size: 12px;
+		line-height: 16px;
+
+		&.left {
+			background-color: #ce9064;
+			border: 2px solid #4f535d;
+			box-sizing: content-box;
+			margin-right: -5px;
+			position: relative;
 			z-index: 1;
 		}
 	}

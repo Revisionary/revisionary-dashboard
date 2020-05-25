@@ -53,17 +53,24 @@
 				<div class="middle">
 					<div class="left"></div>
 					<div class="center tooltip-not-contained" data-tooltip="Open this project">
-						<nuxt-link :to="`/project/${blockData.ID}`" no-prefetch>
+						<nuxt-link
+							:to="`/project/${blockData.ID}`"
+							no-prefetch
+							v-if="this.$route.name === 'projects'"
+						>
 							<ArrowRightIcon />
 						</nuxt-link>
 					</div>
 					<div class="right"></div>
 				</div>
 				<div class="bottom">
-					<div class="left">VERSIONS</div>
+					<div class="left" v-if="this.$route.name !== 'projects'">VERSIONS</div>
 					<div class="center"></div>
 					<div class="right">
-						<div class="tasks-count">.</div>
+						<div class="tasks-count">
+							<div class="left tooltip-not-contained" data-tooltip="Incomplete">42</div>
+							<div class="done tooltip-not-contained" data-tooltip="Solved">9</div>
+						</div>
 					</div>
 				</div>
 			</div>
