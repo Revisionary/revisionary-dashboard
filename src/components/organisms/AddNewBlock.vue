@@ -76,6 +76,7 @@
 			line-height: 18px;
 			font-weight: 500;
 			cursor: pointer;
+			user-select: none;
 
 			&::before {
 				content: none;
@@ -136,6 +137,12 @@
 			justify-content: center;
 			align-items: center;
 			cursor: pointer;
+		}
+
+		&.open {
+			& > .top {
+				//min-height: auto;
+			}
 		}
 	}
 </style>
