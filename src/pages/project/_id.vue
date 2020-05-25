@@ -5,14 +5,14 @@
 			:title="project.title"
 			:dataCount="dataCount"
 			:description="project.description"
-			:isLoading="!isProjectsLoaded"
+			:isLoading="projectsFetching"
 		/>
 
 		<div class="content-wrapper">
 			<draggable
 				class="categories"
 				group="categories"
-				v-if="isProjectsLoaded"
+				v-if="!projectsFetching"
 				draggable=".catsortable"
 				animation="200"
 				handle=".category-title"
@@ -91,7 +91,7 @@
 			},
 			...mapGetters({
 				project: "projects/getProject",
-				isProjectsLoaded: "projects/status"
+				projectsFetching: "projects/status"
 			}),
 			dataCount() {
 				var count = 3;

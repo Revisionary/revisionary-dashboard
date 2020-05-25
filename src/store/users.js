@@ -1,6 +1,21 @@
 export const state = () => ({
-	user: {},
-	users: [],
+	users: {
+		3: {
+			ID: 3,
+			email: "bill@twelve12.com",
+			first_name: "Bill",
+			last_name: "Stone",
+			job_title: "Project Manager",
+			department: "Web Development",
+			company: "Twelve12",
+			picture: null,
+			email_notifications: false,
+			trial_started_for: null,
+			trial_expire_date: null,
+			trial_expire_notified: 0,
+			user_level_ID: 2
+		}
+	},
 	fetching: false
 });
 
@@ -9,10 +24,17 @@ export const getters = {
 		return state.users;
 	},
 	getUser(state) {
-		return state.user;
-	},
-	getCurrentUser(state) {
-		return state.currentUser;
+
+		return function (ID) {
+
+			if (typeof state.users[ID] !== "undefined")
+				return state.users[ID];
+
+			return false;
+
+		}
+
+
 	},
 	status(state) {
 		return state.fetching;
@@ -21,27 +43,12 @@ export const getters = {
 
 export const actions = {
 
-	// Fetch Users
-	async fetch({ commit }, user_IDs) {
-		await commit("setFetching", true);
-		await commit("set", [
-			{
-				ID: 5,
-				email: "bilaltas@me.com",
-				first_name: "Bilal",
-				last_name: "TAS",
-				job_title: "Project Manager",
-				department: "Web Development",
-				company: "Twelve12",
-				picture: null,
-				email_notifications: false,
-				trial_started_for: null,
-				trial_expire_date: null,
-				trial_expire_notified: 0,
-				user_level_ID: 2
-			}
-		]);
-		await commit("setFetching", false);
+	// Fetch Multiple Users
+	fetch({ commit, state }, IDs) {
+
+		console.log('FETCHING USERS: ', IDs);
+
+		commit("setFetching", true);
 
 		// await this.$axios
 		// 	.get("https://dapi.revisionary.co/v1/projects")
@@ -52,134 +59,55 @@ export const actions = {
 		// 			commit("setFetching", true);
 		// 		}
 		// 	});
-	},
 
-	// Fetch Project Categories
-	async fetchCategories({ commit }) {
-		await commit("setFetching", false);
-		await commit("setCategories", [
-			{
-				ID: 0,
-				title: "Uncategorized"
-			},
-			{
-				ID: 1,
-				title: "Personal Projects"
-			},
-			{
-				ID: 2,
-				title: "Cat 1"
-			},
-			{
-				ID: 3,
-				title: "Cat 2"
-			},
-			{
-				ID: 4,
-				title: "Cat 33"
-			}
-		]);
-		await commit("setFetching", true);
-	},
 
-	// Get singular project
-	async fetchProject({ commit, state }, projectID) {
 
-		// Find the project
-		const projectFound = state.projects.find(function (project) {
-			return project.ID == projectID;
+		IDs.forEach(function (ID) {
+
+			if (typeof state.users[ID] !== "undefined") return true;
+
+			commit("add", {
+				ID: ID,
+				email: "bilaltas@me.com",
+				first_name: "Bilal",
+				last_name: "TAS" + ID,
+				job_title: "Project Manager",
+				department: "Web Development",
+				company: "Twelve12",
+				picture: null,
+				email_notifications: false,
+				trial_started_for: null,
+				trial_expire_date: null,
+				trial_expire_notified: 0,
+				user_level_ID: 2
+			});
+
 		});
 
-		if (projectFound) {
-			commit("setProject", projectFound);
-			return;
-		}
-
-
-		await commit("setFetching", false);
-		await commit("setProject", {
-			ID: 3,
-			title: "4 Marc Pridmore",
-			description: "Lorem ipsum dolor sit amet.",
-			image_url: "https://placeimg.com/640/480/any",
-			user_ID: 6,
-			order: 1,
-			cat_ID: 0,
-			favorite: true,
-			users: [1, 2, 3]
-		});
-		await commit("setFetching", true);
-
-
-		// await commit("setFetching", false);
-		// await this.$axios
-		// 	.get(`https://dapi.revisionary.co/v1/projects/${projectID}`)
-		// 	.then(res => {
-		// 		if (res.status === 200) {
-		// 			commit("setProject", res.data);
-		// 			commit("setFetching", true);
-		// 		}
-		// 	});
-	},
-
-	// Reset Selected Project
-	resetProject({ commit }) {
-		commit("setProject", {});
-	},
-
-	// Reset Selected Project
-	updateProject({ commit }, payload) {
-
-		// DO IT ON BACKEND !!!
-
-		// If successful
-		commit("update", payload);
+		commit("setFetching", false);
 
 	}
+
 };
 
 export const mutations = {
-	set(state, projects) {
-		state.projects = projects;
+	set(state, users) {
+		state.users = users;
 	},
-	update(state, payload) {
+	update(state, { ID, name, value }) {
+		if (typeof state.users[ID] === "undefined")
+			return false;
 
-		const projectID = payload.ID;
-		const name = payload.name;
-		const value = payload.value;
-
-		// Get the current state of the projects
-		let currentProjects = state.projects;
-
-		// Find the index
-		const index = currentProjects.findIndex(project => project.ID === projectID);
-
-		if (index > -1) {
-
-			// Modify the project
-			currentProjects[index][name] = value;
-
-			// Commit the change
-			state.projects = currentProjects;
-			return;
-		}
-
-		return false;
-
+		state.users[ID][name] = value;
 	},
-	setCategories(state, categories) {
-		state.projectCategories = categories;
+	add(state, user) {
+		state.users[user.ID] = user;
 	},
-	add(state, project) {
-		merge(state.projects, project);
-	},
-	remove(state, project) {
-		state.projects.splice(state.project.indexOf(project), 1);
-	},
-	setProject(state, project) {
-		state.project = project;
+	remove(state, ID) {
+		if (typeof state.users[ID] !== "undefined")
+			delete state.users[ID];
 	},
 	setFetching(state, status) {
-		state.isLoaded = status;
+		state.fetching = status;
 	}
 };

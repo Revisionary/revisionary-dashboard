@@ -7,7 +7,7 @@ export const state = () => ({
 	],
 	projects: [],
 	project: {},
-	isLoaded: false
+	fetching: false
 });
 
 export const getters = {
@@ -21,16 +21,17 @@ export const getters = {
 		return state.project;
 	},
 	status(state) {
-		return state.isLoaded;
+		return state.fetching;
 	}
 };
 
 export const actions = {
 
 	// Fetch Project Categories
-	async fetchCategories({ commit }) {
-		await commit("setLoaded", false);
-		await commit("setCategories", [
+	fetchCategories({ commit }) {
+
+		commit("setFetching", true);
+		commit("setCategories", [
 			{
 				ID: 0,
 				title: "Uncategorized"
@@ -52,106 +53,125 @@ export const actions = {
 				title: "Cat 33"
 			}
 		]);
-		await commit("setLoaded", true);
+		commit("setFetching", false);
+
 	},
 
 	// Fetch Projects
-	async fetch({ commit }) {
-		await commit("setLoaded", false);
-		await commit("set", [
-			{
-				ID: 21,
-				title: "1 Marc Pridmore",
-				description: "Lorem ipsum dolor sit amet.",
-				image_url: "https://placeimg.com/640/480/any",
-				user_ID: 6,
-				order: 1,
-				cat_ID: 0,
-				favorite: false,
-				users: [1, 2, 3]
-			},
-			{
-				ID: 32,
-				title: "2 Marc Pridmore",
-				description: "Lorem ipsum dolor sit amet.",
-				image_url: "https://placeimg.com/640/480/any",
-				user_ID: 6,
-				order: 1,
-				cat_ID: 4,
-				favorite: false,
-				users: [1, 2, 3]
-			},
-			{
-				ID: 43,
-				title: "3 Marc Pridmore",
-				description: "Lorem ipsum dolor sit amet.",
-				image_url: "https://placeimg.com/640/480/any",
-				user_ID: 6,
-				order: 1,
-				cat_ID: 1,
-				favorite: false,
-				users: [1, 2, 3]
-			},
-			{
-				ID: 54,
-				title: "4 Marc Pridmore",
-				description: "Lorem ipsum dolor sit amet.",
-				image_url: "https://placeimg.com/640/480/any",
-				user_ID: 6,
-				order: 1,
-				cat_ID: 0,
-				favorite: true,
-				users: [1, 2, 3]
-			},
-			{
-				ID: 65,
-				title: "5 Marc Pridmore",
-				description: "Lorem ipsum dolor sit amet.",
-				image_url: "https://placeimg.com/640/480/any",
-				user_ID: 6,
-				order: 1,
-				cat_ID: 1,
-				favorite: true,
-				users: [1, 2, 3]
-			},
-			{
-				ID: 76,
-				title: "6 Marc Pridmore",
-				description: "Lorem ipsum dolor sit amet.",
-				image_url: "https://placeimg.com/640/480/any",
-				user_ID: 6,
-				order: 1,
-				cat_ID: 2,
-				favorite: true,
-				users: [1, 2, 3]
-			},
-			{
-				ID: 78,
-				title: "7 Marc Pridmore",
-				description: "Lorem ipsum dolor sit amet.",
-				image_url: "https://placeimg.com/640/480/any",
-				user_ID: 6,
-				order: 1,
-				cat_ID: 0,
-				favorite: false,
-				users: [1, 2, 3]
-			}
-		]);
-		await commit("setLoaded", true);
+	fetch({ commit, dispatch }) {
 
-		// await this.$axios
-		// 	.get("https://dapi.revisionary.co/v1/projects")
-		// 	.then(res => {
-		// 		if (res.status === 200) {
-		// 			//console.log(res.data);
-		// 			commit("set", res.data.splice(0, 6));
-		// 			commit("setLoaded", true);
-		// 		}
-		// 	});
+		commit("setFetching", true);
+		setTimeout(function () {
+
+
+			const projects = [
+				{
+					ID: 21,
+					title: "1 Marc Pridmore",
+					description: "Lorem ipsum dolor sit amet.",
+					image_url: "https://placeimg.com/640/480/any",
+					user_ID: 6,
+					order: 1,
+					cat_ID: 0,
+					favorite: false,
+					users: [1, 2, 3]
+				},
+				{
+					ID: 32,
+					title: "2 Marc Pridmore",
+					description: "Lorem ipsum dolor sit amet.",
+					image_url: "https://placeimg.com/640/480/any",
+					user_ID: 6,
+					order: 1,
+					cat_ID: 4,
+					favorite: false,
+					users: [1, 2, 3]
+				},
+				{
+					ID: 43,
+					title: "3 Marc Pridmore",
+					description: "Lorem ipsum dolor sit amet.",
+					image_url: "https://placeimg.com/640/480/any",
+					user_ID: 6,
+					order: 1,
+					cat_ID: 1,
+					favorite: false,
+					users: [1, 2, 3]
+				},
+				{
+					ID: 54,
+					title: "4 Marc Pridmore",
+					description: "Lorem ipsum dolor sit amet.",
+					image_url: "https://placeimg.com/640/480/any",
+					user_ID: 6,
+					order: 1,
+					cat_ID: 0,
+					favorite: true,
+					users: [2, 3]
+				},
+				{
+					ID: 65,
+					title: "5 Marc Pridmore",
+					description: "Lorem ipsum dolor sit amet.",
+					image_url: "https://placeimg.com/640/480/any",
+					user_ID: 2,
+					order: 1,
+					cat_ID: 1,
+					favorite: true,
+					users: [1, 3]
+				},
+				{
+					ID: 76,
+					title: "6 Marc Pridmore",
+					description: "Lorem ipsum dolor sit amet.",
+					image_url: "https://placeimg.com/640/480/any",
+					user_ID: 3,
+					order: 1,
+					cat_ID: 2,
+					favorite: true,
+					users: [1, 2, 3]
+				},
+				{
+					ID: 78,
+					title: "7 Marc Pridmore",
+					description: "Lorem ipsum dolor sit amet.",
+					image_url: "https://placeimg.com/640/480/any",
+					user_ID: 4,
+					order: 1,
+					cat_ID: 0,
+					favorite: false,
+					users: [1, 2, 3]
+				}
+			];
+			commit("set", projects);
+
+
+			// Take users to batch fetch
+			let usersToFetch = [];
+			projects.forEach(function (project) {
+				usersToFetch.push(project.user_ID);
+
+				project.users.forEach(function (user) {
+					usersToFetch.push(user);
+				});
+
+			});
+			usersToFetch = usersToFetch.filter((v, i, a) => a.indexOf(v) === i); // Make it unique
+
+
+			// Get the users info
+			dispatch("users/fetch", usersToFetch, { root: true });
+
+
+			commit("setFetching", false);
+
+		}, 1000);
+
+
 	},
 
 	// Get singular project
-	async fetchProject({ commit, state }, projectID) {
+	fetchProject({ commit, state }, projectID) {
 
 		// Find the project
 		const projectFound = state.projects.find(function (project) {
@@ -164,30 +184,33 @@ export const actions = {
 		}
 
 
-		await commit("setLoaded", false);
-		await commit("setProject", {
-			ID: 3,
-			title: "4 Marc Pridmore",
-			description: "Lorem ipsum dolor sit amet.",
-			image_url: "https://placeimg.com/640/480/any",
-			user_ID: 6,
-			order: 1,
-			cat_ID: 0,
-			favorite: true,
-			users: [1, 2, 3]
-		});
-		await commit("setLoaded", true);
+		commit("setFetching", true);
 
-
-		// await commit("setLoaded", false);
+		// await commit("setFetching", false);
 		// await this.$axios
 		// 	.get(`https://dapi.revisionary.co/v1/projects/${projectID}`)
 		// 	.then(res => {
 		// 		if (res.status === 200) {
 		// 			commit("setProject", res.data);
-		// 			commit("setLoaded", true);
+		// 			commit("setFetching", true);
 		// 		}
 		// 	});
+
+		setTimeout(function () {
+			commit("setProject", {
+				ID: 3,
+				title: "4 Marc Pridmore",
+				description: "Lorem ipsum dolor sit amet.",
+				image_url: "https://placeimg.com/640/480/any",
+				user_ID: 6,
+				order: 1,
+				cat_ID: 0,
+				favorite: true,
+				users: [1, 2, 3]
+			});
+			commit("setFetching", false);
+		}, 1000);
+
 	},
 
 	// Reset Selected Project
@@ -210,17 +233,13 @@ export const mutations = {
 	set(state, projects) {
 		state.projects = projects;
 	},
-	update(state, payload) {
-
-		const projectID = payload.ID;
-		const name = payload.name;
-		const value = payload.value;
+	update(state, { ID, name, value }) {
 
 		// Get the current state of the projects
 		let currentProjects = state.projects;
 
 		// Find the index
-		const index = currentProjects.findIndex(project => project.ID === projectID);
+		const index = currentProjects.findIndex(project => project.ID === ID);
 
 		if (index > -1) {
 
@@ -247,7 +266,7 @@ export const mutations = {
 	setProject(state, project) {
 		state.project = project;
 	},
-	setLoaded(state, status) {
-		state.isLoaded = status;
+	setFetching(state, status) {
+		state.fetching = status;
 	}
 };

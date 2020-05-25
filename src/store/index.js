@@ -45,11 +45,11 @@ export const actions = {
 
 
 		const user = {
-			ID: 5,
-			email: "bilaltas@me.com",
-			first_name: "Bilal",
+			ID: 2,
+			email: "cuneyttas@hotmail.com.tr",
+			first_name: "Cuneyt",
 			last_name: "TAS",
-			job_title: "Project Manager",
+			job_title: "Web Developer",
 			department: "Web Development",
 			company: "Twelve12",
 			picture: null,
@@ -57,9 +57,10 @@ export const actions = {
 			trial_started_for: null,
 			trial_expire_date: null,
 			trial_expire_notified: 0,
-			user_level_ID: 2
+			level_ID: 2
 		};
 		commit("setUser", user);
+		commit("users/add", user, { root: true });
 
 
 		commit("setFetching", false);
@@ -84,12 +85,17 @@ export const actions = {
 
 
 		const token = "abcd123";
+		localStorage.setItem("revisionaryToken", token);
+		commit("setToken", token);
+		commit("setAuthenticated", true); console.log('NEW LOGIN: AUTHENTICATED.');
+
+
 		const user = {
-			ID: 5,
-			email: "bilaltas@me.com",
-			first_name: "Bilal",
+			ID: 2,
+			email: "cuneyttas@hotmail.com.tr",
+			first_name: "Cuneyt",
 			last_name: "TAS",
-			job_title: "Project Manager",
+			job_title: "Web Developer",
 			department: "Web Development",
 			company: "Twelve12",
 			picture: null,
@@ -97,12 +103,10 @@ export const actions = {
 			trial_started_for: null,
 			trial_expire_date: null,
 			trial_expire_notified: 0,
-			user_level_ID: 2
+			level_ID: 2
 		};
-		localStorage.setItem("revisionaryToken", token);
-		commit("setToken", token);
-		commit("setAuthenticated", true); console.log('NEW LOGIN: AUTHENTICATED.');
 		commit("setUser", user);
+		commit("users/add", user, { root: true });
 
 
 		commit("setFetching", false);

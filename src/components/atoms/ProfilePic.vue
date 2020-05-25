@@ -1,6 +1,10 @@
 <template>
-	<picture :style="`background-image: url(${pictureUrl});`" :tooltip="`${fullName}`">
-		<span>{{abbreviation}}</span>
+	<picture
+		class="bottom-tooltip tooltip-not-contained"
+		:style="`background-image: url(${pictureUrl});`"
+		:data-tooltip="(fullName != '' ? fullName : null)"
+	>
+		<span>{{abbr}}</span>
 	</picture>
 </template>
 
@@ -228,18 +232,23 @@
 		props: {
 			firstName: {
 				type: String,
-				required: true
+				default: ""
 			},
 			lastName: {
 				type: String,
-				required: true
+				default: ""
 			},
 			picture: {
 				type: String,
 				default: "" // https://www.bilaltas.net/wp-content/uploads/2013/02/duvar11-300x300.jpg
 			},
 			email: {
-				type: String
+				type: String,
+				default: ""
+			},
+			abbreviation: {
+				type: String,
+				default: ""
 			}
 		},
 		computed: {
@@ -248,9 +257,11 @@
 				return get_gravatar(this.email);
 			},
 			fullName() {
-				return this.firstName + " " + this.lastName;
+				return (this.firstName + " " + this.lastName).trim();
 			},
-			abbreviation() {
+			abbr() {
+				if (this.abbreviation != "") return this.abbreviation;
+				if (this.firstName == "" && this.lastName == "") return "?";
 				return this.firstName.substr(0, 1) + this.lastName.substr(0, 1);
 			}
 		}
@@ -279,13 +290,11 @@
 		background-size: cover;
 		background-repeat: no-repeat;
 		border-radius: 50%;
-		box-sizing: border-box;
 
 		// Profile image overlay
 		&::before {
 			content: "";
 			display: block;
-			border-radius: 50%;
 			position: absolute;
 			top: 0;
 			left: 0;
@@ -294,6 +303,8 @@
 			background-image: inherit;
 			background-size: inherit;
 			background-position: inherit;
+			border-radius: inherit;
+			box-sizing: inherit;
 		}
 
 		// Abbreviation

@@ -13,7 +13,7 @@
 	import SideBar from "~/components/SideBar.vue";
 
 	export default {
-		middleware: "authenticated",
+		middleware: "authentication",
 		mounted() {
 			//console.log("MOUNTED");
 

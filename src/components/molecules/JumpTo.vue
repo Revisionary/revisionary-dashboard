@@ -13,7 +13,11 @@
 				>
 					<nuxt-link to="/projects/" no-prefetch>All Projects</nuxt-link>
 				</li>
+				<li v-if="fetching">
+					<span>Loading...</span>
+				</li>
 				<li
+					v-else
 					v-for="eachProject in projects"
 					:key="eachProject.ID"
 					:class="{active : project.ID == eachProject.ID}"
@@ -38,7 +42,7 @@
 			...mapGetters({
 				projects: "projects/get",
 				project: "projects/getProject",
-				isLoaded: "projects/status"
+				fetching: "projects/status"
 			}),
 			current() {
 				if (

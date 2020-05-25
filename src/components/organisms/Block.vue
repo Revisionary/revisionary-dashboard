@@ -3,7 +3,31 @@
 		<div class="top" :style="'background-image: url(' + blockData.image_url + ');'">
 			<div class="actions">
 				<div class="top">
-					<div class="left">USERS</div>
+					<div class="left">
+						<div class="multiple-profiles">
+							<span class="owner">
+								<ProfilePic
+									:firstName="ownerInfo.first_name"
+									:lastName="ownerInfo.last_name"
+									:picture="ownerInfo.picture"
+									:email="ownerInfo.email"
+								/>
+							</span>
+							<span class="shared" v-for="(user_ID, index) in blockData.users" :key="user_ID">
+								<ProfilePic
+									v-if="index < 2"
+									:firstName="userInfo(user_ID).first_name"
+									:lastName="userInfo(user_ID).last_name"
+									:picture="userInfo(user_ID).picture"
+									:email="userInfo(user_ID).email"
+								/>
+								<ProfilePic v-if="index == 2" :abbreviation="blockData.users.length.toString()" />
+							</span>
+						</div>
+						<button class="transparent with-icon share">
+							<ShareIcon />Share
+						</button>
+					</div>
 					<div class="center"></div>
 					<div class="right">
 						<details>
@@ -68,12 +92,17 @@
 	import ArrowRightIcon from "~/components/atoms/icon-arrow-right.vue";
 	import MoreIcon from "~/components/atoms/icon-more.vue";
 	import StarIcon from "~/components/atoms/icon-star.vue";
+	import ShareIcon from "~/components/atoms/icon-share.vue";
+
+	import ProfilePic from "~/components/atoms/ProfilePic.vue";
 
 	export default {
 		components: {
 			ArrowRightIcon,
 			MoreIcon,
-			StarIcon
+			StarIcon,
+			ShareIcon,
+			ProfilePic
 		},
 		methods: {
 			toggleFavorite() {
@@ -85,6 +114,22 @@
 					name: "favorite",
 					value: !blockFavorite
 				});
+			},
+			userInfo(ID) {
+				let foundUser = this.$store.getters["users/getUser"](ID);
+
+				if (!foundUser) {
+					this.$store.dispatch("users/fetch", [ID]);
+					foundUser = this.$store.getters["users/getUser"](ID);
+				}
+
+				return foundUser;
+			}
+		},
+		computed: {
+			ownerInfo() {
+				const user_ID = this.blockData.user_ID;
+				return this.userInfo(user_ID);
 			}
 		},
 		props: {
@@ -156,6 +201,20 @@
 					display: flex;
 					justify-content: space-between;
 					align-items: center;
+
+					& > * {
+						display: flex;
+						flex-direction: row;
+						align-items: center;
+					}
+				}
+
+				.multiple-profiles {
+					cursor: pointer;
+
+					& + .share {
+						margin-left: 10px;
+					}
 				}
 			}
 		}

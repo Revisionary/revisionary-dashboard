@@ -3,10 +3,12 @@
 		<SubHeader subtitle="Hub" title="My Projects" :dataCount="dataCount" description />
 
 		<div class="content-wrapper">
+			<div v-if="projectsFetching">Projects are loading...</div>
+
 			<draggable
+				v-else
 				class="categories"
 				group="categories"
-				v-if="isProjectsLoaded"
 				draggable=".catsortable"
 				animation="200"
 				handle=".category-title"
@@ -87,7 +89,7 @@
 				}
 			},
 			...mapGetters({
-				isProjectsLoaded: "projects/status"
+				projectsFetching: "projects/status"
 			}),
 			dataCount() {
 				if (this.projects.length) return " (" + this.projects.length + ")";

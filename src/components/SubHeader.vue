@@ -13,13 +13,13 @@
 			<div class="details-menu sub-menu right">
 				<ul>
 					<li class="active">
-						<a href="#">All Projects {{ dataCount }}</a>
+						<nuxt-link to="/projects/">All Projects {{ dataCount }}</nuxt-link>
 					</li>
 					<li>
-						<a href="#">Archived Projects (2)</a>
+						<nuxt-link to="/projects/archived/">Archived Projects (2)</nuxt-link>
 					</li>
 					<li>
-						<a href="#">Deleted Projects (0)</a>
+						<nuxt-link to="/projects/deleted/">Deleted Projects (0)</nuxt-link>
 					</li>
 				</ul>
 			</div>
