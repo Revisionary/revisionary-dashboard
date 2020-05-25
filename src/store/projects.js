@@ -74,6 +74,8 @@ export const actions = {
 					order: 1,
 					cat_ID: 0,
 					favorite: false,
+					date_created: "2019-09-23 10:38:13",
+					date_modified: "2019-09-23 10:38:13",
 					users: [1, 2, 3]
 				},
 				{
@@ -85,6 +87,8 @@ export const actions = {
 					order: 1,
 					cat_ID: 4,
 					favorite: false,
+					date_created: "2019-09-23 10:38:13",
+					date_modified: "2019-09-23 10:38:13",
 					users: [1, 2, 3]
 				},
 				{
@@ -96,6 +100,8 @@ export const actions = {
 					order: 1,
 					cat_ID: 1,
 					favorite: false,
+					date_created: "2019-09-23 10:38:13",
+					date_modified: "2019-09-23 10:38:13",
 					users: [1, 2, 3]
 				},
 				{
@@ -107,6 +113,8 @@ export const actions = {
 					order: 1,
 					cat_ID: 0,
 					favorite: true,
+					date_created: "2020-03-23 10:38:13",
+					date_modified: "2020-03-23 10:38:13",
 					users: [2, 3]
 				},
 				{
@@ -118,6 +126,8 @@ export const actions = {
 					order: 1,
 					cat_ID: 1,
 					favorite: true,
+					date_created: "2020-05-23 10:38:13",
+					date_modified: "2020-05-23 10:38:13",
 					users: [1, 3]
 				},
 				{
@@ -129,6 +139,8 @@ export const actions = {
 					order: 1,
 					cat_ID: 2,
 					favorite: true,
+					date_created: "2019-09-23 10:38:13",
+					date_modified: "2019-09-23 10:38:13",
 					users: [1, 2, 3]
 				},
 				{
@@ -140,6 +152,8 @@ export const actions = {
 					order: 1,
 					cat_ID: 0,
 					favorite: false,
+					date_created: "2019-09-23 10:38:13",
+					date_modified: "2019-09-23 10:38:13",
 					users: [1, 2, 3]
 				}
 			];
