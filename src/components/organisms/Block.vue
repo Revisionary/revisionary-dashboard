@@ -30,7 +30,7 @@
 					</div>
 					<div class="center"></div>
 					<div class="right">
-						<details>
+						<details class="block-actions">
 							<summary>
 								<MoreIcon />
 							</summary>
@@ -62,7 +62,9 @@
 				<div class="bottom">
 					<div class="left">VERSIONS</div>
 					<div class="center"></div>
-					<div class="right">PINS</div>
+					<div class="right">
+						<div class="tasks-count">.</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -215,6 +217,12 @@
 					& + .share {
 						margin-left: 10px;
 					}
+				}
+
+				details.block-actions summary {
+					display: flex;
+					align-items: center;
+					//height: 25px;
 				}
 			}
 		}
