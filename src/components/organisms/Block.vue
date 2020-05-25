@@ -229,7 +229,7 @@
 				details.block-actions summary {
 					display: flex;
 					align-items: center;
-					//height: 25px;
+					height: 15px;
 				}
 			}
 		}
