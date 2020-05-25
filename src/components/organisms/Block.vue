@@ -78,7 +78,9 @@
 		<div class="info">
 			<div class="title">
 				<nuxt-link :to="`/project/${blockData.ID}`" no-prefetch>
-					{{ blockData.title.substr(0, 15) }}
+					<span class="text">
+						<span>{{ blockData.title }}</span>
+					</span>
 					<span class="count">(14)</span>
 				</nuxt-link>
 			</div>
@@ -283,8 +285,28 @@
 				font-weight: 600;
 				margin-bottom: 5px;
 
-				.count {
-					color: #b0b0b0;
+				& > a {
+					display: flex;
+					flex-direction: row;
+
+					& > .text {
+						position: relative;
+						height: 1.2em;
+						flex: 1;
+
+						& > span {
+							position: absolute;
+							overflow: hidden;
+							white-space: nowrap;
+							height: 1.2em;
+							text-overflow: ellipsis;
+							width: 100%;
+						}
+					}
+
+					& > .count {
+						color: #b0b0b0;
+					}
 				}
 			}
 

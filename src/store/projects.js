@@ -67,8 +67,8 @@ export const actions = {
 			const projects = [
 				{
 					ID: 21,
-					title: "1 Marc Pridmore",
-					description: "Lorem ipsum dolor sit amet.",
+					title: "1 Marc Pridmorasdsad asd easd",
+					description: "Lorem ipsum dolor ssit amet.",
 					image_url: "https://placeimg.com/640/480/any",
 					user_ID: 6,
 					order: 1,
