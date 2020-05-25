@@ -32,7 +32,19 @@
 					<div
 						class="category-title"
 						v-if="(category.ID == 0 && blocksOfCategory(category.ID).length) && categories.length > 1 || category.ID != 0"
-					>{{ category.title }}</div>
+					>
+						<span class="handle" v-if="category.ID != 0">
+							<MoveIcon />
+						</span>
+						{{ category.title }}
+						<span
+							class="edit tooltip-not-contained"
+							v-if="category.ID != 0"
+							data-tooltip="Rename Category"
+						>
+							<EditIcon />
+						</span>
+					</div>
 
 					<draggable class="blocks" group="blocks" draggable=".sortable" animation="200">
 						<div
@@ -58,6 +70,9 @@
 	import { mapGetters } from "vuex";
 	import draggable from "vuedraggable";
 
+	import MoveIcon from "~/components/atoms/icon-move.vue";
+	import EditIcon from "~/components/atoms/icon-edit.vue";
+
 	import SubHeader from "~/components/SubHeader.vue";
 	import Block from "~/components/organisms/Block.vue";
 	import AddNewBlock from "~/components/organisms/AddNewBlock.vue";
@@ -66,6 +81,8 @@
 	export default {
 		components: {
 			draggable,
+			MoveIcon,
+			EditIcon,
 			SubHeader,
 			Footer,
 			Block,
