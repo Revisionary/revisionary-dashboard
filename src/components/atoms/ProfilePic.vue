@@ -244,14 +244,12 @@
 		},
 		computed: {
 			pictureUrl() {
-				if (this.picture != "") return this.picture;
+				if (this.picture != "" && this.picture != null) return this.picture;
 				return get_gravatar(this.email);
 			},
-
 			fullName() {
 				return this.firstName + " " + this.lastName;
 			},
-
 			abbreviation() {
 				return this.firstName.substr(0, 1) + this.lastName.substr(0, 1);
 			}

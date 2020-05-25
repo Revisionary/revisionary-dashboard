@@ -6,24 +6,30 @@
 			</nuxt-link>
 			<span
 				class="menu-icon"
-				:class="{ active: $store.state.isSideBarOpen }"
-				@click.prevent="$store.commit('toggleSideBar')"
-				v-if="this.$store.state.authenticated"
+				:class="{ active: isSideBarOpen }"
+				@click="$store.commit('toggleSideBar')"
+				v-if="authenticated"
 			>
 				<MenuIcon />
 			</span>
 
-			<JumpTo v-if="this.$store.state.authenticated" />
+			<JumpTo v-if="authenticated" />
 		</div>
 		<div class="center-side"></div>
-		<div class="right-side" v-if="this.$store.state.authenticated">
+		<div class="right-side" v-if="authenticated">
 			<a href="#" class="plan-limitations">Free Plan</a>
 
 			<a href="#" class="button">Upgrade</a>
 
 			<details>
 				<summary>
-					<ProfilePic class="profile-pic" firstName="Bilal" lastName="TAS" email="bilaltas@me.com" />
+					<ProfilePic
+						class="profile-pic"
+						:firstName="currentUser.first_name"
+						:lastName="currentUser.last_name"
+						:email="currentUser.email"
+						:picture="currentUser.picture"
+					/>
 					<ChevronDownIcon />
 				</summary>
 				<div class="details-menu sub-menu right">
@@ -70,6 +76,17 @@
 		created() {
 			if (!this.$store.state.authenticated)
 				this.$store.commit("toggleSideBar", false);
+		},
+		computed: {
+			authenticated() {
+				return this.$store.state.authenticated;
+			},
+			currentUser() {
+				return this.$store.state.authUser;
+			},
+			isSideBarOpen() {
+				return this.$store.state.isSideBarOpen;
+			}
 		},
 		methods: {
 			login() {
