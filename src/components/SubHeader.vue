@@ -14,35 +14,45 @@
 			<div class="info">
 				<div class="subtitle">{{ isLoading ? 'Loading...' : subtitle }}</div>
 
-				<details class="unselectable-when-loading">
-					<summary>
-						<h1>
-							<span>
-								{{ title + dataCount }}
-								<ChevronDownIcon />
-							</span>
-						</h1>
-					</summary>
-					<div class="details-menu sub-menu right">
-						<ul>
-							<li class="active">
-								<nuxt-link
-									to="/projects/"
-								>All {{ this.$route.name == 'projects' ? 'Projects' : 'Pages' }} {{ dataCount }}</nuxt-link>
-							</li>
-							<li>
-								<nuxt-link
-									to="/projects/archived/"
-								>Archived {{ this.$route.name == 'projects' ? 'Projects' : 'Pages' }} (2)</nuxt-link>
-							</li>
-							<li>
-								<nuxt-link
-									to="/projects/deleted/"
-								>Deleted {{ this.$route.name == 'projects' ? 'Projects' : 'Pages' }} (0)</nuxt-link>
-							</li>
-						</ul>
+				<div class="title">
+					<details class="unselectable-when-loading">
+						<summary class="rotate-icon">
+							<h1>
+								<span>
+									{{ title + dataCount }}
+									<ChevronDownIcon />
+								</span>
+							</h1>
+						</summary>
+						<div class="details-menu sub-menu right">
+							<ul>
+								<li class="active">
+									<nuxt-link
+										to="/projects/"
+									>All {{ this.$route.name == 'projects' ? 'Projects' : 'Pages' }} {{ dataCount }}</nuxt-link>
+								</li>
+								<li>
+									<nuxt-link
+										to="/projects/archived/"
+									>Archived {{ this.$route.name == 'projects' ? 'Projects' : 'Pages' }} (2)</nuxt-link>
+								</li>
+								<li>
+									<nuxt-link
+										to="/projects/deleted/"
+									>Deleted {{ this.$route.name == 'projects' ? 'Projects' : 'Pages' }} (0)</nuxt-link>
+								</li>
+							</ul>
+						</div>
+					</details>
+					<div class="project-actions" v-if="this.$route.name !== 'projects'">
+						<a href="#">
+							<InfoIcon />
+						</a>
+						<a href="#">
+							<StarIcon :active="blockData.favorite" />
+						</a>
 					</div>
-				</details>
+				</div>
 
 				<p class="description">
 					<span>{{ description }}</span>
@@ -124,8 +134,10 @@
 	import ChevronDownIcon from "~/components/atoms/icon-chevron-down.vue";
 	import SearchIcon from "~/components/atoms/icon-search.vue";
 	import SortIcon from "~/components/atoms/icon-sort.vue";
+	import StarIcon from "~/components/atoms/icon-star.vue";
 	import PlusIcon from "~/components/atoms/icon-plus.vue";
 	import ShareIcon from "~/components/atoms/icon-share.vue";
+	import InfoIcon from "~/components/atoms/icon-info.vue";
 
 	import ProfilePic from "~/components/atoms/ProfilePic.vue";
 
@@ -134,9 +146,11 @@
 			ChevronDownIcon,
 			SearchIcon,
 			SortIcon,
+			StarIcon,
 			PlusIcon,
 			ProfilePic,
-			ShareIcon
+			ShareIcon,
+			InfoIcon
 		},
 		props: {
 			isLoading: {
@@ -293,6 +307,34 @@
 			}
 		}
 
+		.title {
+			display: flex;
+			align-items: center;
+
+			& > .project-actions {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				margin-left: 15px;
+				margin-bottom: -4px;
+
+				& > * {
+					padding: 0 5px;
+
+					& > * {
+						display: block;
+						width: 15px;
+					}
+				}
+			}
+
+			h1 {
+				svg > path {
+					stroke: #a4a6ac;
+				}
+			}
+		}
+
 		.subtitle {
 			font-style: normal;
 			font-weight: bold;
@@ -365,6 +407,10 @@
 		}
 
 		&.loading {
+			.project-actions {
+				display: none;
+			}
+
 			.thumbnail,
 			h1,
 			.description,

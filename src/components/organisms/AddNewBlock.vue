@@ -17,7 +17,7 @@
 				or
 				<a href="#">upload your page design</a>
 				<span class="bottom-tooltip" data-tooltip="Some info here...">
-					<InfoIcon />
+					<QuestionIcon />
 				</span>
 			</p>
 		</div>
@@ -28,13 +28,13 @@
 <script>
 	import PlusIconLarge from "~/components/atoms/icon-plus-large.vue";
 	import ChevronRightIcon from "~/components/atoms/icon-chevron-right.vue";
-	import InfoIcon from "~/components/atoms/icon-info.vue";
+	import QuestionIcon from "~/components/atoms/icon-question.vue";
 
 	export default {
 		components: {
 			PlusIconLarge,
 			ChevronRightIcon,
-			InfoIcon
+			QuestionIcon
 		},
 		props: {
 			blockData: {

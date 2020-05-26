@@ -222,8 +222,8 @@ export const actions = {
 
 			commit("setProject", {
 				ID: 76,
-				title: "6 Marc Pridmore",
-				description: "Lorem ipsum dolor sit amet.",
+				title: "Marc Pridmore",
+				description: "Marc Pridmore’s new website and design overhaul on WordPress.",
 				image_url: "https://placeimg.com/640/480/any",
 				user_ID: 3,
 				order: 1,

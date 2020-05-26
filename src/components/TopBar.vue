@@ -22,7 +22,7 @@
 			<a href="#" class="button">Upgrade</a>
 
 			<details>
-				<summary>
+				<summary class="rotate-icon">
 					<ProfilePic
 						class="profile-pic"
 						:firstName="currentUser.first_name"
