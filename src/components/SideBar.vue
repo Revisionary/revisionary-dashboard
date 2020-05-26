@@ -80,6 +80,17 @@
 
 					&.active {
 						color: #372d2d;
+						position: relative;
+
+						&::after {
+							content: "";
+							position: absolute;
+							bottom: 8px;
+							left: 24px;
+							width: 21px;
+							height: 2px;
+							background-color: #037ef3;
+						}
 
 						& > svg > path {
 							stroke: #037ef3;
