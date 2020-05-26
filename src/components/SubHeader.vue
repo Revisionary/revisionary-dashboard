@@ -1,13 +1,11 @@
 <template>
 	<header id="sub-header" :class="{ loading: isLoading }">
 		<div class="left">
-			<div
+			<figure
 				class="thumbnail"
 				v-if="this.$route.name !== 'projects'"
 				:style="'background-image: url(' + thumbnail + ');'"
-			>
-				<figure></figure>
-			</div>
+			></figure>
 			<div class="info">
 				<div class="subtitle">{{subtitle}}</div>
 
@@ -279,7 +277,7 @@
 			letter-spacing: -0.3px;
 			color: #9f9f9f;
 			text-transform: uppercase;
-			margin-bottom: 4px;
+			margin-bottom: 2px;
 		}
 
 		.description {
@@ -343,6 +341,7 @@
 		}
 
 		&.loading {
+			.thumbnail,
 			h1,
 			.description,
 			.shares,
@@ -350,32 +349,32 @@
 				text-indent: 9999px;
 				white-space: nowrap;
 				overflow: hidden;
-				background: linear-gradient(
+				background-image: linear-gradient(
 					90deg,
 					#9ea5ab,
 					rgb(230, 230, 230),
 					#9ea5ab
-				);
+				) !important;
 				background-size: 300% 100%;
 				animation: gradientBG 3s ease infinite;
 
 				border-radius: 3px;
 				width: 200px;
-				height: 36px;
 				color: transparent;
 				opacity: 0.2;
 				pointer-events: none;
 
 				& > * {
 					opacity: 0;
-					display: none;
 				}
 			}
 
-			.description,
-			.page-info {
+			.thumbnail {
+				width: 80px;
+			}
+
+			.description {
 				width: 500px;
-				height: 23px;
 			}
 
 			.page-info {
