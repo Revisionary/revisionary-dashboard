@@ -12,7 +12,7 @@
 				</div>
 			</figure>
 			<div class="info">
-				<div class="subtitle">{{subtitle}}</div>
+				<div class="subtitle">{{ isLoading ? 'Loading...' : subtitle }}</div>
 
 				<details class="unselectable-when-loading">
 					<summary>

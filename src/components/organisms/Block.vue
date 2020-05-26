@@ -28,7 +28,7 @@
 								/>
 							</span>
 						</div>
-						<button class="transparent with-icon share">
+						<button class="transparent with-icon share" v-if="this.$route.name === 'projects'">
 							<ShareIcon />Share
 						</button>
 					</div>
@@ -56,10 +56,46 @@
 				</div>
 				<div class="middle">
 					<div class="left"></div>
-					<div class="center tooltip-not-contained" data-tooltip="Open this project">
-						<nuxt-link :to="`/project/${blockData.ID}`" v-if="this.$route.name === 'projects'">
+					<div class="center">
+						<nuxt-link
+							class="tooltip-not-contained"
+							:to="`/project/${blockData.ID}`"
+							v-if="this.$route.name === 'projects'"
+							data-tooltip="Open this project"
+						>
 							<ArrowRightIcon />
 						</nuxt-link>
+
+						<details v-else>
+							<summary class="button rounded with-icon icon-right rotate-icon">
+								OPEN
+								<ChevronDownIcon />
+							</summary>
+							<div class="details-menu sub-menu center compact lines">
+								<ul>
+									<li>
+										<a href="#">
+											<LaptopIcon />Custom (1544x780)
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<DesktopIcon />Desktop (1544x780)
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<TabletIcon />Tablet (1544x780)
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<MobileIcon />Mobile (1544x780)
+										</a>
+									</li>
+								</ul>
+							</div>
+						</details>
 					</div>
 					<div class="right"></div>
 				</div>
@@ -112,6 +148,12 @@
 	import MoreIcon from "~/components/atoms/icon-more.vue";
 	import StarIcon from "~/components/atoms/icon-star.vue";
 	import ShareIcon from "~/components/atoms/icon-share.vue";
+	import ChevronDownIcon from "~/components/atoms/icon-chevron-down.vue";
+
+	import DesktopIcon from "~/components/atoms/devices/icon-desktop.vue";
+	import LaptopIcon from "~/components/atoms/devices/icon-laptop.vue";
+	import TabletIcon from "~/components/atoms/devices/icon-tablet.vue";
+	import MobileIcon from "~/components/atoms/devices/icon-mobile.vue";
 
 	import ProfilePic from "~/components/atoms/ProfilePic.vue";
 
@@ -121,6 +163,11 @@
 			MoreIcon,
 			StarIcon,
 			ShareIcon,
+			ChevronDownIcon,
+			DesktopIcon,
+			LaptopIcon,
+			TabletIcon,
+			MobileIcon,
 			ProfilePic
 		},
 		methods: {
@@ -204,7 +251,7 @@
 		background-color: white;
 		width: 100%;
 		height: 100%;
-		min-height: 300px;
+		min-height: 280px;
 		border-radius: 6px;
 		border: 1px solid #eaedf3;
 		box-shadow: 0px 2px 14px #edf1fa;
@@ -288,7 +335,7 @@
 				font-size: 18px;
 				line-height: 21px;
 				font-weight: 600;
-				margin-bottom: 5px;
+				margin-bottom: 0;
 
 				& > a {
 					display: flex;
@@ -321,6 +368,7 @@
 				line-height: 20px;
 				position: relative;
 				height: 1.2em;
+				display: none;
 
 				& > span {
 					position: absolute;
