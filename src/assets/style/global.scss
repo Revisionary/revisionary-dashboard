@@ -61,6 +61,7 @@ input[type="reset"] {
 	justify-content: center;
 	align-items: center;
 	background: linear-gradient(90deg, #8fbecd -46.78%, #037df1 100.08%);
+	border: none;
 	border-radius: 5px;
 	font-weight: 600;
 	font-size: 13px;
@@ -89,6 +90,7 @@ input[type="reset"] {
 		font-size: 11px;
 		line-height: 12px;
 		padding: 0 10px;
+		border: 1px solid white;
 
 		&:hover {
 			background-color: rgba(255, 255, 255, 0.12);
