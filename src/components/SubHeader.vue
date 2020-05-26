@@ -65,7 +65,11 @@
 							:picture="userInfo(user_ID).picture"
 							:email="userInfo(user_ID).email"
 						/>
-						<ProfilePic v-if="index == 2" :abbreviation="blockData.users.length.toString()" />
+						<ProfilePic
+							v-if="index == 2"
+							:abbreviation="(blockData.users.length - 2).toString()"
+							:data-tooltip="(blockData.users.length - 2).toString() + ' more person'"
+						/>
 					</span>
 				</div>
 				<button class="transparent with-icon share">
@@ -286,9 +290,14 @@
 		.shares {
 			justify-content: flex-end;
 
+			.multiple-profiles > * + * {
+				margin-left: -12px;
+			}
+
 			.owner,
 			.shared {
 				border-color: white;
+				border-width: 3px;
 
 				& > picture {
 					width: 34px;

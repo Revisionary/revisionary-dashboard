@@ -231,7 +231,7 @@ export const actions = {
 				date_created: "2019-09-23 10:38:13",
 				date_modified: "2019-09-23 10:38:13",
 				sub_count: 15,
-				users: [1, 2, 4]
+				users: [1, 2, 4, 5]
 			});
 			commit("setFetching", false);
 		}, 1000);

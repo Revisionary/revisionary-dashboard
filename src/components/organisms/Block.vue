@@ -21,7 +21,11 @@
 									:picture="userInfo(user_ID).picture"
 									:email="userInfo(user_ID).email"
 								/>
-								<ProfilePic v-if="index == 2" :abbreviation="blockData.users.length.toString()" />
+								<ProfilePic
+									v-if="index == 2"
+									:abbreviation="(blockData.users.length - 2).toString()"
+									:data-tooltip="(blockData.users.length - 2).toString() + ' more person'"
+								/>
 							</span>
 						</div>
 						<button class="transparent with-icon share">
