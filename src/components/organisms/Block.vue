@@ -81,7 +81,10 @@
 					<span class="text">
 						<span>{{ blockData.title }}</span>
 					</span>
-					<span class="count">(14)</span>
+					<span
+						class="count tooltip-not-contained"
+						data-tooltip="Pages Count"
+					>({{ blockData.sub_count }})</span>
 				</nuxt-link>
 			</div>
 			<div class="description">

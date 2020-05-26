@@ -76,6 +76,7 @@ export const actions = {
 					favorite: false,
 					date_created: "2019-09-23 10:38:13",
 					date_modified: "2019-09-23 10:38:13",
+					sub_count: 5,
 					users: [1, 2, 3]
 				},
 				{
@@ -89,6 +90,7 @@ export const actions = {
 					favorite: false,
 					date_created: "2019-09-23 10:38:13",
 					date_modified: "2019-09-23 10:38:13",
+					sub_count: 14,
 					users: [1, 2, 3]
 				},
 				{
@@ -102,6 +104,7 @@ export const actions = {
 					favorite: false,
 					date_created: "2019-09-23 10:38:13",
 					date_modified: "2019-09-23 10:38:13",
+					sub_count: 8,
 					users: [1, 2, 3]
 				},
 				{
@@ -115,6 +118,7 @@ export const actions = {
 					favorite: true,
 					date_created: "2020-03-23 10:38:13",
 					date_modified: "2020-03-23 10:38:13",
+					sub_count: 4,
 					users: [2, 3]
 				},
 				{
@@ -128,6 +132,7 @@ export const actions = {
 					favorite: true,
 					date_created: "2020-05-23 10:38:13",
 					date_modified: "2020-05-23 10:38:13",
+					sub_count: 7,
 					users: [1, 3]
 				},
 				{
@@ -141,6 +146,7 @@ export const actions = {
 					favorite: true,
 					date_created: "2019-09-23 10:38:13",
 					date_modified: "2019-09-23 10:38:13",
+					sub_count: 15,
 					users: [1, 2, 3]
 				},
 				{
@@ -154,6 +160,7 @@ export const actions = {
 					favorite: false,
 					date_created: "2019-09-23 10:38:13",
 					date_modified: "2019-09-23 10:38:13",
+					sub_count: 0,
 					users: [1, 2, 3]
 				}
 			];
