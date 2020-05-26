@@ -5,7 +5,12 @@
 				class="thumbnail"
 				v-if="this.$route.name !== 'projects'"
 				:style="'background-image: url(' + thumbnail + ');'"
-			></figure>
+			>
+				<div class="tasks-count">
+					<div class="left tooltip-not-contained" data-tooltip="Incomplete">42</div>
+					<div class="done tooltip-not-contained" data-tooltip="Solved">9</div>
+				</div>
+			</figure>
 			<div class="info">
 				<div class="subtitle">{{subtitle}}</div>
 
@@ -267,6 +272,25 @@
 			background-size: cover;
 			background-repeat: no-repeat;
 			background-position: 0 0;
+			position: relative;
+
+			.tasks-count {
+				position: absolute;
+				top: -10px;
+				right: 0;
+
+				& > * {
+					width: 22px;
+					height: 22px;
+					border-color: white;
+					border-width: 3px;
+					font-size: 11px;
+
+					&.left {
+						margin-right: -7px;
+					}
+				}
+			}
 		}
 
 		.subtitle {
@@ -371,6 +395,7 @@
 
 			.thumbnail {
 				width: 80px;
+				border-radius: 20px;
 			}
 
 			.description {
