@@ -68,7 +68,7 @@ export const actions = {
 				{
 					ID: 21,
 					title: "1 Marc Pridmorasdsad asd easd",
-					description: "Lorem ipsum dolor ssit amet.",
+					description: "Lorem ipsum dolor ssit amet. ASD asDsad asd asd as das das d.",
 					image_url: "https://placeimg.com/640/480/any",
 					user_ID: 6,
 					order: 1,

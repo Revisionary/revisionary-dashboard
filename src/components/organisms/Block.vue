@@ -84,7 +84,9 @@
 					<span class="count">(14)</span>
 				</nuxt-link>
 			</div>
-			<div class="description">{{ blockData.description.substr(0, 35) }}</div>
+			<div class="description">
+				<span>{{ blockData.description }}</span>
+			</div>
 		</div>
 		<div class="bottom">
 			<div
@@ -314,6 +316,17 @@
 				color: #78808b;
 				font-size: 15px;
 				line-height: 20px;
+				position: relative;
+				height: 1.2em;
+
+				& > span {
+					position: absolute;
+					overflow: hidden;
+					white-space: nowrap;
+					height: 1.2em;
+					text-overflow: ellipsis;
+					width: 100%;
+				}
 			}
 		}
 
