@@ -67,9 +67,11 @@
 						</nuxt-link>
 
 						<details v-else>
-							<summary class="button rounded with-icon icon-right rotate-icon">
-								OPEN
-								<ChevronDownIcon />
+							<summary class="rotate-icon">
+								<div class="button rounded with-icon icon-right">
+									OPEN
+									<ChevronDownIcon />
+								</div>
 							</summary>
 							<div class="details-menu sub-menu center compact lines">
 								<ul>
