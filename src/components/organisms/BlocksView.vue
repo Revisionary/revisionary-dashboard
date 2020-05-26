@@ -87,10 +87,6 @@
 			}
 		},
 		computed: {
-			dataCount() {
-				if (this.blocks.length) return " (" + this.blocks.length + ")";
-				return "";
-			},
 			favoriteBlocks() {
 				var blocks = this.blocks.filter(function(block) {
 					return block.favorite;

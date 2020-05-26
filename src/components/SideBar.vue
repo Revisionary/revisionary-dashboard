@@ -3,7 +3,7 @@
 		<div class="wrapper">
 			<div class="top-section">
 				<nuxt-link to="/projects/" :class="{ active: this.$route.name === 'projects' }" no-prefetch>
-					<DashboardIcon />Dashboard
+					<DashboardIcon />Projects
 				</nuxt-link>
 				<a href="#">
 					<NotificationIcon />Notifications

@@ -21,6 +21,10 @@
 			Footer
 		},
 		computed: {
+			dataCount() {
+				if (this.blocks.length) return " (" + this.blocks.length + ")";
+				return "";
+			},
 			categories: {
 				get() {
 					return this.$store.getters["projects/getCategories"];

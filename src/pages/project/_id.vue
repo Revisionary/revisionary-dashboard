@@ -5,6 +5,7 @@
 			:title="project.title"
 			:dataCount="dataCount"
 			:description="project.description"
+			:thumbnail="project.image_url"
 			:isLoading="projectsFetching"
 		/>
 
@@ -28,6 +29,10 @@
 			Footer
 		},
 		computed: {
+			dataCount() {
+				if (this.blocks.length) return " (" + this.blocks.length + ")";
+				return "";
+			},
 			categories: {
 				get() {
 					return this.$store.getters["projects/getCategories"];
@@ -52,10 +57,10 @@
 		methods: {},
 		created() {
 			this.$store.dispatch("projects/fetchProject", this.$route.params.id);
-			if (!this.blocks.length) {
-				this.$store.dispatch("projects/fetchCategories");
-				this.$store.dispatch("projects/fetch");
-			}
+			//if (!this.blocks.length) {
+			this.$store.dispatch("projects/fetchCategories");
+			this.$store.dispatch("projects/fetch");
+			//}
 		},
 		data() {
 			return {};

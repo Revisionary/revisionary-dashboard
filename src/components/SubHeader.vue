@@ -1,33 +1,52 @@
 <template>
 	<header id="sub-header" :class="{ loading: isLoading }">
-		<div class="subtitle">{{subtitle}}</div>
-		<details class="unselectable-when-loading">
-			<summary>
-				<h1>
-					<span>
-						{{ title.substr(0, 15) + dataCount }}
-						<ChevronDownIcon />
-					</span>
-				</h1>
-			</summary>
-			<div class="details-menu sub-menu right">
-				<ul>
-					<li class="active">
-						<nuxt-link to="/projects/">All Projects {{ dataCount }}</nuxt-link>
-					</li>
-					<li>
-						<nuxt-link to="/projects/archived/">Archived Projects (2)</nuxt-link>
-					</li>
-					<li>
-						<nuxt-link to="/projects/deleted/">Deleted Projects (0)</nuxt-link>
-					</li>
-				</ul>
+		<div class="left">
+			<div
+				class="thumbnail"
+				v-if="this.$route.name !== 'projects'"
+				:style="'background-image: url(' + thumbnail + ');'"
+			>
+				<figure></figure>
 			</div>
-		</details>
+			<div class="info">
+				<div class="subtitle">{{subtitle}}</div>
 
-		<p class="description">
-			<span>{{ description }}</span>
-		</p>
+				<details class="unselectable-when-loading">
+					<summary>
+						<h1>
+							<span>
+								{{ title + dataCount }}
+								<ChevronDownIcon />
+							</span>
+						</h1>
+					</summary>
+					<div class="details-menu sub-menu right">
+						<ul>
+							<li class="active">
+								<nuxt-link
+									to="/projects/"
+								>All {{ this.$route.name == 'projects' ? 'Projects' : 'Pages' }} {{ dataCount }}</nuxt-link>
+							</li>
+							<li>
+								<nuxt-link
+									to="/projects/archived/"
+								>Archived {{ this.$route.name == 'projects' ? 'Projects' : 'Pages' }} (2)</nuxt-link>
+							</li>
+							<li>
+								<nuxt-link
+									to="/projects/deleted/"
+								>Deleted {{ this.$route.name == 'projects' ? 'Projects' : 'Pages' }} (0)</nuxt-link>
+							</li>
+						</ul>
+					</div>
+				</details>
+
+				<p class="description">
+					<span>{{ description }}</span>
+				</p>
+			</div>
+		</div>
+		<div class="right" v-if="this.$route.name !== 'projects'">SHARES</div>
 
 		<div class="bottom">
 			<div class="tabs">
@@ -87,6 +106,9 @@
 			dataCount: {
 				default: ""
 			},
+			thumbnail: {
+				default: ""
+			},
 			description: {
 				default: "Loading..."
 			}
@@ -97,6 +119,19 @@
 <style lang="scss">
 	#sub-header {
 		position: relative;
+		padding-bottom: 70px;
+		display: flex;
+		flex-direction: row;
+		justify-content: space-between;
+		align-items: center;
+
+		& > .left {
+			display: flex;
+		}
+
+		& > .right {
+			display: flex;
+		}
 
 		h1 {
 			font-size: 30px;
@@ -117,6 +152,17 @@
 			}
 		}
 
+		.thumbnail {
+			width: 80px;
+			height: 80px;
+			background-color: #78808b;
+			margin-right: 20px;
+			border-radius: 20px;
+			background-size: cover;
+			background-repeat: no-repeat;
+			background-position: 0 0;
+		}
+
 		.subtitle {
 			font-style: normal;
 			font-weight: bold;
@@ -133,8 +179,8 @@
 			font-size: 17px;
 			line-height: 23px;
 			color: #78808b;
-			margin-top: 5px;
-			margin-bottom: 30px;
+			margin-top: 0;
+			margin-bottom: 0;
 		}
 
 		&.loading {
