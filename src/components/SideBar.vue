@@ -85,10 +85,10 @@
 						&::after {
 							content: "";
 							position: absolute;
-							bottom: 8px;
+							bottom: 9px;
 							left: 24px;
 							width: 21px;
-							height: 2px;
+							height: 1px;
 							background-color: #037ef3;
 						}
 
