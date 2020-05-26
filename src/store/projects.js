@@ -18,6 +18,7 @@ export const getters = {
 		return state.projectCategories;
 	},
 	getProject(state) {
+		console.log('GETTING PROJECT');
 		return state.project;
 	},
 	status(state) {
@@ -147,7 +148,7 @@ export const actions = {
 					date_created: "2019-09-23 10:38:13",
 					date_modified: "2019-09-23 10:38:13",
 					sub_count: 15,
-					users: [1, 2, 3]
+					users: [1, 2, 4]
 				},
 				{
 					ID: 78,
@@ -219,15 +220,18 @@ export const actions = {
 
 		setTimeout(function () {
 			commit("setProject", {
-				ID: 3,
-				title: "4 Marc Pridmore",
+				ID: 76,
+				title: "6 Marc Pridmore",
 				description: "Lorem ipsum dolor sit amet.",
 				image_url: "https://placeimg.com/640/480/any",
-				user_ID: 6,
+				user_ID: 3,
 				order: 1,
-				cat_ID: 0,
+				cat_ID: 2,
 				favorite: true,
-				users: [1, 2, 3]
+				date_created: "2019-09-23 10:38:13",
+				date_modified: "2019-09-23 10:38:13",
+				sub_count: 15,
+				users: [1, 2, 4]
 			});
 			commit("setFetching", false);
 		}, 1000);

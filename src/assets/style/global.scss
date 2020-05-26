@@ -373,6 +373,12 @@ details {
 	}
 }
 
+.shares {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
 /* TASKS */
 .tasks-count {
 	display: flex;

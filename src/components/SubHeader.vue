@@ -46,7 +46,38 @@
 				</p>
 			</div>
 		</div>
-		<div class="right" v-if="this.$route.name !== 'projects'">SHARES</div>
+		<div class="right" v-if="this.$route.name !== 'projects'">
+			<div class="shares">
+				<div class="multiple-profiles">
+					<span class="owner">
+						<ProfilePic
+							:firstName="ownerInfo.first_name"
+							:lastName="ownerInfo.last_name"
+							:picture="ownerInfo.picture"
+							:email="ownerInfo.email"
+						/>
+					</span>
+					<span class="shared" v-for="(user_ID, index) in blockData.users" :key="user_ID">
+						<ProfilePic
+							v-if="index < 2"
+							:firstName="userInfo(user_ID).first_name"
+							:lastName="userInfo(user_ID).last_name"
+							:picture="userInfo(user_ID).picture"
+							:email="userInfo(user_ID).email"
+						/>
+						<ProfilePic v-if="index == 2" :abbreviation="blockData.users.length.toString()" />
+					</span>
+				</div>
+				<button class="transparent with-icon share">
+					<ShareIcon />Share
+				</button>
+			</div>
+			<div class="page-info">
+				Created
+				<strong>{{ timeSince(blockData.date_created) }} ago</strong>, last modified
+				<strong>{{ timeSince(blockData.date_modified) }} ago</strong>
+			</div>
+		</div>
 
 		<div class="bottom">
 			<div class="tabs">
@@ -84,33 +115,100 @@
 	import SearchIcon from "~/components/atoms/icon-search.vue";
 	import SortIcon from "~/components/atoms/icon-sort.vue";
 	import PlusIcon from "~/components/atoms/icon-plus.vue";
+	import ShareIcon from "~/components/atoms/icon-share.vue";
+
+	import ProfilePic from "~/components/atoms/ProfilePic.vue";
 
 	export default {
 		components: {
 			ChevronDownIcon,
 			SearchIcon,
 			SortIcon,
-			PlusIcon
+			PlusIcon,
+			ProfilePic,
+			ShareIcon
 		},
 		props: {
 			isLoading: {
+				type: Boolean,
 				default: false
 			},
 			title: {
+				type: String,
 				default: "Loading...",
 				required: true
 			},
 			subtitle: {
+				type: String,
 				default: ""
 			},
 			dataCount: {
+				type: String,
 				default: ""
 			},
 			thumbnail: {
+				type: String,
 				default: ""
 			},
 			description: {
+				type: String,
 				default: "Loading..."
+			}
+		},
+		computed: {
+			ownerInfo() {
+				const user_ID = this.blockData.user_ID;
+				return this.userInfo(user_ID);
+			},
+			blockData() {
+				if (this.$route.name == "projects") return false;
+				return this.$store.getters["projects/getProject"];
+			}
+		},
+		methods: {
+			userInfo(ID) {
+				let foundUser = this.$store.getters["users/getUser"](ID);
+
+				if (!foundUser) {
+					this.$store.dispatch("users/fetch", [ID]);
+					foundUser = this.$store.getters["users/getUser"](ID);
+				}
+
+				return foundUser;
+			},
+			timeSince(date) {
+				date = new Date(date);
+
+				// UTC
+				var now = new Date();
+				var seconds = Math.floor(
+					(new Date(now.getTime() + now.getTimezoneOffset() * 60000) -
+						date) /
+						1000
+				);
+
+				var interval = Math.floor(seconds / 31536000);
+				if (interval > 1) return interval + " years";
+				if (interval == 1) return interval + " year";
+
+				interval = Math.floor(seconds / 2592000);
+				if (interval > 1) return interval + " months";
+				if (interval == 1) return interval + " month";
+
+				interval = Math.floor(seconds / 86400);
+				if (interval > 1) return interval + " days";
+				if (interval == 1) return interval + " day";
+
+				interval = Math.floor(seconds / 3600);
+				if (interval > 1) return interval + " hours";
+				if (interval == 1) return interval + " hour";
+
+				interval = Math.floor(seconds / 60);
+				if (interval > 1) return interval + " minutes";
+				if (interval == 1) return interval + " minute";
+
+				//return Math.floor(seconds) + " seconds";
+				return "in a minute";
 			}
 		}
 	};
@@ -131,6 +229,8 @@
 
 		& > .right {
 			display: flex;
+			flex-direction: column;
+			justify-content: flex-end;
 		}
 
 		h1 {
@@ -181,6 +281,52 @@
 			color: #78808b;
 			margin-top: 0;
 			margin-bottom: 0;
+		}
+
+		.shares {
+			justify-content: flex-end;
+
+			.owner,
+			.shared {
+				border-color: white;
+
+				& > picture {
+					width: 34px;
+					height: 34px;
+					font-size: 14px;
+				}
+			}
+
+			button {
+				border-color: #c3cad8;
+				color: #9199b1 !important;
+				text-transform: uppercase;
+				border-radius: 10px;
+				height: 30px;
+				margin-left: 8px;
+				padding: 0 12px;
+				padding-left: 10px;
+				font-size: 12px;
+				line-height: 14px;
+
+				& > svg > path {
+					stroke: #7884a7;
+				}
+			}
+		}
+
+		.page-info {
+			color: #747781;
+			font-weight: 500;
+			font-size: 12px;
+			letter-spacing: -0.5px;
+			line-height: 17px;
+			margin-top: 8px;
+			opacity: 0.7;
+
+			& > strong {
+				color: #2d3037;
+			}
 		}
 
 		&.loading {

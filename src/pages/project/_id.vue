@@ -57,10 +57,8 @@
 		methods: {},
 		created() {
 			this.$store.dispatch("projects/fetchProject", this.$route.params.id);
-			//if (!this.blocks.length) {
 			this.$store.dispatch("projects/fetchCategories");
 			this.$store.dispatch("projects/fetch");
-			//}
 		},
 		data() {
 			return {};
