@@ -219,6 +219,7 @@ export const actions = {
 		// 	});
 
 		setTimeout(function () {
+
 			commit("setProject", {
 				ID: 76,
 				title: "6 Marc Pridmore",
@@ -234,6 +235,7 @@ export const actions = {
 				users: [1, 2, 4, 5]
 			});
 			commit("setFetching", false);
+
 		}, 1000);
 
 	},

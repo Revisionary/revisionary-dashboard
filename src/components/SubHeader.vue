@@ -47,6 +47,7 @@
 			</div>
 		</div>
 		<div class="right" v-if="this.$route.name !== 'projects'">
+			<div class="subtitle" style="opacity: 0;">.</div>
 			<div class="shares">
 				<div class="multiple-profiles">
 					<span class="owner">
@@ -77,9 +78,11 @@
 				</button>
 			</div>
 			<div class="page-info">
-				Created
-				<strong>{{ timeSince(blockData.date_created) }} ago</strong>, last modified
-				<strong>{{ timeSince(blockData.date_modified) }} ago</strong>
+				<span>
+					Created
+					<strong>{{ timeSince(blockData.date_created) }} ago</strong>, last modified
+					<strong>{{ timeSince(blockData.date_modified) }} ago</strong>
+				</span>
 			</div>
 		</div>
 
@@ -235,6 +238,7 @@
 			display: flex;
 			flex-direction: column;
 			justify-content: flex-end;
+			align-items: flex-end;
 		}
 
 		h1 {
@@ -340,7 +344,12 @@
 
 		&.loading {
 			h1,
-			.description {
+			.description,
+			.shares,
+			.page-info {
+				text-indent: 9999px;
+				white-space: nowrap;
+				overflow: hidden;
 				background: linear-gradient(
 					90deg,
 					#9ea5ab,
@@ -357,15 +366,20 @@
 				opacity: 0.2;
 				pointer-events: none;
 
-				& > span {
+				& > * {
 					opacity: 0;
 					display: none;
 				}
 			}
 
-			.description {
+			.description,
+			.page-info {
 				width: 500px;
 				height: 23px;
+			}
+
+			.page-info {
+				width: 280px;
 			}
 
 			.unselectable-when-loading {
