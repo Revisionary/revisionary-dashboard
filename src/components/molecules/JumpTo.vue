@@ -11,7 +11,7 @@
 					v-if="this.$route.name !== 'projects'"
 					@click="toggleJumper"
 				>
-					<nuxt-link to="/projects/" no-prefetch>All Projects</nuxt-link>
+					<nuxt-link to="/projects/">All Projects</nuxt-link>
 				</li>
 				<li v-if="fetching">
 					<span>Loading...</span>
@@ -23,7 +23,7 @@
 					:class="{active : project.ID == eachProject.ID}"
 					@click="toggleJumper"
 				>
-					<nuxt-link :to="`/project/${eachProject.ID}`" no-prefetch>{{ eachProject.title.substr(0, 15) }}</nuxt-link>
+					<nuxt-link :to="`/project/${eachProject.ID}`">{{ eachProject.title.substr(0, 15) }}</nuxt-link>
 				</li>
 			</ul>
 		</div>

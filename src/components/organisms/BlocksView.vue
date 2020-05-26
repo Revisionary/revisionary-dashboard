@@ -77,10 +77,10 @@
 		},
 		props: {
 			categories: {
-				type: Object
+				type: Array
 			},
 			blocks: {
-				type: Object
+				type: Array
 			},
 			blocksFetching: {
 				type: Boolean

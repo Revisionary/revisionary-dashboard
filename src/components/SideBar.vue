@@ -2,7 +2,7 @@
 	<aside id="sidebar">
 		<div class="wrapper">
 			<div class="top-section">
-				<nuxt-link to="/projects/" :class="{ active: this.$route.name === 'projects' }" no-prefetch>
+				<nuxt-link to="/projects/" :class="{ active: this.$route.name === 'projects' }">
 					<DashboardIcon />Projects
 				</nuxt-link>
 				<a href="#">

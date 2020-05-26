@@ -6,7 +6,7 @@
 			:dataCount="dataCount"
 			:description="project.description"
 			:thumbnail="project.image_url"
-			:isLoading="projectsFetching"
+			:isLoading="blocksFetching"
 		/>
 
 		<BlocksView :categories="categories" :blocks="blocks" :blocksFetching="blocksFetching" />

@@ -53,11 +53,7 @@
 				<div class="middle">
 					<div class="left"></div>
 					<div class="center tooltip-not-contained" data-tooltip="Open this project">
-						<nuxt-link
-							:to="`/project/${blockData.ID}`"
-							no-prefetch
-							v-if="this.$route.name === 'projects'"
-						>
+						<nuxt-link :to="`/project/${blockData.ID}`" v-if="this.$route.name === 'projects'">
 							<ArrowRightIcon />
 						</nuxt-link>
 					</div>
@@ -77,7 +73,7 @@
 		</div>
 		<div class="info">
 			<div class="title">
-				<nuxt-link :to="`/project/${blockData.ID}`" no-prefetch>
+				<nuxt-link :to="`/project/${blockData.ID}`">
 					<span class="text">
 						<span>{{ blockData.title }}</span>
 					</span>
