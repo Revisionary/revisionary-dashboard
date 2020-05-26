@@ -35,8 +35,6 @@
 </script>
 
 <style lang="scss">
-	@import "~/assets/style/blockLayout";
-
 	main {
 		width: 100%;
 		display: flex;
@@ -53,6 +51,10 @@
 				background-color: #fff;
 				padding: 40px 55px;
 				border-bottom: 1px solid #eaedf3;
+			}
+
+			& > .content-wrapper {
+				padding: 55px;
 			}
 		}
 	}
