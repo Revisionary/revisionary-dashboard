@@ -138,11 +138,5 @@
 			align-items: center;
 			cursor: pointer;
 		}
-
-		&.open {
-			& > .top {
-				//min-height: auto;
-			}
-		}
 	}
 </style>

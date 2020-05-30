@@ -297,7 +297,6 @@
 					width: 22px;
 					height: 22px;
 					border-color: white;
-					border-width: 2px;
 					font-size: 11px;
 
 					&.left {
