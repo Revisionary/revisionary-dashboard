@@ -30,16 +30,16 @@
 				}
 			},
 			...mapGetters({
+				project: "projects/getProject",
 				blocksFetching: "projects/status"
 			})
 		},
 		created() {
+			this.$store.dispatch("projects/fetchProject", this.$route.params.id);
 			this.$store.dispatch("projects/fetchCategories");
 			this.$store.dispatch("projects/fetch");
-			this.$store.dispatch("projects/resetProject");
 		}
 	};
 </script>
 
-<style lang="scss">
-</style>
+<style></style>

@@ -1,8 +1,8 @@
 <template>
-	<div class="content-wrapper blocks-view">
+	<div class="blocks-view">
 		<div
 			v-if="blocksFetching"
-		>{{ this.$route.name == 'projects' ? 'Projects' : 'Pages' }} are loading...</div>
+		>{{ $route.name == 'projects' ? 'Projects' : 'Pages' }} are loading...</div>
 
 		<draggable
 			v-else

@@ -15,21 +15,16 @@
 	export default {
 		middleware: "authentication",
 		mounted() {
-			//console.log("MOUNTED");
 
 			this.$nextTick(() => {
 				this.$nuxt.$loading.start();
 				setTimeout(() => this.$nuxt.$loading.finish(), 500);
 			});
+
 		},
 		components: {
 			TopBar,
 			SideBar
-		},
-		data() {
-			return {
-				//isSideBarOpen: $store.state.isSideBarOpen
-			};
 		}
 	};
 </script>

@@ -3,7 +3,7 @@
 		<div class="left">
 			<figure
 				class="thumbnail"
-				v-if="this.$route.name !== 'projects'"
+				v-if="dataType !== 'project'"
 				:style="'background-image: url(' + thumbnail + ');'"
 			>
 				<div class="tasks-count">
@@ -26,31 +26,37 @@
 						</summary>
 						<div class="details-menu sub-menu right">
 							<ul>
-								<li class="active">
+								<li :class="{ active: $route.params.category == null }">
 									<nuxt-link
-										to="/projects/"
-									>All {{ this.$route.name == 'projects' ? 'Projects' : 'Pages' }} {{ dataCount }}</nuxt-link>
+										:to="currentPath + '/'"
+									>All {{ $route.name == 'projects' || $route.name == 'projects-category' ? 'Projects' : 'Pages' }} {{ dataCount }}</nuxt-link>
 								</li>
-								<li>
+								<li :class="{ active: $route.params.category == 'archived' }">
 									<nuxt-link
-										to="/projects/archived/"
-									>Archived {{ this.$route.name == 'projects' ? 'Projects' : 'Pages' }} (2)</nuxt-link>
+										:to="currentPath + '/archived/'"
+									>Archived {{ $route.name == 'projects' || $route.name == 'projects-category' ? 'Projects' : 'Pages' }} (2)</nuxt-link>
 								</li>
-								<li>
+								<li :class="{ active: $route.params.category == 'deleted' }">
 									<nuxt-link
-										to="/projects/deleted/"
-									>Deleted {{ this.$route.name == 'projects' ? 'Projects' : 'Pages' }} (0)</nuxt-link>
+										:to="currentPath + '/deleted/'"
+									>Deleted {{ $route.name == 'projects' || $route.name == 'projects-category' ? 'Projects' : 'Pages' }} (0)</nuxt-link>
 								</li>
 							</ul>
 						</div>
 					</details>
-					<div class="project-actions" v-if="this.$route.name !== 'projects'">
-						<a href="#">
+					<div
+						class="project-actions"
+						v-if="$route.name !== 'projects' && $route.name !== 'projects-category'"
+					>
+						<div class="edit-project" data-tooltip="Edit Project">
 							<InfoIcon />
-						</a>
-						<a href="#">
+						</div>
+						<div
+							class="favorite"
+							:data-tooltip="blockData.favorite ? 'Remove from Favorites' : 'Add to Favorites'"
+						>
 							<StarIcon :active="blockData.favorite" />
-						</a>
+						</div>
 					</div>
 				</div>
 
@@ -59,7 +65,7 @@
 				</p>
 			</div>
 		</div>
-		<div class="right" v-if="this.$route.name !== 'projects'">
+		<div class="right" v-if="$route.name !== 'projects' && $route.name !== 'projects-category'">
 			<div class="subtitle" style="opacity: 0;">.</div>
 			<div class="shares">
 				<div class="multiple-profiles">
@@ -101,11 +107,11 @@
 
 		<div class="bottom">
 			<div class="tabs">
-				<a href="#" class="active">ALL</a>
-				<a href="#">MINE</a>
-				<a href="#">SHARED</a>
-				<a href="#">FAVORITES</a>
-				<a href="#">PERSONAL PROJECTS</a>
+				<nuxt-link :to="currentPath + '/'">ALL</nuxt-link>
+				<nuxt-link :to="currentPath + '/mine/'">MINE</nuxt-link>
+				<nuxt-link :to="currentPath + '/shared/'">SHARED</nuxt-link>
+				<nuxt-link :to="currentPath + '/favorites/'">FAVORITES</nuxt-link>
+				<nuxt-link :to="currentPath + '/personal-projects/'">PERSONAL PROJECTS</nuxt-link>
 
 				<a
 					href="#"
@@ -116,7 +122,11 @@
 			</div>
 
 			<div class="actions">
-				<a href="#" class="tooltip-not-contained" data-tooltip="Search in Projects">
+				<a
+					href="#"
+					class="tooltip-not-contained"
+					:data-tooltip="'Search in ' + ($route.name == 'projects' || $route.name == 'projects-category' ? 'Projects' : 'Pages')"
+				>
 					<SearchIcon />
 				</a>
 				<a href="#" class="tooltip-not-contained" data-tooltip="Settings">
@@ -153,40 +163,58 @@
 			InfoIcon
 		},
 		props: {
+			dataType: {
+				type: String
+			},
 			isLoading: {
 				type: Boolean,
 				default: false
-			},
-			title: {
-				type: String,
-				default: "Loading...",
-				required: true
-			},
-			subtitle: {
-				type: String,
-				default: ""
-			},
-			dataCount: {
-				type: String,
-				default: ""
-			},
-			thumbnail: {
-				type: String,
-				default: ""
-			},
-			description: {
-				type: String,
-				default: "Loading..."
 			}
 		},
 		computed: {
-			ownerInfo() {
-				const user_ID = this.blockData.user_ID;
-				return this.userInfo(user_ID);
+			currentPath() {
+				if (this.dataType == "project") return "/projects";
+				return "/project/" + this.$route.params.id;
 			},
 			blockData() {
-				if (this.$route.name == "projects") return false;
+				if (this.dataType == "project") return [];
 				return this.$store.getters["projects/getProject"];
+			},
+			blocksData() {
+				if (this.dataType == "project")
+					return this.$store.getters["projects/get"];
+				return this.$store.getters["projects/get"]; // Pages !!!
+			},
+			dataCount() {
+				if (this.blocksData.length)
+					return " (" + this.blocksData.length + ")";
+				return "";
+			},
+			ownerInfo() {
+				return this.userInfo(this.blockData.user_ID);
+			},
+			isLoading() {
+				return this.$store.getters["projects/status"];
+			},
+			thumbnail() {
+				return this.blockData.image_url;
+			},
+			subtitle() {
+				if (this.isLoading) return "Loading...";
+				else if (this.$route.params.category != null)
+					return this.$route.params.category;
+				else if (this.dataType == "project") return "Hub";
+				else return "Project";
+			},
+			title() {
+				if (this.isLoading) return "Loading...";
+				else if (this.dataType == "project") return "Projects";
+				else return this.blockData.title;
+			},
+			description() {
+				if (this.isLoading) return "Loading...";
+				else if (this.dataType == "project") return "";
+				else return this.blockData.description;
 			}
 		},
 		methods: {
@@ -479,7 +507,7 @@
 					margin-right: 20px;
 					border-bottom: 1px solid transparent;
 
-					&.active {
+					&.nuxt-link-exact-active {
 						color: #4d5058;
 						font-weight: 600;
 						border-color: #037ef3;

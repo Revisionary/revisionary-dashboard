@@ -28,7 +28,10 @@
 								/>
 							</span>
 						</div>
-						<button class="transparent with-icon share" v-if="this.$route.name === 'projects'">
+						<button
+							class="transparent with-icon share"
+							v-if="$route.name == 'projects' || $route.name == 'projects-category'"
+						>
 							<ShareIcon />Share
 						</button>
 					</div>
@@ -60,7 +63,7 @@
 						<nuxt-link
 							class="tooltip-not-contained"
 							:to="`/project/${blockData.ID}`"
-							v-if="this.$route.name === 'projects'"
+							v-if="$route.name == 'projects' || $route.name == 'projects-category'"
 							data-tooltip="Open this project"
 						>
 							<ArrowRightIcon />
@@ -102,7 +105,10 @@
 					<div class="right"></div>
 				</div>
 				<div class="bottom">
-					<div class="left" v-if="this.$route.name !== 'projects'">VERSIONS</div>
+					<div
+						class="left"
+						v-if="$route.name !== 'projects' && $route.name !== 'projects-category'"
+					>VERSIONS</div>
 					<div class="center"></div>
 					<div class="right">
 						<div class="tasks-count">

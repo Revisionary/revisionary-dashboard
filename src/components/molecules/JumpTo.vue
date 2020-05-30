@@ -7,8 +7,8 @@
 		<div class="details-menu sub-menu">
 			<ul>
 				<li
-					:class="{active : this.$route.name === 'projects'}"
-					v-if="this.$route.name !== 'projects'"
+					:class="{active : $route.name === 'projects'}"
+					v-if="$route.name !== 'projects'"
 					@click="toggleJumper"
 				>
 					<nuxt-link to="/projects/">All Projects</nuxt-link>
