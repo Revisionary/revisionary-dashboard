@@ -35,9 +35,16 @@
 			})
 		},
 		created() {
-			this.$store.dispatch("projects/fetchProject", this.$route.params.id);
-			this.$store.dispatch("projects/fetchCategories");
-			this.$store.dispatch("projects/fetch");
+			if (!this.project.length)
+				this.$store.dispatch(
+					"projects/fetchProject",
+					this.$route.params.id
+				);
+
+			if (!this.categories.length)
+				this.$store.dispatch("projects/fetchCategories"); // Page Categories fetch !!!
+
+			if (!this.blocks.length) this.$store.dispatch("projects/fetch"); // Pages fetch !!!
 		}
 	};
 </script>

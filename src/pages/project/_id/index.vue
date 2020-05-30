@@ -36,8 +36,8 @@
 		},
 		created() {
 			this.$store.dispatch("projects/fetchProject", this.$route.params.id);
-			this.$store.dispatch("projects/fetchCategories");
-			this.$store.dispatch("projects/fetch");
+			this.$store.dispatch("projects/fetchCategories"); // Page Categories fetch !!!
+			this.$store.dispatch("projects/fetch"); // Pages fetch !!!
 		}
 	};
 </script>

@@ -35,9 +35,10 @@
 			})
 		},
 		created() {
-			this.$store.dispatch("projects/fetchProject", this.$route.params.id);
-			this.$store.dispatch("projects/fetchCategories");
-			this.$store.dispatch("projects/fetch");
+			if (!this.categories.length)
+				this.$store.dispatch("projects/fetchCategories");
+
+			if (!this.blocks.length) this.$store.dispatch("projects/fetch");
 		}
 	};
 </script>

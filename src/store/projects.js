@@ -18,7 +18,6 @@ export const getters = {
 		return state.projectCategories;
 	},
 	getProject(state) {
-		console.log('GETTING PROJECT');
 		return state.project;
 	},
 	status(state) {
@@ -68,7 +67,7 @@ export const actions = {
 			const projects = [
 				{
 					ID: 21,
-					title: "1 Marc Pridmorasdsad asd easd",
+					title: "Marc Pridmorasdsad asd easd",
 					description: "Lorem ipsum dolor ssit amet. ASD asDsad asd asd as das das d.",
 					image_url: "https://placeimg.com/640/480/any",
 					user_ID: 6,

@@ -36,7 +36,7 @@
 		created() {
 			this.$store.dispatch("projects/fetchCategories");
 			this.$store.dispatch("projects/fetch");
-			this.$store.dispatch("projects/resetProject");
+			//this.$store.dispatch("projects/resetProject");
 		}
 	};
 </script>
