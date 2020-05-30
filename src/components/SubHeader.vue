@@ -165,10 +165,6 @@
 		props: {
 			dataType: {
 				type: String
-			},
-			isLoading: {
-				type: Boolean,
-				default: false
 			}
 		},
 		computed: {

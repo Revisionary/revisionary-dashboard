@@ -1,16 +1,12 @@
 <template>
-	<details id="jump-to" :open="jumperOpen ? true : null">
-		<summary class="selectbox" @click.prevent="toggleJumper">
+	<details id="jump-to">
+		<summary class="selectbox" @click="fetchProjects">
 			<span class="current">{{ current }}</span>
 			<CaretDownIcon />
 		</summary>
 		<div class="details-menu sub-menu">
 			<ul>
-				<li
-					:class="{active : $route.name === 'projects'}"
-					v-if="$route.name !== 'projects'"
-					@click="toggleJumper"
-				>
+				<li :class="{active : $route.name === 'projects'}" v-if="$route.name !== 'projects'">
 					<nuxt-link to="/projects/">All Projects</nuxt-link>
 				</li>
 				<li v-if="fetching">
@@ -21,7 +17,6 @@
 					v-for="eachProject in projects"
 					:key="eachProject.ID"
 					:class="{active : project.ID == eachProject.ID}"
-					@click="toggleJumper"
 				>
 					<nuxt-link :to="`/project/${eachProject.ID}`">{{ eachProject.title.substr(0, 15) }}</nuxt-link>
 				</li>
@@ -55,20 +50,9 @@
 			}
 		},
 		methods: {
-			toggleJumper() {
-				if (this.jumperOpen) this.jumperOpen = false;
-				else {
-					if (!this.projects.length && !this.jumperOpen)
-						this.$store.dispatch("projects/fetch");
-
-					this.jumperOpen = true;
-				}
+			fetchProjects() {
+				if (!this.projects.length) this.$store.dispatch("projects/fetch");
 			}
-		},
-		data() {
-			return {
-				jumperOpen: false
-			};
 		}
 	};
 </script>

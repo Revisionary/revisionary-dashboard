@@ -21,7 +21,8 @@ export default {
 		link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
 	},
 	router: {
-		prefetchLinks: false
+		prefetchLinks: false,
+		middleware: 'dropdown-closer'
 	},
 	/*
 	 ** Customize the progress-bar color
