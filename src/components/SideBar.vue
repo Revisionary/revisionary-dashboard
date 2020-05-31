@@ -61,6 +61,8 @@
 
 			& > * {
 				padding: 28px 0;
+				width: 100%;
+				white-space: nowrap;
 
 				& > a {
 					display: flex;
