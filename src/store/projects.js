@@ -66,146 +66,146 @@ export const actions = {
 	async fetch({ commit, dispatch }) {
 
 		commit("setFetching", true);
-		await this.$axios
-			.get(`https://jsonplaceholder.typicode.com/posts`)
-			.then(res => {
-				if (res.status === 200) {
+		// await this.$axios
+		// 	.get(`https://jsonplaceholder.typicode.com/posts`)
+		// 	.then(res => {
+		// 		if (res.status === 200) {
 
-					const projects = [
-						{
-							ID: 21,
-							title: "Marc Pridmorasdsad asd easd",
-							description: "Lorem ipsum dolor ssit amet. ASD asDsad asd asd as das das d.",
-							image_url: "https://placeimg.com/640/480/any",
-							user_ID: 6,
-							order: 1,
-							cat_ID: 0,
-							favorite: false,
-							archived: true,
-							deleted: false,
-							date_created: "2019-09-23 10:38:13",
-							date_modified: "2019-09-23 10:38:13",
-							sub_count: 5,
-							users: [1, 2, 3]
-						},
-						{
-							ID: 32,
-							title: "Arc Marc Pridmore",
-							description: "Lorem ipsum dolor sit amet.",
-							image_url: "https://placeimg.com/640/480/any",
-							user_ID: 6,
-							order: 1,
-							cat_ID: 4,
-							favorite: false,
-							archived: true,
-							deleted: false,
-							date_created: "2019-09-23 10:38:13",
-							date_modified: "2019-09-23 10:38:13",
-							sub_count: 14,
-							users: [1, 2, 3]
-						},
-						{
-							ID: 43,
-							title: "3 Marc Pridmore",
-							description: "Lorem ipsum dolor sit amet.",
-							image_url: "https://placeimg.com/640/480/any",
-							user_ID: 6,
-							order: 1,
-							cat_ID: 1,
-							favorite: false,
-							archived: false,
-							deleted: false,
-							date_created: "2019-09-23 10:38:13",
-							date_modified: "2019-09-23 10:38:13",
-							sub_count: 8,
-							users: [1, 2, 3]
-						},
-						{
-							ID: 54,
-							title: "4 Marc Pridmore",
-							description: "Lorem ipsum dolor sit amet.",
-							image_url: "https://placeimg.com/640/480/any",
-							user_ID: 6,
-							order: 1,
-							cat_ID: 0,
-							favorite: true,
-							archived: false,
-							deleted: false,
-							date_created: "2020-03-23 10:38:13",
-							date_modified: "2020-03-23 10:38:13",
-							sub_count: 4,
-							users: [2, 3]
-						},
-						{
-							ID: 65,
-							title: "5 Marc Pridmore",
-							description: "Lorem ipsum dolor sit amet.",
-							image_url: "https://placeimg.com/640/480/any",
-							user_ID: 2,
-							order: 1,
-							cat_ID: 1,
-							favorite: true,
-							archived: false,
-							deleted: false,
-							date_created: "2020-05-23 10:38:13",
-							date_modified: "2020-05-23 10:38:13",
-							sub_count: 7,
-							users: [1, 3]
-						},
-						{
-							ID: 76,
-							title: "6 Marc Pridmore",
-							description: "Lorem ipsum dolor sit amet.",
-							image_url: "https://placeimg.com/640/480/any",
-							user_ID: 3,
-							order: 1,
-							cat_ID: 2,
-							favorite: true,
-							archived: false,
-							deleted: false,
-							date_created: "2019-09-23 10:38:13",
-							date_modified: "2019-09-23 10:38:13",
-							sub_count: 15,
-							users: [1, 2, 4]
-						},
-						{
-							ID: 78,
-							title: "7 Marc Pridmore",
-							description: "Lorem ipsum dolor sit amet.",
-							image_url: "https://placeimg.com/640/480/any",
-							user_ID: 4,
-							order: 1,
-							cat_ID: 0,
-							favorite: false,
-							archived: false,
-							deleted: true,
-							date_created: "2019-09-23 10:38:13",
-							date_modified: "2019-09-23 10:38:13",
-							sub_count: 0,
-							users: [1, 2, 3]
-						}
-					];
-					commit("set", projects);
-
-
-					// Take users to batch fetch
-					let usersToFetch = [];
-					projects.forEach(function (project) {
-						usersToFetch.push(project.user_ID);
-
-						project.users.forEach(function (user) {
-							usersToFetch.push(user);
-						});
-
-					});
-					usersToFetch = usersToFetch.filter((v, i, a) => a.indexOf(v) === i); // Make it unique
+		const projects = [
+			{
+				ID: 21,
+				title: "Marc Pridmorasdsad asd easd",
+				description: "Lorem ipsum dolor ssit amet. ASD asDsad asd asd as das das d.",
+				image_url: "https://placeimg.com/640/480/any",
+				user_ID: 6,
+				order: 1,
+				cat_ID: 0,
+				favorite: false,
+				archived: true,
+				deleted: false,
+				date_created: "2019-09-23 10:38:13",
+				date_modified: "2019-09-23 10:38:13",
+				sub_count: 5,
+				users: [1, 2, 3]
+			},
+			{
+				ID: 32,
+				title: "Arc Marc Pridmore",
+				description: "Lorem ipsum dolor sit amet.",
+				image_url: "https://placeimg.com/640/480/any",
+				user_ID: 6,
+				order: 1,
+				cat_ID: 4,
+				favorite: false,
+				archived: true,
+				deleted: false,
+				date_created: "2019-09-23 10:38:13",
+				date_modified: "2019-09-23 10:38:13",
+				sub_count: 14,
+				users: [1, 2, 3]
+			},
+			{
+				ID: 43,
+				title: "3 Marc Pridmore",
+				description: "Lorem ipsum dolor sit amet.",
+				image_url: "https://placeimg.com/640/480/any",
+				user_ID: 6,
+				order: 1,
+				cat_ID: 1,
+				favorite: false,
+				archived: false,
+				deleted: false,
+				date_created: "2019-09-23 10:38:13",
+				date_modified: "2019-09-23 10:38:13",
+				sub_count: 8,
+				users: [1, 2, 3]
+			},
+			{
+				ID: 54,
+				title: "4 Marc Pridmore",
+				description: "Lorem ipsum dolor sit amet.",
+				image_url: "https://placeimg.com/640/480/any",
+				user_ID: 6,
+				order: 1,
+				cat_ID: 0,
+				favorite: true,
+				archived: false,
+				deleted: false,
+				date_created: "2020-03-23 10:38:13",
+				date_modified: "2020-03-23 10:38:13",
+				sub_count: 4,
+				users: [2, 3]
+			},
+			{
+				ID: 65,
+				title: "5 Marc Pridmore",
+				description: "Lorem ipsum dolor sit amet.",
+				image_url: "https://placeimg.com/640/480/any",
+				user_ID: 2,
+				order: 1,
+				cat_ID: 1,
+				favorite: true,
+				archived: false,
+				deleted: false,
+				date_created: "2020-05-23 10:38:13",
+				date_modified: "2020-05-23 10:38:13",
+				sub_count: 7,
+				users: [1, 3]
+			},
+			{
+				ID: 76,
+				title: "6 Marc Pridmore",
+				description: "Lorem ipsum dolor sit amet.",
+				image_url: "https://placeimg.com/640/480/any",
+				user_ID: 3,
+				order: 1,
+				cat_ID: 2,
+				favorite: true,
+				archived: false,
+				deleted: false,
+				date_created: "2019-09-23 10:38:13",
+				date_modified: "2019-09-23 10:38:13",
+				sub_count: 15,
+				users: [1, 2, 4]
+			},
+			{
+				ID: 78,
+				title: "7 Marc Pridmore",
+				description: "Lorem ipsum dolor sit amet.",
+				image_url: "https://placeimg.com/640/480/any",
+				user_ID: 4,
+				order: 1,
+				cat_ID: 0,
+				favorite: false,
+				archived: false,
+				deleted: true,
+				date_created: "2019-09-23 10:38:13",
+				date_modified: "2019-09-23 10:38:13",
+				sub_count: 0,
+				users: [1, 2, 3]
+			}
+		];
+		commit("set", projects);
 
 
-					// Get the users info
-					dispatch("users/fetch", usersToFetch, { root: true });
+		// Take users to batch fetch
+		let usersToFetch = [];
+		projects.forEach(function (project) {
+			usersToFetch.push(project.user_ID);
 
-				}
+			project.users.forEach(function (user) {
+				usersToFetch.push(user);
 			});
+
+		});
+		usersToFetch = usersToFetch.filter((v, i, a) => a.indexOf(v) === i); // Make it unique
+
+
+		// Get the users info
+		dispatch("users/fetch", usersToFetch, { root: true });
+
+		// 	}
+		// });
 
 
 		setTimeout(function () {
@@ -232,34 +232,34 @@ export const actions = {
 
 
 		commit("setFetching", true);
-		await this.$axios
-			.get(`https://jsonplaceholder.typicode.com/posts`)
-			.then(res => {
-				if (res.status === 200) {
+		// await this.$axios
+		// 	.get(`https://jsonplaceholder.typicode.com/posts`)
+		// 	.then(res => {
+		// 		if (res.status === 200) {
 
-					commit("setProject", {
-						ID: 54,
-						title: "Marc Pridmore",
-						description: "Marc Pridmore’s new website and design overhaul on WordPress.",
-						image_url: "https://placeimg.com/640/480/any",
-						user_ID: 3,
-						order: 1,
-						cat_ID: 2,
-						favorite: true,
-						archived: false,
-						deleted: false,
-						date_created: "2019-09-23 10:38:13",
-						date_modified: "2019-09-23 10:38:13",
-						sub_count: 15,
-						users: [1, 2, 4, 5]
-					});
+		commit("setProject", {
+			ID: 54,
+			title: "Marc Pridmore",
+			description: "Marc Pridmore’s new website and design overhaul on WordPress.",
+			image_url: "https://placeimg.com/640/480/any",
+			user_ID: 3,
+			order: 1,
+			cat_ID: 2,
+			favorite: true,
+			archived: false,
+			deleted: false,
+			date_created: "2019-09-23 10:38:13",
+			date_modified: "2019-09-23 10:38:13",
+			sub_count: 15,
+			users: [1, 2, 4, 5]
+		});
 
-					setTimeout(function () {
-						commit("setFetching", false);
-					}, 1000);
+		setTimeout(function () {
+			commit("setFetching", false);
+		}, 1000);
 
-				}
-			});
+		// 	}
+		// });
 
 	},
 

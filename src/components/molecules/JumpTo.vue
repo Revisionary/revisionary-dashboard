@@ -14,7 +14,7 @@
 				</li>
 				<li
 					v-else
-					v-for="eachProject in projects"
+					v-for="eachProject in projects.filter(project => !project.archived && !project.deleted)"
 					:key="eachProject.ID"
 					:class="{active : project.ID == eachProject.ID}"
 				>
