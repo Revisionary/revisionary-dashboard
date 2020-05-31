@@ -12,10 +12,7 @@
 			animation="200"
 			handle=".category-title"
 		>
-			<div
-				class="category favorites"
-				v-if="favoriteBlocks.length && filter != 'archived' && filter != 'deleted' && filter != 'mine' && filter != 'shared' && filter != 'favorites'"
-			>
+			<div class="category favorites" v-if="favoriteBlocks.length && filter == null">
 				<div class="category-title">Favorites</div>
 
 				<draggable class="blocks" group="favorite-blocks" draggable=".sortable" animation="200">
@@ -50,7 +47,7 @@
 
 				<div
 					class="empty-category"
-					v-if="!blocksOfCategory(category.ID).length && (category.ID != 0 && blockCategories.length > 1)"
+					v-if="(category.ID != 0 && !blocksOfCategory(category.ID).length) || (category.ID == 0 && !blocksOfCategory(0).length && blockCategories.length == 1 )"
 				>There's nothing here yet.</div>
 
 				<draggable class="blocks" group="blocks" draggable=".sortable" animation="200">
@@ -58,7 +55,10 @@
 						<Block :blockData="block" />
 					</div>
 
-					<div class="block add-new" v-if="!filter">
+					<div
+						class="block add-new"
+						v-if="!filter && category.ID != 0 || (category.ID == 0 && blocksOfCategory(0).length && blockCategories.length > 1)"
+					>
 						<AddNewBlock />
 					</div>
 				</draggable>
@@ -101,43 +101,54 @@
 		},
 		computed: {
 			blockCategories() {
-				if (
-					this.filter == "archived" ||
-					this.filter == "deleted" ||
-					this.filter == "mine" ||
-					this.filter == "shared" ||
-					this.filter == "favorites"
-				)
+				if (this.filter != null)
 					return this.categories.filter(category => category.ID == 0);
 
 				return this.categories;
 			},
 			favoriteBlocks() {
-				var blocks = this.blocks.filter(function(block) {
-					return block.favorite;
-				});
+				return this.blocks.filter(block => block.favorite);
+			},
+			categorizedBlocks() {
+				if (this.filter == "archived")
+					return this.blocks.filter(block => block.archived);
 
-				return blocks;
+				if (this.filter == "deleted")
+					return this.blocks.filter(block => block.deleted);
+
+				if (this.filter == "mine")
+					return this.blocks.filter(
+						block => block.user_ID == this.$store.state.authUser.ID
+					);
+
+				if (this.filter == "shared")
+					return this.blocks.filter(
+						block => block.user_ID != this.$store.state.authUser.ID
+					);
+
+				if (this.filter == "favorites")
+					return this.blocks.filter(block => block.favorite);
+
+				const foundCat = this.categories.find(
+					category => category.slug == this.filter
+				);
+				if (foundCat)
+					return this.blocks.filter(block => block.cat_ID == foundCat.ID);
+
+				// If no filter
+				return this.blocks.filter(
+					block => !block.archived && !block.deleted
+				);
 			}
 		},
 		methods: {
 			blocksOfCategory(cat_ID) {
-				if (
-					this.filter == "archived" ||
-					this.filter == "deleted" ||
-					this.filter == "mine" ||
-					this.filter == "shared" ||
-					this.filter == "favorites"
-				)
-					return this.blocks;
+				if (this.filter != null) return this.categorizedBlocks;
 
-				return this.blocks.filter(function(block) {
+				return this.categorizedBlocks.filter(function(block) {
 					return block.cat_ID == cat_ID;
 				});
 			}
-		},
-		data() {
-			return {};
 		}
 	};
 </script>

@@ -1,6 +1,11 @@
 <template>
 	<div class="content-wrapper">
-		<BlocksView :categories="categories" :blocks="blocks" :blocksFetching="blocksFetching" />
+		<BlocksView
+			:categories="categories"
+			:blocks="blocks"
+			:blocksFetching="blocksFetching"
+			:filter="$route.params.category"
+		/>
 	</div>
 </template>
 
@@ -13,31 +18,12 @@
 			BlocksView
 		},
 		computed: {
-			categories: {
-				get() {
-					return this.$store.getters["projects/getCategories"];
-				},
-				set(newList) {
-					this.$store.commit("projects/setCategories", newList);
-				}
-			},
-			blocks: {
-				get() {
-					return this.$store.getters["projects/get"];
-				},
-				set(newList) {
-					this.$store.commit("projects/set", newList);
-				}
-			},
 			...mapGetters({
+				// Pages !!!
+				categories: "projects/getCategories",
+				blocks: "projects/get",
 				blocksFetching: "projects/status"
 			})
-		},
-		created() {
-			if (!this.categories.length)
-				this.$store.dispatch("projects/fetchCategories"); // Page Categories fetch !!!
-
-			if (!this.blocks.length) this.$store.dispatch("projects/fetch"); // Pages fetch !!!
 		}
 	};
 </script>

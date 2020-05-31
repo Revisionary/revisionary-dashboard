@@ -111,7 +111,12 @@
 				<nuxt-link :to="currentPath + '/mine/'">MINE</nuxt-link>
 				<nuxt-link :to="currentPath + '/shared/'">SHARED</nuxt-link>
 				<nuxt-link :to="currentPath + '/favorites/'">FAVORITES</nuxt-link>
-				<nuxt-link :to="currentPath + '/personal-projects/'">PERSONAL PROJECTS</nuxt-link>
+
+				<nuxt-link
+					v-for="category in blockCategories.filter(category => category.ID != 0 )"
+					:key="category.ID"
+					:to="currentPath + '/' + category.slug + '/'"
+				>{{ category.title }}</nuxt-link>
 
 				<a
 					href="#"
@@ -176,6 +181,11 @@
 				if (this.dataType == "project") return [];
 				return this.$store.getters["projects/getProject"];
 			},
+			blockCategories() {
+				if (this.dataType == "project")
+					return this.$store.getters["projects/getCategories"];
+				return this.$store.getters["projects/getCategories"]; // Page Categories !!!
+			},
 			blocksData() {
 				if (this.dataType == "project")
 					return this.$store.getters["projects/get"];
@@ -197,10 +207,20 @@
 			},
 			subtitle() {
 				if (this.isLoading) return "Loading...";
-				else if (this.$route.params.category != null)
+
+				if (this.$route.params.category == "favorites") return "Favorite";
+
+				const foundCat = this.blockCategories.find(
+					category => category.slug == this.$route.params.category
+				);
+				if (this.$route.params.category != null && foundCat)
+					return foundCat.title;
+
+				if (this.$route.params.category != null)
 					return this.$route.params.category;
-				else if (this.dataType == "project") return "Hub";
-				else return "Project";
+
+				if (this.dataType == "project") return "Hub";
+				return "Project";
 			},
 			title() {
 				if (this.isLoading) return "Loading...";

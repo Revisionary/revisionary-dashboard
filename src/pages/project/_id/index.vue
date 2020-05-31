@@ -13,29 +13,12 @@
 			BlocksView
 		},
 		computed: {
-			categories: {
-				get() {
-					return this.$store.getters["projects/getCategories"];
-				},
-				set(newList) {
-					this.$store.commit("projects/setCategories", newList);
-				}
-			},
-			blocks: {
-				get() {
-					return this.$store.getters["projects/get"];
-				},
-				set(newList) {
-					this.$store.commit("projects/set", newList);
-				}
-			},
 			...mapGetters({
+				// Pages !!!
+				categories: "projects/getCategories",
+				blocks: "projects/get",
 				blocksFetching: "projects/status"
 			})
-		},
-		created() {
-			this.$store.dispatch("projects/fetchCategories"); // Page Categories fetch !!!
-			this.$store.dispatch("projects/fetch"); // Pages fetch !!!
 		}
 	};
 </script>

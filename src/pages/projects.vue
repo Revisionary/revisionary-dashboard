@@ -16,6 +16,10 @@
 		components: {
 			SubHeader,
 			Footer
+		},
+		created() {
+			this.$store.dispatch("projects/fetchCategories");
+			this.$store.dispatch("projects/fetch");
 		}
 	};
 </script>

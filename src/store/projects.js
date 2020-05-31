@@ -34,23 +34,28 @@ export const actions = {
 		commit("setCategories", [
 			{
 				ID: 0,
-				title: "Uncategorized"
+				title: "Uncategorized",
+				slug: "uncategorized"
 			},
 			{
 				ID: 1,
-				title: "Personal Projects"
+				title: "Personal Projects",
+				slug: "personal-projects"
 			},
 			{
 				ID: 2,
-				title: "Cat 1"
+				title: "Cat 1",
+				slug: "cat-1"
 			},
 			{
 				ID: 3,
-				title: "Cat 2"
+				title: "Cat 2",
+				slug: "cat-2"
 			},
 			{
 				ID: 4,
-				title: "Cat 33"
+				title: "Cat 33",
+				slug: "cat-33"
 			}
 		]);
 		commit("setFetching", false);
@@ -85,7 +90,7 @@ export const actions = {
 						},
 						{
 							ID: 32,
-							title: "2 Marc Pridmore",
+							title: "Arc Marc Pridmore",
 							description: "Lorem ipsum dolor sit amet.",
 							image_url: "https://placeimg.com/640/480/any",
 							user_ID: 6,
