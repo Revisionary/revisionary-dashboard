@@ -106,8 +106,13 @@
 
 				return this.categories;
 			},
+			availableBlocks() {
+				return this.blocks.filter(
+					block => !block.archived && !block.deleted
+				);
+			},
 			favoriteBlocks() {
-				return this.blocks.filter(block => block.favorite);
+				return this.availableBlocks.filter(block => block.favorite);
 			},
 			categorizedBlocks() {
 				if (this.filter == "archived")
@@ -117,28 +122,28 @@
 					return this.blocks.filter(block => block.deleted);
 
 				if (this.filter == "mine")
-					return this.blocks.filter(
+					return this.availableBlocks.filter(
 						block => block.user_ID == this.$store.state.authUser.ID
 					);
 
 				if (this.filter == "shared")
-					return this.blocks.filter(
+					return this.availableBlocks.filter(
 						block => block.user_ID != this.$store.state.authUser.ID
 					);
 
 				if (this.filter == "favorites")
-					return this.blocks.filter(block => block.favorite);
+					return this.availableBlocks.filter(block => block.favorite);
 
 				const foundCat = this.categories.find(
 					category => category.slug == this.filter
 				);
 				if (foundCat)
-					return this.blocks.filter(block => block.cat_ID == foundCat.ID);
+					return this.availableBlocks.filter(
+						block => block.cat_ID == foundCat.ID
+					);
 
 				// If no filter
-				return this.blocks.filter(
-					block => !block.archived && !block.deleted
-				);
+				return this.availableBlocks;
 			}
 		},
 		methods: {
