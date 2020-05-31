@@ -36,12 +36,13 @@
 						<MoveIcon />
 					</span>
 					{{ category.title }}
-					<span
-						class="edit tooltip-not-contained"
-						v-if="category.ID != 0"
-						data-tooltip="Rename Category"
-					>
-						<EditIcon />
+					<span class="category-actions" v-if="category.ID != 0">
+						<span class="tooltip-not-contained" data-tooltip="Rename Category">
+							<EditIcon />
+						</span>
+						<span class="tooltip-not-contained" data-tooltip="Delete Category">
+							<TrashIcon />
+						</span>
 					</span>
 				</div>
 
@@ -72,6 +73,7 @@
 
 	import MoveIcon from "~/components/atoms/icon-move.vue";
 	import EditIcon from "~/components/atoms/icon-edit.vue";
+	import TrashIcon from "~/components/atoms/icon-trash.vue";
 
 	import Block from "~/components/organisms/Block.vue";
 	import AddNewBlock from "~/components/organisms/AddNewBlock.vue";
@@ -81,6 +83,7 @@
 			draggable,
 			MoveIcon,
 			EditIcon,
+			TrashIcon,
 			Block,
 			AddNewBlock
 		},
@@ -186,13 +189,19 @@
 					cursor: move;
 				}
 
-				& > .edit {
+				& > .category-actions {
 					transform: translateY(2px);
-					display: inline-block;
+					display: inline-flex;
 					margin-left: 0px;
 					opacity: 0;
 					transition: 500ms;
 					cursor: pointer;
+
+					& > span {
+						opacity: 0;
+						display: inline-block;
+						margin-right: 5px;
+					}
 				}
 
 				&:hover {
@@ -200,12 +209,16 @@
 						opacity: 1;
 					}
 
-					& > .edit {
+					& > .category-actions {
 						margin-left: 5px;
-						opacity: 0.3;
+						opacity: 1;
 
-						&:hover {
-							opacity: 1;
+						& > span {
+							opacity: 0.3;
+
+							&:hover {
+								opacity: 1;
+							}
 						}
 					}
 				}
