@@ -105,10 +105,35 @@
 					<div class="right"></div>
 				</div>
 				<div class="bottom">
-					<div
-						class="left"
-						v-if="$route.name !== 'projects' && $route.name !== 'projects-category'"
-					>VERSIONS</div>
+					<div class="left" v-if="$route.name !== 'projects' && $route.name !== 'projects-category'">
+						<details>
+							<summary>
+								<div class="button radius">
+									<VersionIcon />v1
+									<ChevronDownIcon />
+								</div>
+							</summary>
+							<div class="details-menu sub-menu compact lines versions-list">
+								<ul>
+									<li>
+										<a href="#">
+											<VersionIcon />v1 (2 months ago)
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<VersionIcon />v2 (1 week ago)
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<VersionIcon />v3 (a day ago)
+										</a>
+									</li>
+								</ul>
+							</div>
+						</details>
+					</div>
 					<div class="center"></div>
 					<div class="right">
 						<div class="tasks-count">
@@ -155,6 +180,7 @@
 	import ArrowRightIcon from "~/components/atoms/icon-arrow-right.vue";
 	import MoreIcon from "~/components/atoms/icon-more.vue";
 	import StarIcon from "~/components/atoms/icon-star.vue";
+	import VersionIcon from "~/components/atoms/icon-version.vue";
 	import ShareIcon from "~/components/atoms/icon-share.vue";
 	import ChevronDownIcon from "~/components/atoms/icon-chevron-down.vue";
 
@@ -170,6 +196,7 @@
 			ArrowRightIcon,
 			MoreIcon,
 			StarIcon,
+			VersionIcon,
 			ShareIcon,
 			ChevronDownIcon,
 			DesktopIcon,
@@ -331,6 +358,14 @@
 					display: flex;
 					align-items: center;
 					height: 15px;
+				}
+
+				.versions-list {
+					svg {
+						path {
+							stroke: #78808b;
+						}
+					}
 				}
 			}
 		}
