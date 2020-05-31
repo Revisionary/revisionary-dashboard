@@ -298,10 +298,12 @@ export const mutations = {
 
 			// Commit the change
 			state.projects = currentProjects;
-			return;
-		}
 
-		return false;
+			// If current project is this one
+			if (state.project.ID == ID)
+				state.project = currentProjects[index];
+
+		}
 
 	},
 	setCategories(state, categories) {

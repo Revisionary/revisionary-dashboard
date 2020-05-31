@@ -54,6 +54,7 @@
 						<div
 							class="favorite"
 							:data-tooltip="blockData.favorite ? 'Remove from Favorites' : 'Add to Favorites'"
+							@click="toggleFavorite"
 						>
 							<StarIcon :active="blockData.favorite" />
 						</div>
@@ -234,6 +235,16 @@
 			}
 		},
 		methods: {
+			toggleFavorite() {
+				const blockID = this.blockData.ID;
+				const blockFavorite = this.blockData.favorite;
+
+				this.$store.dispatch("projects/updateProject", {
+					ID: blockID,
+					name: "favorite",
+					value: !blockFavorite
+				});
+			},
 			userInfo(ID) {
 				let foundUser = this.$store.getters["users/getUser"](ID);
 
@@ -363,6 +374,7 @@
 
 				& > * {
 					padding: 0 5px;
+					cursor: pointer;
 
 					& > * {
 						display: block;
