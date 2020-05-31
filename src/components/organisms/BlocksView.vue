@@ -2,7 +2,7 @@
 	<div class="blocks-view">
 		<div
 			v-if="blocksFetching"
-		>{{ $route.name == 'projects' ? 'Projects' : 'Pages' }} are loading...</div>
+		>{{ $route.name == 'projects' || $route.name == 'projects-category' ? 'Projects' : 'Pages' }} are loading...</div>
 
 		<draggable
 			v-else
@@ -12,7 +12,10 @@
 			animation="200"
 			handle=".category-title"
 		>
-			<div class="category favorites" v-if="favoriteBlocks.length">
+			<div
+				class="category favorites"
+				v-if="favoriteBlocks.length && filter != 'archived' && filter != 'deleted' && filter != 'mine' && filter != 'shared' && filter != 'favorites'"
+			>
 				<div class="category-title">Favorites</div>
 
 				<draggable class="blocks" group="favorite-blocks" draggable=".sortable" animation="200">
@@ -25,12 +28,12 @@
 			<div
 				class="category"
 				:class="{catsortable : category.ID != 0}"
-				v-for="category in categories"
+				v-for="category in blockCategories"
 				:key="category.ID"
 			>
 				<div
 					class="category-title"
-					v-if="(category.ID == 0 && blocksOfCategory(category.ID).length) && categories.length > 1 || category.ID != 0"
+					v-if="category.ID != 0 || (category.ID == 0 && blocksOfCategory(0).length && blockCategories.length > 1)"
 				>
 					<span class="handle" v-if="category.ID != 0">
 						<MoveIcon />
@@ -45,11 +48,17 @@
 					</span>
 				</div>
 
+				<div
+					class="empty-category"
+					v-if="!blocksOfCategory(category.ID).length && (category.ID != 0 && blockCategories.length > 1)"
+				>There's nothing here yet.</div>
+
 				<draggable class="blocks" group="blocks" draggable=".sortable" animation="200">
 					<div class="block sortable" v-for="block in blocksOfCategory(category.ID)" :key="block.ID">
 						<Block :blockData="block" />
 					</div>
-					<div class="block add-new">
+
+					<div class="block add-new" v-if="!filter">
 						<AddNewBlock />
 					</div>
 				</draggable>
@@ -82,11 +91,27 @@
 			blocks: {
 				type: Array
 			},
+			filter: {
+				type: String,
+				default: null
+			},
 			blocksFetching: {
 				type: Boolean
 			}
 		},
 		computed: {
+			blockCategories() {
+				if (
+					this.filter == "archived" ||
+					this.filter == "deleted" ||
+					this.filter == "mine" ||
+					this.filter == "shared" ||
+					this.filter == "favorites"
+				)
+					return this.categories.filter(category => category.ID == 0);
+
+				return this.categories;
+			},
 			favoriteBlocks() {
 				var blocks = this.blocks.filter(function(block) {
 					return block.favorite;
@@ -97,11 +122,18 @@
 		},
 		methods: {
 			blocksOfCategory(cat_ID) {
-				var blocksOfCat = this.blocks.filter(function(block) {
+				if (
+					this.filter == "archived" ||
+					this.filter == "deleted" ||
+					this.filter == "mine" ||
+					this.filter == "shared" ||
+					this.filter == "favorites"
+				)
+					return this.blocks;
+
+				return this.blocks.filter(function(block) {
 					return block.cat_ID == cat_ID;
 				});
-
-				return blocksOfCat;
 			}
 		},
 		data() {
@@ -161,6 +193,12 @@
 						}
 					}
 				}
+			}
+
+			.empty-category {
+				padding: 10px 10px 30px;
+				color: #9ea5ab;
+				font-size: 14px;
 			}
 		}
 	}

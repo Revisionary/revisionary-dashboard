@@ -30,17 +30,10 @@
 				}
 			},
 			...mapGetters({
-				project: "projects/getProject",
 				blocksFetching: "projects/status"
 			})
 		},
 		created() {
-			if (!this.project.length)
-				this.$store.dispatch(
-					"projects/fetchProject",
-					this.$route.params.id
-				);
-
 			if (!this.categories.length)
 				this.$store.dispatch("projects/fetchCategories"); // Page Categories fetch !!!
 

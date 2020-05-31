@@ -23,7 +23,9 @@
 			},
 			blocks: {
 				get() {
-					return this.$store.getters["projects/get"];
+					return this.$store.getters["projects/get"].filter(
+						block => !block.archived && !block.deleted
+					);
 				},
 				set(newList) {
 					this.$store.commit("projects/set", newList);

@@ -13,6 +13,10 @@
 	import Footer from "~/components/Footer.vue";
 
 	export default {
+		async validate({ params, store }) {
+			await store.dispatch("projects/fetchProject", params.id);
+			return store.getters["projects/getProject"].ID == params.id;
+		},
 		components: {
 			SubHeader,
 			Footer
