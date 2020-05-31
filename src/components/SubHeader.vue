@@ -34,12 +34,12 @@
 								<li :class="{ active: $route.params.category == 'archived' }">
 									<nuxt-link
 										:to="currentPath + '/archived/'"
-									>Archived {{ $route.name == 'projects' || $route.name == 'projects-category' ? 'Projects' : 'Pages' }} (2)</nuxt-link>
+									>Archived {{ $route.name == 'projects' || $route.name == 'projects-category' ? 'Projects' : 'Pages' }} ({{ blocksData.filter(block => block.archived).length }})</nuxt-link>
 								</li>
 								<li :class="{ active: $route.params.category == 'deleted' }">
 									<nuxt-link
 										:to="currentPath + '/deleted/'"
-									>Deleted {{ $route.name == 'projects' || $route.name == 'projects-category' ? 'Projects' : 'Pages' }} (0)</nuxt-link>
+									>Deleted {{ $route.name == 'projects' || $route.name == 'projects-category' ? 'Projects' : 'Pages' }} ({{ blocksData.filter(block => block.deleted).length }})</nuxt-link>
 								</li>
 							</ul>
 						</div>
