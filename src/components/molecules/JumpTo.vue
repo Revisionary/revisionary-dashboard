@@ -41,7 +41,8 @@
 			}),
 			current() {
 				if (
-					this.$route.name === "project-id" &&
+					(this.$route.name === "project-id" ||
+						this.$route.name === "project-id-category") &&
 					typeof this.project.title !== "undefined"
 				)
 					return this.project.title.substr(0, 15);
