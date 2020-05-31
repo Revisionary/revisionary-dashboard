@@ -14,6 +14,28 @@
 	import BlocksView from "~/components/organisms/BlocksView.vue";
 
 	export default {
+		async validate({ params, store }) {
+			await store.dispatch("projects/fetchCategories"); // Page Cat !!!
+
+			if (
+				params.category == "archived" ||
+				params.category == "deleted" ||
+				params.category == "mine" ||
+				params.category == "shared" ||
+				params.category == "favorites"
+			)
+				return true;
+
+			if (
+				store.getters["projects/getCategories"].find(
+					// Page Cat !!!
+					category => category.slug == params.category
+				)
+			)
+				return true;
+
+			return false;
+		},
 		components: {
 			BlocksView
 		},

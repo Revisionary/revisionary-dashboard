@@ -18,7 +18,4 @@
 	</svg>
 </template>
 <style>
-	svg {
-		display: inline-block;
-	}
 </style>
