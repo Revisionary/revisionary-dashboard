@@ -16,10 +16,10 @@
 			<JumpTo v-if="authenticated" />
 		</div>
 		<div class="center-side"></div>
-		<div class="right-side" v-if="authenticated">
+		<div class="right-side" v-if="$auth.loggedIn">
 			<a href="#" class="plan-limitations">Free Plan</a>
 
-			<a href="#" class="button">Upgrade</a>
+			<a href="#" class="button upgrade">Upgrade</a>
 
 			<details>
 				<summary class="rotate-icon">
@@ -51,7 +51,7 @@
 			</details>
 		</div>
 		<div class="right-side" v-else>
-			<a href="#" class="button" @click.prevent="login">Login</a>
+			<a href="/">Back to homepage</a>
 		</div>
 	</div>
 </template>
@@ -74,29 +74,22 @@
 			ChevronDownIcon
 		},
 		created() {
-			if (!this.$store.state.authenticated)
-				this.$store.commit("toggleSideBar", false);
+			if (!this.$auth.loggedIn) this.$store.commit("toggleSideBar", false);
 		},
 		computed: {
 			authenticated() {
-				return this.$store.state.authenticated;
+				return this.$auth.loggedIn;
 			},
 			currentUser() {
-				return this.$store.state.authUser;
+				return this.$auth.user;
 			},
 			isSideBarOpen() {
 				return this.$store.state.isSideBarOpen;
 			}
 		},
 		methods: {
-			login() {
-				this.$store.dispatch("generateToken");
-				this.$router.push("/");
-				this.$store.commit("toggleSideBar", true);
-			},
 			logout() {
-				this.$store.dispatch("invalidateToken");
-				this.$router.push("/");
+				this.$auth.logout();
 				this.$store.commit("toggleSideBar", false);
 			}
 		}

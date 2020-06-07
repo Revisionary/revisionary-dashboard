@@ -125,7 +125,7 @@ export const actions = {
 				title: "4 Marc Pridmore",
 				description: "Lorem ipsum dolor sit amet.",
 				image_url: "https://placeimg.com/640/480/any",
-				user_ID: 6,
+				user_ID: 1,
 				order: 1,
 				cat_ID: 0,
 				favorite: true,

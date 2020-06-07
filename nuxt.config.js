@@ -1,6 +1,15 @@
+// import path from 'path'
+// import fs from 'fs'
+
 export default {
 	srcDir: "src/",
 	mode: "spa",
+	// server: {
+	// 	https: {
+	// 		key: fs.readFileSync(path.resolve(__dirname, '../proxy/certificates/revisionary.co.key')),
+	// 		cert: fs.readFileSync(path.resolve(__dirname, '../proxy/certificates/revisionary.co.crt'))
+	// 	}
+	// },
 	/*
 	 ** Headers of the page
 	 */
@@ -27,7 +36,7 @@ export default {
 	/*
 	 ** Customize the progress-bar color
 	 */
-	loading: { color: "#037ef3" },
+	loading: '~/components/Loading.vue', // loading: { color: "#037ef3" },
 	/*
 	 ** Global CSS
 	 */
@@ -46,6 +55,8 @@ export default {
 	modules: [
 		// Doc: https://axios.nuxtjs.org/usage
 		"@nuxtjs/axios",
+		"@nuxtjs/proxy",
+		'@nuxtjs/auth',
 		"@nuxtjs/pwa",
 		// Doc: https://github.com/nuxt-community/dotenv-module
 		"@nuxtjs/dotenv"
@@ -54,7 +65,39 @@ export default {
 	 ** Axios module configuration
 	 ** See https://axios.nuxtjs.org/options
 	 */
-	axios: {},
+	axios: {
+		// https: true,
+		// host: "dapi.revisionary.co",
+		// baseURL: "http://backend/v1/",
+		// browserBaseURL: "http://dapi.revisionary.co/v1/",
+		// port: 80,
+		prefix: "/v1/",
+		retry: { retries: 3 },
+		credentials: false,
+		proxy: true,
+		// proxyHeaders: false
+	},
+	auth: {
+		strategies: {
+			local: {
+				endpoints: {
+					login: { url: 'session', method: 'post', propertyName: 'token' },
+					logout: { url: 'session', method: 'delete' },
+					user: { url: 'session', method: 'get', propertyName: 'user' }
+				},
+				// tokenRequired: true,
+				tokenType: '',
+				// globalToken: true,
+				autoFetchUser: false
+			}
+		}
+	},
+	proxy: {
+		'/v1/': { target: 'http://dapi.revisionary.co/' }
+	},
+	// proxy: {
+	// 	'/v1/': 'https://dapi.revisionary.co'
+	// },
 	/*
 	 ** Build configuration
 	 */

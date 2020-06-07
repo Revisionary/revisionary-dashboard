@@ -126,12 +126,12 @@
 
 				if (this.filter == "mine")
 					return this.availableBlocks.filter(
-						block => block.user_ID == this.$store.state.authUser.ID
+						block => block.user_ID == this.$auth.user.ID
 					);
 
 				if (this.filter == "shared")
 					return this.availableBlocks.filter(
-						block => block.user_ID != this.$store.state.authUser.ID
+						block => block.user_ID != this.$auth.user.ID
 					);
 
 				if (this.filter == "favorites")

@@ -33,11 +33,6 @@
 			NotificationIcon,
 			TasksIcon,
 			SupportIcon
-		},
-		data() {
-			return {
-				//isSideBarOpen: this.$store.state.isSideBarOpen
-			};
 		}
 	};
 </script>
