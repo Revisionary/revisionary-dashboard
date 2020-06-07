@@ -1,21 +1,5 @@
 export const state = () => ({
-	users: {
-		3: {
-			ID: 3,
-			email: "bill@twelve12.com",
-			first_name: "Bill",
-			last_name: "Stone",
-			job_title: "Project Manager",
-			department: "Web Development",
-			company: "Twelve12",
-			picture: null,
-			email_notifications: false,
-			trial_started_for: null,
-			trial_expire_date: null,
-			trial_expire_notified: 0,
-			user_level_ID: 2
-		}
-	},
+	users: {},
 	fetching: false
 });
 
@@ -33,7 +17,6 @@ export const getters = {
 			return false;
 
 		}
-
 
 	},
 	status(state) {
