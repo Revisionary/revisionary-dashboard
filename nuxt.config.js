@@ -78,6 +78,11 @@ export default {
 		// proxyHeaders: false
 	},
 	auth: {
+		redirect: {
+			login: '/login',
+			logout: '/login',
+			home: '/projects'
+		},
 		strategies: {
 			local: {
 				endpoints: {
