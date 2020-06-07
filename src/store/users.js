@@ -44,47 +44,28 @@ export const getters = {
 export const actions = {
 
 	// Fetch Multiple Users
-	fetch({ commit, state }, IDs) {
+	async fetch({ commit }, IDs) {
 
 		console.log('FETCHING USERS: ', IDs);
 
 		commit("setFetching", true);
 
-		// await this.$axios
-		// 	.get("https://dapi.revisionary.co/v1/projects")
-		// 	.then(res => {
-		// 		if (res.status === 200) {
-		// 			//console.log(res.data);
-		// 			commit("set", res.data.splice(0, 6));
-		// 			commit("setFetching", true);
-		// 		}
-		// 	});
+		await this.$axios.post('users', {
+			IDs: IDs
+		}).then(res => {
+			console.log('RESPONSE: ', res);
+			if (res.status === 200) {
+				console.log('DATA: ', res.data);
+				commit('addMultiple', res.data.users);
+				commit("setFetching", false);
+			}
+		}).catch(function (error) {
 
-
-
-		IDs.forEach(function (ID) {
-
-			if (typeof state.users[ID] !== "undefined") return true;
-
-			commit("add", {
-				ID: ID,
-				email: "bilaltas@me.com",
-				first_name: "Bilal",
-				last_name: "TAS" + ID,
-				job_title: "Project Manager",
-				department: "Web Development",
-				company: "Twelve12",
-				picture: null,
-				email_notifications: false,
-				trial_started_for: null,
-				trial_expire_date: null,
-				trial_expire_notified: 0,
-				user_level_ID: 2
-			});
+			console.log('ERROR: ', error);
+			commit("setFetching", false);
 
 		});
 
-		commit("setFetching", false);
 
 	}
 
@@ -102,6 +83,9 @@ export const mutations = {
 	},
 	add(state, user) {
 		state.users[user.ID] = user;
+	},
+	addMultiple(state, users) {
+		state.users = users;
 	},
 	remove(state, ID) {
 		if (typeof state.users[ID] !== "undefined")
