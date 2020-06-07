@@ -2,7 +2,8 @@ export const state = () => ({
 	projectCategories: [
 		{
 			ID: 0,
-			title: "Uncategorized"
+			title: "Uncategorized",
+			slug: "uncategorized"
 		}
 	],
 	projects: [],
@@ -28,37 +29,23 @@ export const getters = {
 export const actions = {
 
 	// Fetch Project Categories
-	fetchCategories({ commit }) {
+	async fetchCategories({ commit }) {
 
 		commit("setFetching", true);
-		commit("setCategories", [
-			{
-				ID: 0,
-				title: "Uncategorized",
-				slug: "uncategorized"
-			},
-			{
-				ID: 1,
-				title: "Personal Projects",
-				slug: "personal-projects"
-			},
-			{
-				ID: 2,
-				title: "Cat 1",
-				slug: "cat-1"
-			},
-			{
-				ID: 3,
-				title: "Cat 2",
-				slug: "cat-2"
-			},
-			{
-				ID: 4,
-				title: "Cat 33",
-				slug: "cat-33"
+
+		await this.$axios.get('projectcategories').then(res => {
+			//console.log('RESPONSE: ', res);
+			if (res.status === 200) {
+				//console.log('DATA: ', res.data);
+				commit('setCategories', res.data.categories);
+				commit("setFetching", false);
 			}
-		]);
-		commit("setFetching", false);
+		}).catch(function (error) {
+
+			console.log('ERROR: ', error);
+			commit("setFetching", false);
+
+		});
 
 	},
 
