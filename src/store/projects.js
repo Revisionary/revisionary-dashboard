@@ -50,7 +50,7 @@ export const actions = {
 	},
 
 	// Fetch Projects
-	async fetch({ commit, dispatch }) {
+	fetch({ commit, dispatch }) {
 
 		commit("setFetching", true);
 		// await this.$axios

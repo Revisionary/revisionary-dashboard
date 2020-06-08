@@ -219,10 +219,10 @@
 			userInfo(ID) {
 				let foundUser = this.$store.getters["users/getUser"](ID);
 
-				if (!foundUser) {
-					this.$store.dispatch("users/fetch", [ID]);
-					foundUser = this.$store.getters["users/getUser"](ID);
-				}
+				// if (!foundUser) {
+				// 	this.$store.dispatch("users/fetch", [ID]);
+				// 	foundUser = this.$store.getters["users/getUser"](ID);
+				// }
 
 				return foundUser;
 			},
