@@ -143,8 +143,13 @@
 							<div
 								class="left tooltip-not-contained"
 								data-tooltip="Incomplete"
+								v-if="blockData.incomplete_tasks > 0"
 							>{{ blockData.incomplete_tasks }}</div>
-							<div class="done tooltip-not-contained" data-tooltip="Solved">{{ blockData.complete_tasks }}</div>
+							<div
+								class="done tooltip-not-contained"
+								data-tooltip="Solved"
+								v-if="blockData.complete_tasks > 0"
+							>{{ blockData.complete_tasks }}</div>
 						</div>
 						<div v-else>
 							<small>No Tasks</small>
