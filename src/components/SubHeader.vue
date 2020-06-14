@@ -193,8 +193,11 @@
 				return this.$store.getters["projects/get"]; // Pages !!!
 			},
 			dataCount() {
-				if (this.blocksData.length)
-					return " (" + this.blocksData.length + ")";
+				const availableCount = this.blocksData.filter(
+					block => !block.archived && !block.deleted
+				).length;
+
+				if (availableCount) return " (" + availableCount + ")";
 				return "";
 			},
 			ownerInfo() {
