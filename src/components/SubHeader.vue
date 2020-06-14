@@ -6,9 +6,17 @@
 				v-if="dataType !== 'project'"
 				:style="'background-image: url(' + thumbnail + ');'"
 			>
-				<div class="tasks-count">
-					<div class="left tooltip-not-contained" data-tooltip="Incomplete">42</div>
-					<div class="done tooltip-not-contained" data-tooltip="Solved">9</div>
+				<div class="tasks-count" v-if="blockData.incomplete_tasks > 0 || blockData.complete_tasks > 0">
+					<div
+						class="left tooltip-not-contained"
+						data-tooltip="Incomplete"
+						v-if="blockData.incomplete_tasks > 0"
+					>{{ blockData.incomplete_tasks }}</div>
+					<div
+						class="done tooltip-not-contained"
+						data-tooltip="Solved"
+						v-if="blockData.complete_tasks > 0"
+					>{{ blockData.complete_tasks }}</div>
 				</div>
 			</figure>
 			<div class="info">
