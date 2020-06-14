@@ -1,11 +1,5 @@
 export const state = () => ({
-	projectCategories: [
-		{
-			ID: 0,
-			title: "Uncategorized",
-			slug: "uncategorized"
-		}
-	],
+	projectCategories: [],
 	projects: [],
 	project: {},
 	fetching: false
@@ -71,9 +65,9 @@ export const actions = {
 				projects.forEach(function (project) {
 					usersToFetch.push(project.user_ID);
 
-					// project.users.forEach(function (user) {
-					// 	usersToFetch.push(user);
-					// });
+					project.users.forEach(function (user) {
+						usersToFetch.push(user);
+					});
 
 				});
 				usersToFetch = usersToFetch.filter((v, i, a) => a.indexOf(v) === i); // Make it unique

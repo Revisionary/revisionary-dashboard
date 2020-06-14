@@ -29,16 +29,16 @@ export const actions = {
 	// Fetch Multiple Users
 	async fetch({ commit }, IDs) {
 
-		console.log('FETCHING USERS: ', IDs);
+		//console.log('FETCHING USERS: ', IDs);
 
 		commit("setFetching", true);
 
 		await this.$axios.post('users', {
 			IDs: IDs
 		}).then(res => {
-			console.log('RESPONSE: ', res);
+			//console.log('RESPONSE: ', res);
 			if (res.status === 200) {
-				console.log('DATA: ', res.data);
+				console.log('USERS: ', res.data.users);
 				commit('addMultiple', res.data.users);
 				commit("setFetching", false);
 			}

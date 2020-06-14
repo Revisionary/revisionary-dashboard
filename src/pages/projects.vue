@@ -18,7 +18,9 @@
 			Footer
 		},
 		created() {
-			this.$store.dispatch("projects/fetchCategories");
+			if (!this.$store.getters["projects/getCategories"].length)
+				this.$store.dispatch("projects/fetchCategories");
+
 			this.$store.dispatch("projects/fetch");
 		}
 	};

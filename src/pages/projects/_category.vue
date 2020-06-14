@@ -15,7 +15,8 @@
 
 	export default {
 		async validate({ params, store }) {
-			await store.dispatch("projects/fetchCategories");
+			if (!store.getters["projects/getCategories"].length)
+				await store.dispatch("projects/fetchCategories");
 
 			if (
 				params.category == "archived" ||

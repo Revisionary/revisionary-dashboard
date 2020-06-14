@@ -22,7 +22,9 @@
 			Footer
 		},
 		created() {
-			this.$store.dispatch("projects/fetchCategories"); // Page Categories fetch !!!
+			if (!this.$store.getters["projects/getCategories"].length)
+				this.$store.dispatch("projects/fetchCategories"); // Page Categories fetch !!!
+
 			this.$store.dispatch("projects/fetch"); // Pages fetch !!!
 		}
 	};
