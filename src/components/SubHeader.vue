@@ -341,6 +341,7 @@
 			background-color: #78808b;
 			margin-right: 20px;
 			border-radius: 20px;
+			border: 1px solid #eaedf3;
 			background-size: cover;
 			background-repeat: no-repeat;
 			background-position: 0 0;
