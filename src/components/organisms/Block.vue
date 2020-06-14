@@ -137,8 +137,11 @@
 					<div class="center"></div>
 					<div class="right">
 						<div class="tasks-count">
-							<div class="left tooltip-not-contained" data-tooltip="Incomplete">42</div>
-							<div class="done tooltip-not-contained" data-tooltip="Solved">9</div>
+							<div
+								class="left tooltip-not-contained"
+								data-tooltip="Incomplete"
+							>{{ blockData.incomplete_tasks }}</div>
+							<div class="done tooltip-not-contained" data-tooltip="Solved">{{ blockData.complete_tasks }}</div>
 						</div>
 					</div>
 				</div>
