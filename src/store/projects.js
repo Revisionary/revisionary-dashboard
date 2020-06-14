@@ -36,7 +36,7 @@ export const actions = {
 		await this.$axios.get('projectcategories').then(res => {
 			//console.log('RESPONSE: ', res);
 			if (res.status === 200) {
-				//console.log('DATA: ', res.data);
+				console.log('PROJECT CATS: ', res.data.categories);
 				commit('setCategories', res.data.categories);
 				commit("setFetching", false);
 			}
@@ -58,7 +58,7 @@ export const actions = {
 		await this.$axios.get('projects').then(res => {
 			//console.log('RESPONSE: ', res);
 			if (res.status === 200) {
-				//console.log('DATA: ', res.data);
+				console.log('PROJECTS: ', res.data.projects);
 
 				const projects = res.data.projects;
 

@@ -21,7 +21,7 @@
 	export default {
 		props: {
 			active: {
-				type: Number,
+				type: Boolean,
 				default: 0
 			}
 		}
