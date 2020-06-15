@@ -157,6 +157,11 @@
 					</div>
 				</div>
 			</div>
+			<div
+				class="block-status"
+				:class="{done : blockData.incomplete_tasks == 0}"
+				v-if="blockData.incomplete_tasks > 0 || blockData.complete_tasks > 0"
+			></div>
 		</div>
 		<div class="info">
 			<div class="title">
@@ -382,6 +387,26 @@
 					}
 				}
 			}
+
+			& > .block-status {
+				position: absolute;
+				top: 20px;
+				right: 15px;
+				width: 8px;
+				height: 8px;
+				box-sizing: content-box;
+				border-radius: 50%;
+				background-clip: padding-box;
+				pointer-events: none;
+				transition: 500ms;
+				background-color: #f39754;
+				border: 3px solid transparentize(#f39754, 0.5);
+
+				&.done {
+					background-color: #7fcd74;
+					border: 3px solid transparentize(#7fcd74, 0.5);
+				}
+			}
 		}
 
 		& > .info {
@@ -463,6 +488,10 @@
 			& > .top {
 				& > .actions {
 					opacity: 1;
+				}
+
+				& > .block-status {
+					opacity: 0;
 				}
 			}
 		}
