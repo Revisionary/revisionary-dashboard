@@ -396,11 +396,11 @@
 				height: 8px;
 				box-sizing: content-box;
 				border-radius: 50%;
-				background-clip: padding-box;
 				pointer-events: none;
 				transition: 500ms;
 				background-color: #f39754;
 				border: 3px solid transparentize(#f39754, 0.5);
+				background-clip: padding-box;
 
 				&.done {
 					background-color: #7fcd74;
