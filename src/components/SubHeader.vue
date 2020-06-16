@@ -27,7 +27,7 @@
 						<summary class="rotate-icon">
 							<h1>
 								<span>
-									{{ title + dataCount }}
+									<span v-html="title"></span>
 									<ChevronDownIcon />
 								</span>
 							</h1>
@@ -70,7 +70,7 @@
 				</div>
 
 				<p class="description">
-					<span>{{ description }}</span>
+					<span v-html="blockData.description"></span>
 				</p>
 			</div>
 		</div>
@@ -236,8 +236,9 @@
 			},
 			title() {
 				if (this.isLoading) return "Loading...";
-				else if (this.dataType == "project") return "Projects";
-				else return this.blockData.title;
+				else if (this.dataType == "project")
+					return "Projects" + this.dataCount;
+				else return this.blockData.title + this.dataCount;
 			},
 			description() {
 				if (this.isLoading) return "Loading...";
@@ -330,7 +331,6 @@
 			font-weight: 600;
 			letter-spacing: -0.3px;
 			color: #2d3137;
-			//text-transform: capitalize;
 
 			& > span {
 				display: inline-flex;
