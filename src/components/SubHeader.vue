@@ -88,14 +88,14 @@
 					</span>
 					<span class="shared" v-for="(user_ID, index) in blockData.users" :key="user_ID">
 						<ProfilePic
-							v-if="index < 2"
+							v-if="index < 2 || (index == 2 && blockData.users.length == 3)"
 							:firstName="userInfo(user_ID).first_name"
 							:lastName="userInfo(user_ID).last_name"
 							:picture="userInfo(user_ID).picture"
 							:email="userInfo(user_ID).email"
 						/>
 						<ProfilePic
-							v-if="index == 2"
+							v-if="index == 2 && blockData.users.length > 3"
 							:abbreviation="(blockData.users.length - 2).toString()"
 							:data-tooltip="(blockData.users.length - 2).toString() + ' more person'"
 						/>
@@ -330,7 +330,7 @@
 			font-weight: 600;
 			letter-spacing: -0.3px;
 			color: #2d3137;
-			text-transform: capitalize;
+			//text-transform: capitalize;
 
 			& > span {
 				display: inline-flex;
@@ -361,14 +361,7 @@
 				right: 0;
 
 				& > * {
-					width: 22px;
-					height: 22px;
 					border-color: white;
-					font-size: 11px;
-
-					&.left {
-						margin-right: -7px;
-					}
 				}
 			}
 		}
@@ -425,19 +418,18 @@
 		.shares {
 			justify-content: flex-end;
 
-			.multiple-profiles > * + * {
+			.multiple-profiles > * + * > picture {
 				margin-left: -12px;
 			}
 
 			.owner,
 			.shared {
-				border-color: white;
-				border-width: 3px;
-
 				& > picture {
 					width: 34px;
 					height: 34px;
 					font-size: 14px;
+					border-color: white;
+					border-width: 3px;
 				}
 			}
 

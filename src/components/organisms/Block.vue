@@ -15,14 +15,14 @@
 							</span>
 							<span class="shared" v-for="(user_ID, index) in blockData.users" :key="user_ID">
 								<ProfilePic
-									v-if="index < 2"
+									v-if="index < 2 || (index == 2 && blockData.users.length == 3)"
 									:firstName="userInfo(user_ID).first_name"
 									:lastName="userInfo(user_ID).last_name"
 									:picture="userInfo(user_ID).picture"
 									:email="userInfo(user_ID).email"
 								/>
 								<ProfilePic
-									v-if="index == 2"
+									v-if="index == 2 && blockData.users.length > 3"
 									:abbreviation="(blockData.users.length - 2).toString()"
 									:data-tooltip="(blockData.users.length - 2).toString() + ' more person'"
 								/>
