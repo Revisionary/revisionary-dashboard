@@ -167,7 +167,7 @@
 			<div class="title">
 				<nuxt-link :to="`/project/${blockData.ID}`">
 					<span class="text">
-						<span v-html="blockData.title"></span>
+						<span>{{ blockData.title }}</span>
 					</span>
 					<span
 						class="count tooltip-not-contained"
@@ -176,7 +176,7 @@
 				</nuxt-link>
 			</div>
 			<div class="description">
-				<span v-html="blockData.description"></span>
+				<span>{{ blockData.description }}</span>
 			</div>
 		</div>
 		<div class="bottom">
@@ -450,6 +450,7 @@
 				line-height: 20px;
 				position: relative;
 				height: 1.2em;
+				display: none;
 
 				& > span {
 					position: absolute;
