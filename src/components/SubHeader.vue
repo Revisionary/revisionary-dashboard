@@ -6,9 +6,17 @@
 				v-if="dataType !== 'project'"
 				:style="'background-image: url(' + thumbnail + ');'"
 			>
-				<div class="tasks-count">
-					<div class="left tooltip-not-contained" data-tooltip="Incomplete">42</div>
-					<div class="done tooltip-not-contained" data-tooltip="Solved">9</div>
+				<div class="tasks-count" v-if="blockData.incomplete_tasks > 0 || blockData.complete_tasks > 0">
+					<div
+						class="left tooltip-not-contained"
+						data-tooltip="Incomplete"
+						v-if="blockData.incomplete_tasks > 0"
+					>{{ blockData.incomplete_tasks }}</div>
+					<div
+						class="done tooltip-not-contained"
+						data-tooltip="Solved"
+						v-if="blockData.complete_tasks > 0"
+					>{{ blockData.complete_tasks }}</div>
 				</div>
 			</figure>
 			<div class="info">
@@ -19,7 +27,7 @@
 						<summary class="rotate-icon">
 							<h1>
 								<span>
-									{{ title + dataCount }}
+									<span v-html="title"></span>
 									<ChevronDownIcon />
 								</span>
 							</h1>
@@ -62,7 +70,7 @@
 				</div>
 
 				<p class="description">
-					<span>{{ description }}</span>
+					<span v-html="blockData.description"></span>
 				</p>
 			</div>
 		</div>
@@ -80,14 +88,14 @@
 					</span>
 					<span class="shared" v-for="(user_ID, index) in blockData.users" :key="user_ID">
 						<ProfilePic
-							v-if="index < 2"
+							v-if="index < 2 || (index == 2 && blockData.users.length == 3)"
 							:firstName="userInfo(user_ID).first_name"
 							:lastName="userInfo(user_ID).last_name"
 							:picture="userInfo(user_ID).picture"
 							:email="userInfo(user_ID).email"
 						/>
 						<ProfilePic
-							v-if="index == 2"
+							v-if="index == 2 && blockData.users.length > 3"
 							:abbreviation="(blockData.users.length - 2).toString()"
 							:data-tooltip="(blockData.users.length - 2).toString() + ' more person'"
 						/>
@@ -228,8 +236,9 @@
 			},
 			title() {
 				if (this.isLoading) return "Loading...";
-				else if (this.dataType == "project") return "Projects";
-				else return this.blockData.title;
+				else if (this.dataType == "project")
+					return "Projects" + this.dataCount;
+				else return this.blockData.title + this.dataCount;
 			},
 			description() {
 				if (this.isLoading) return "Loading...";
@@ -322,7 +331,6 @@
 			font-weight: 600;
 			letter-spacing: -0.3px;
 			color: #2d3137;
-			text-transform: capitalize;
 
 			& > span {
 				display: inline-flex;
@@ -341,6 +349,7 @@
 			background-color: #78808b;
 			margin-right: 20px;
 			border-radius: 20px;
+			border: 1px solid #eaedf3;
 			background-size: cover;
 			background-repeat: no-repeat;
 			background-position: 0 0;
@@ -352,14 +361,7 @@
 				right: 0;
 
 				& > * {
-					width: 22px;
-					height: 22px;
 					border-color: white;
-					font-size: 11px;
-
-					&.left {
-						margin-right: -7px;
-					}
 				}
 			}
 		}
@@ -416,19 +418,18 @@
 		.shares {
 			justify-content: flex-end;
 
-			.multiple-profiles > * + * {
+			.multiple-profiles > * + * > picture {
 				margin-left: -12px;
 			}
 
 			.owner,
 			.shared {
-				border-color: white;
-				border-width: 3px;
-
 				& > picture {
 					width: 34px;
 					height: 34px;
 					font-size: 14px;
+					border-color: white;
+					border-width: 3px;
 				}
 			}
 

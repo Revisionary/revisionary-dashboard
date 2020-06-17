@@ -442,7 +442,6 @@ details {
 	flex-direction: row;
 
 	& > * {
-		border: 2px solid rgba(117, 120, 127, 0.5);
 		border-radius: 50%;
 		position: relative;
 		z-index: 5;
@@ -451,10 +450,17 @@ details {
 			width: 25px;
 			height: 25px;
 			font-size: 11px;
+			border: 2px solid rgba(117, 120, 127, 0.5);
+			background-clip: padding-box;
+			box-sizing: content-box;
 		}
 
 		& + * {
-			margin-left: -9px;
+
+			& > picture {
+				margin-left: -9px;
+			}
+
 		}
 
 		&:nth-child(2) {
@@ -488,23 +494,25 @@ details {
 	align-items: center;
 
 	& > * {
-		width: 25px;
-		height: 25px;
+		width: 22px;
+		height: 22px;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		background-color: #79838c;
 		border-radius: 50%;
 		font-weight: 500;
-		font-size: 12px;
-		line-height: 16px;
+		font-size: 10px;
+		line-height: normal;
 		color: white;
-		border: 2px solid #4f535d;
 		box-sizing: content-box;
+		background-color: #7fcd74;
+		border: 2px solid transparentize(#7fcd74, 0.8);
+		background-clip: padding-box;
 
 		&.left {
 			background-color: #ce9064;
-			margin-right: -5px;
+			border: 2px solid transparentize(#ce9064, 0.8);
+			margin-right: -7px;
 			position: relative;
 			z-index: 1;
 		}

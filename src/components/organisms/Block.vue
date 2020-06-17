@@ -15,14 +15,14 @@
 							</span>
 							<span class="shared" v-for="(user_ID, index) in blockData.users" :key="user_ID">
 								<ProfilePic
-									v-if="index < 2"
+									v-if="index < 2 || (index == 2 && blockData.users.length == 3)"
 									:firstName="userInfo(user_ID).first_name"
 									:lastName="userInfo(user_ID).last_name"
 									:picture="userInfo(user_ID).picture"
 									:email="userInfo(user_ID).email"
 								/>
 								<ProfilePic
-									v-if="index == 2"
+									v-if="index == 2 && blockData.users.length > 3"
 									:abbreviation="(blockData.users.length - 2).toString()"
 									:data-tooltip="(blockData.users.length - 2).toString() + ' more person'"
 								/>
@@ -143,8 +143,13 @@
 							<div
 								class="left tooltip-not-contained"
 								data-tooltip="Incomplete"
+								v-if="blockData.incomplete_tasks > 0"
 							>{{ blockData.incomplete_tasks }}</div>
-							<div class="done tooltip-not-contained" data-tooltip="Solved">{{ blockData.complete_tasks }}</div>
+							<div
+								class="done tooltip-not-contained"
+								data-tooltip="Solved"
+								v-if="blockData.complete_tasks > 0"
+							>{{ blockData.complete_tasks }}</div>
 						</div>
 						<div v-else>
 							<small>No Tasks</small>
@@ -152,12 +157,17 @@
 					</div>
 				</div>
 			</div>
+			<div
+				class="block-status"
+				:class="{done : blockData.incomplete_tasks == 0}"
+				v-if="blockData.incomplete_tasks > 0 || blockData.complete_tasks > 0"
+			></div>
 		</div>
 		<div class="info">
 			<div class="title">
 				<nuxt-link :to="`/project/${blockData.ID}`">
 					<span class="text">
-						<span>{{ blockData.title }}</span>
+						<span v-html="blockData.title"></span>
 					</span>
 					<span
 						class="count tooltip-not-contained"
@@ -166,7 +176,7 @@
 				</nuxt-link>
 			</div>
 			<div class="description">
-				<span>{{ blockData.description }}</span>
+				<span v-html="blockData.description"></span>
 			</div>
 		</div>
 		<div class="bottom">
@@ -377,6 +387,26 @@
 					}
 				}
 			}
+
+			& > .block-status {
+				position: absolute;
+				top: 20px;
+				right: 15px;
+				width: 8px;
+				height: 8px;
+				box-sizing: content-box;
+				border-radius: 50%;
+				pointer-events: none;
+				transition: 500ms;
+				background-color: #f39754;
+				border: 3px solid transparentize(#f39754, 0.5);
+				background-clip: padding-box;
+
+				&.done {
+					background-color: #7fcd74;
+					border: 3px solid transparentize(#7fcd74, 0.5);
+				}
+			}
 		}
 
 		& > .info {
@@ -420,7 +450,6 @@
 				line-height: 20px;
 				position: relative;
 				height: 1.2em;
-				display: none;
 
 				& > span {
 					position: absolute;
@@ -458,6 +487,10 @@
 			& > .top {
 				& > .actions {
 					opacity: 1;
+				}
+
+				& > .block-status {
+					opacity: 0;
 				}
 			}
 		}

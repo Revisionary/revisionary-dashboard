@@ -65,8 +65,8 @@ export const actions = {
 				projects.forEach(function (project) {
 					usersToFetch.push(project.user_ID);
 
-					project.users.forEach(function (user) {
-						usersToFetch.push(user);
+					project.users.forEach(user => {
+						usersToFetch.push(parseInt(user));
 					});
 
 				});
