@@ -1,17 +1,18 @@
 <template>
-	<div id="login-form" class="wrapper">
-		<h1 class="title">Sign in to Revisionary</h1>
+	<div id="signup-form" class="wrapper">
+		<h1 class="title">Sign up to Revisionary</h1>
 		<form class="form" @submit.prevent="login">
-			<input type="text" v-model="username" placeholder="Email Address" />
-			<input type="password" v-model="password" placeholder="Password" />
-			<button>Login</button>
+			<input type="email" name="email" v-model="email" placeholder="Email Address" />
+			<input type="text" name="full-name" v-model="fullName" placeholder="Full Name" />
+			<input type="password" name="password" v-model="password" placeholder="Password" />
+			<button>Sign Up</button>
 		</form>
 		<hr />
 		<div class="recommend">
-			Still not have any account?
-			<nuxt-link to="/signup/">Signup now.</nuxt-link>
+			Already have an account?
+			<nuxt-link to="/login/">Login here.</nuxt-link>
 		</div>
-		<nuxt-link class="forgot-pass" to="/lost-password/">I forgot my password...</nuxt-link>
+		<!-- <nuxt-link class="forgot-pass" to="/lost-password/">I forgot my password...</nuxt-link> -->
 	</div>
 </template>
 
@@ -21,7 +22,8 @@
 		layout: "landing",
 		data() {
 			return {
-				username: "",
+				email: "",
+				fullName: "",
 				password: ""
 			};
 		},

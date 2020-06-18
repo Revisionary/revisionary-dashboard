@@ -1,27 +1,34 @@
 <template>
-	<div id="login-form" class="wrapper">
-		<h1 class="title">Sign in to Revisionary</h1>
+	<div id="lost-password-form" class="wrapper">
+		<h1 class="title">Reset Your Password</h1>
 		<form class="form" @submit.prevent="login">
-			<input type="text" v-model="username" placeholder="Email Address" />
-			<input type="password" v-model="password" placeholder="Password" />
-			<button>Login</button>
+			<input type="email" name="email" v-model="email" placeholder="Email Address" />
+			<button>Send verification link</button>
 		</form>
 		<hr />
 		<div class="recommend">
-			Still not have any account?
-			<nuxt-link to="/signup/">Signup now.</nuxt-link>
+			Didn't receive email?
+			<nuxt-link to="/support/" style="color: #7eb464;">Get help.</nuxt-link>
 		</div>
-		<nuxt-link class="forgot-pass" to="/lost-password/">I forgot my password...</nuxt-link>
+		<nuxt-link class="forgot-pass" to="/login/">
+			<ArrowLeftIcon />Back to Sign In
+		</nuxt-link>
 	</div>
 </template>
 
 <script>
+	import ArrowLeftIcon from "~/components/atoms/icon-arrow-left.vue";
+
 	export default {
 		// middleware: "authentication",
 		layout: "landing",
+		components: {
+			ArrowLeftIcon
+		},
 		data() {
 			return {
-				username: "",
+				email: "",
+				fullName: "",
 				password: ""
 			};
 		},
