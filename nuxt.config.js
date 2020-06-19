@@ -92,7 +92,7 @@ export default {
 					user: { url: 'session', method: 'get', propertyName: 'user' }
 				},
 				// tokenRequired: true,
-				tokenType: '',
+				// tokenType: 'bearer',
 				// globalToken: true,
 				autoFetchUser: false
 			}
