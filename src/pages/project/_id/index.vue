@@ -15,9 +15,9 @@
 		computed: {
 			...mapGetters({
 				// Pages !!!
-				categories: "projects/getCategories",
-				blocks: "projects/get",
-				blocksFetching: "projects/status"
+				categories: "pages/getCategories",
+				blocks: "pages/get",
+				blocksFetching: "pages/status"
 			})
 		}
 	};

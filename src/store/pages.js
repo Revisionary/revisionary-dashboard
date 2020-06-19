@@ -1,19 +1,19 @@
 export const state = () => ({
-	projectCategories: [],
-	projects: [],
-	project: {},
+	pageCategories: [],
+	pages: [],
+	page: {},
 	fetching: false
 });
 
 export const getters = {
 	get(state) {
-		return state.projects;
+		return state.pages;
 	},
 	getCategories(state) {
-		return state.projectCategories;
+		return state.pageCategories;
 	},
 	getProject(state) {
-		return state.project;
+		return state.page;
 	},
 	status(state) {
 		return state.fetching;
@@ -22,18 +22,16 @@ export const getters = {
 
 export const actions = {
 
-	// Fetch Project Categories
+	// Fetch Page Categories
 	async fetchCategories({ commit }) {
 
 		commit("setFetching", true);
 
-		await this.$axios.get('projectcategories').then(({ status, data }) => {
+		await this.$axios.get('pagecategories').then(({ status, data }) => {
 			if (status === 200) {
-
-				console.log('PROJECT CATS: ', data.categories);
+				console.log('PAGE CATS: ', data.categories);
 				commit('setCategories', data.categories);
 				commit("setFetching", false);
-
 			}
 		}).catch(function (error) {
 
@@ -44,28 +42,27 @@ export const actions = {
 
 	},
 
-	// Fetch Projects
+	// Fetch Pages
 	async fetch({ commit, dispatch }) {
 
 		commit("setFetching", true);
 
-		await this.$axios.get('projects').then(({ status, data }) => {
-
+		await this.$axios.get('pages').then(({ status, data }) => {
 			if (status === 200) {
 
-				const projects = data.projects;
-				console.log('PROJECTS: ', projects);
+				const pages = data.pages;
+				console.log('PAGES: ', pages);
 
-				commit('set', projects);
+				commit('set', pages);
 				commit("setFetching", false);
 
 
 				// Take users to batch fetch
 				let usersToFetch = [];
-				projects.forEach(function (project) {
-					usersToFetch.push(project.user_ID);
+				pages.forEach(function (page) {
+					usersToFetch.push(page.user_ID);
 
-					project.users.forEach(user => {
+					page.users.forEach(user => {
 						usersToFetch.push(parseInt(user));
 					});
 
@@ -88,9 +85,9 @@ export const actions = {
 	},
 
 	// Get singular project
-	async fetchProject({ commit, state, dispatch }, projectID) {
+	async fetchPage({ commit, state, dispatch }, pageID) {
 
-		console.log('PROJECT FETCHING');
+		console.log('PAGE FETCHING');
 
 		// Find the project
 		const projectFound = state.projects.find(function (project) {
