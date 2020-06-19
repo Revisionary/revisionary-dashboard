@@ -193,12 +193,12 @@
 			blockCategories() {
 				if (this.dataType == "project")
 					return this.$store.getters["projects/getCategories"];
-				return this.$store.getters["projects/getCategories"]; // Page Categories !!!
+				return this.$store.getters["pages/getCategories"];
 			},
 			blocksData() {
 				if (this.dataType == "project")
 					return this.$store.getters["projects/get"];
-				return this.$store.getters["projects/get"]; // Pages !!!
+				return this.$store.getters["pages/get"];
 			},
 			dataCount() {
 				const availableCount = this.blocksData.filter(
@@ -212,7 +212,9 @@
 				return this.userInfo(this.blockData.user_ID);
 			},
 			isLoading() {
-				return this.$store.getters["projects/status"];
+				if (this.dataType == "project")
+					return this.$store.getters["projects/status"];
+				return this.$store.getters["pages/status"];
 			},
 			thumbnail() {
 				return this.blockData.image_url;

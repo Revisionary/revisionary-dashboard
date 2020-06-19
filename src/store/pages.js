@@ -23,11 +23,11 @@ export const getters = {
 export const actions = {
 
 	// Fetch Page Categories
-	async fetchCategories({ commit }) {
+	async fetchCategories({ commit }, projectID) {
 
 		commit("setFetching", true);
 
-		await this.$axios.get('pagecategories').then(({ status, data }) => {
+		await this.$axios.get('project/' + projectID + '/categories').then(({ status, data }) => {
 			if (status === 200) {
 				console.log('PAGE CATS: ', data.categories);
 				commit('setCategories', data.categories);
@@ -154,43 +154,43 @@ export const actions = {
 };
 
 export const mutations = {
-	set(state, projects) {
-		state.projects = projects;
+	set(state, pages) {
+		state.pages = pages;
 	},
 	update(state, { ID, name, value }) {
 
 		// Get the current state of the projects
-		let currentProjects = state.projects;
+		let currentPages = state.pages;
 
 		// Find the index
-		const index = currentProjects.findIndex(project => project.ID === ID);
+		const index = currentPages.findIndex(page => page.ID === ID);
 
 		if (index > -1) {
 
 			// Modify the project
-			currentProjects[index][name] = value;
+			currentPages[index][name] = value;
 
 			// Commit the change
-			state.projects = currentProjects;
+			state.pages = currentPages;
 
 			// If current project is this one
-			if (state.project.ID == ID)
-				state.project = currentProjects[index];
+			if (state.page.ID == ID)
+				state.page = currentPages[index];
 
 		}
 
 	},
 	setCategories(state, categories) {
-		state.projectCategories = categories;
+		state.pageCategories = categories;
 	},
-	add(state, project) {
-		merge(state.projects, project);
+	add(state, page) {
+		merge(state.pages, page);
 	},
-	remove(state, project) {
-		state.projects.splice(state.project.indexOf(project), 1);
+	remove(state, page) {
+		state.pages.splice(state.page.indexOf(project), 1);
 	},
-	setProject(state, project) {
-		state.project = project;
+	setPage(state, page) {
+		state.page = page;
 	},
 	setFetching(state, status) {
 		state.fetching = status;

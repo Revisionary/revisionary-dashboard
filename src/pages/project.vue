@@ -22,10 +22,8 @@
 			Footer
 		},
 		created() {
-			if (!this.$store.getters["projects/getCategories"].length)
-				this.$store.dispatch("projects/fetchCategories"); // Page Categories fetch !!!
-
-			this.$store.dispatch("projects/fetch"); // Pages fetch !!!
+			this.$store.dispatch("pages/fetchCategories", this.$route.params.id);
+			this.$store.dispatch("pages/fetch");
 		}
 	};
 </script>

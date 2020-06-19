@@ -22,7 +22,7 @@ export const getters = {
 
 export const actions = {
 
-	// Fetch Project Categories
+	// Fetch Categories
 	async fetchCategories({ commit }) {
 
 		commit("setFetching", true);
@@ -118,7 +118,7 @@ export const actions = {
 
 
 				// Take users to batch fetch
-				let usersToFetch = [];
+				let usersToFetch = [project.user_ID];
 				project.users.forEach(user => {
 					usersToFetch.push(parseInt(user));
 				});
@@ -137,6 +137,28 @@ export const actions = {
 		});
 
 
+
+	},
+
+	// Fetch Project Categories
+	async fetchProjectCategories({ commit }, projectID) {
+
+		commit("setFetching", true);
+
+		await this.$axios.get('project/' + projectID + '/categories').then(({ status, data }) => {
+			if (status === 200) {
+
+				console.log('PAGE CATS: ', data.categories);
+				commit('setCategories', data.categories);
+				commit("setFetching", false);
+
+			}
+		}).catch(function (error) {
+
+			console.log('ERROR: ', error);
+			commit("setFetching", false);
+
+		});
 
 	},
 
