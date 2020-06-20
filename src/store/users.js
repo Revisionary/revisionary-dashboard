@@ -68,7 +68,10 @@ export const mutations = {
 		state.users[user.ID] = user;
 	},
 	addMultiple(state, users) {
-		state.users = users;
+		state.users = {
+			...state.users,
+			...users
+		};
 	},
 	remove(state, ID) {
 		if (typeof state.users[ID] !== "undefined")
