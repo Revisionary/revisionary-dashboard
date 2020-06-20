@@ -1,7 +1,7 @@
 <template>
 	<details id="jump-to">
 		<summary class="selectbox" @click="fetchProjects">
-			<span class="current">{{ current }}</span>
+			<span class="current" v-html="current"></span>
 			<CaretDownIcon />
 		</summary>
 		<div class="details-menu sub-menu">
@@ -18,7 +18,7 @@
 					:key="eachProject.ID"
 					:class="{active : project.ID == eachProject.ID}"
 				>
-					<nuxt-link :to="`/project/${eachProject.ID}`">{{ eachProject.title.substr(0, 15) }}</nuxt-link>
+					<nuxt-link :to="`/project/${eachProject.ID}`" v-html="eachProject.title.substr(0, 15)"></nuxt-link>
 				</li>
 			</ul>
 		</div>
