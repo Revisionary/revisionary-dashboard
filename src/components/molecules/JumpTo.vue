@@ -18,7 +18,7 @@
 					:key="eachProject.ID"
 					:class="{active : project.ID == eachProject.ID}"
 				>
-					<nuxt-link :to="`/project/${eachProject.ID}`" v-html="eachProject.title.substr(0, 15)"></nuxt-link>
+					<nuxt-link :to="`/project/${eachProject.ID}`" v-html="eachProject.title"></nuxt-link>
 				</li>
 			</ul>
 		</div>
@@ -45,7 +45,7 @@
 						this.$route.name === "project-id-category") &&
 					typeof this.project.title !== "undefined"
 				)
-					return this.project.title.substr(0, 15);
+					return this.project.title;
 
 				return "Jump to...";
 			}
