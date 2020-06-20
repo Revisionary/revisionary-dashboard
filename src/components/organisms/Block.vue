@@ -176,7 +176,7 @@
 					</span>
 					<span
 						class="count tooltip-not-contained"
-						data-tooltip="Pages Count"
+						:data-tooltip="$route.name == 'projects' || $route.name == 'projects-category' ? 'Pages Count' : 'Versions Count'"
 					>({{ blockData.sub_count }})</span>
 				</nuxt-link>
 			</div>
