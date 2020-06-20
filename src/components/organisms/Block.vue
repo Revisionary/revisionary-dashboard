@@ -80,12 +80,17 @@
 								<ul>
 									<li>
 										<a href="#">
-											<LaptopIcon />Custom (1544x780)
+											<WindowIcon />Custom (1544x780)
 										</a>
 									</li>
 									<li>
 										<a href="#">
 											<DesktopIcon />Desktop (1544x780)
+										</a>
+									</li>
+									<li>
+										<a href="#">
+											<LaptopIcon />Laptop (1544x780)
 										</a>
 									</li>
 									<li>
@@ -203,6 +208,7 @@
 	import ShareIcon from "~/components/atoms/icon-share.vue";
 	import ChevronDownIcon from "~/components/atoms/icon-chevron-down.vue";
 
+	import WindowIcon from "~/components/atoms/devices/icon-custom.vue";
 	import DesktopIcon from "~/components/atoms/devices/icon-desktop.vue";
 	import LaptopIcon from "~/components/atoms/devices/icon-laptop.vue";
 	import TabletIcon from "~/components/atoms/devices/icon-tablet.vue";
@@ -218,6 +224,7 @@
 			VersionIcon,
 			ShareIcon,
 			ChevronDownIcon,
+			WindowIcon,
 			DesktopIcon,
 			LaptopIcon,
 			TabletIcon,
