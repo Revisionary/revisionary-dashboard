@@ -1,12 +1,21 @@
 <template>
-	<svg width="18" height="14" viewBox="0 0 18 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+	<svg width="12" height="16" viewBox="0 0 12 16" fill="none" xmlns="http://www.w3.org/2000/svg">
 		<path
-			d="M1 2.63636L1 11.3636C1 12.2674 1.71634 13 2.6 13H15.4C16.2837 13 17 12.2674 17 11.3636V2.63636C17 1.73263 16.2837 1 15.4 1H2.6C1.71634 1 1 1.73263 1 2.63636Z"
+			d="M1.93182 15H9.56818C10.359 15 11 14.3732 11 13.6V2.4C11 1.6268 10.359 1 9.56818 1H1.93182C1.14105 1 0.5 1.6268 0.5 2.4V13.6C0.5 14.3732 1.14105 15 1.93182 15Z"
 			stroke="#78808B"
+			stroke-width="0.875"
 			stroke-linecap="round"
 			stroke-linejoin="round"
 		/>
-		<rect x="3" y="3" width="1" height="8" rx="0.5" fill="#78808B" />
+		<rect
+			x="2.25"
+			y="13.25"
+			width="0.875"
+			height="7"
+			rx="0.4375"
+			transform="rotate(-90 2.25 13.25)"
+			fill="#78808B"
+		/>
 	</svg>
 </template>
 <style>
