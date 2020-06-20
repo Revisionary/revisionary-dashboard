@@ -253,6 +253,22 @@ details {
 						&:hover {
 							color: #037ef3;
 						}
+
+					}
+
+					&.with-tasks {
+						position: relative;
+						padding-right: 50px;
+
+						.tasks-count {
+							position: absolute;
+							right: 8px;
+							top: 50%;
+							transform: translateY(-40%);
+							width: 45px;
+							justify-content: flex-end;
+						}
+
 					}
 
 					&.active {
@@ -512,9 +528,12 @@ details {
 		&.left {
 			background-color: #ce9064;
 			border: 2px solid transparentize(#ce9064, 0.8);
-			margin-right: -7px;
 			position: relative;
 			z-index: 1;
+		}
+
+		& + * {
+			margin-left: -7px;
 		}
 	}
 }

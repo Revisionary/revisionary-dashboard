@@ -16,9 +16,26 @@
 					v-else
 					v-for="eachProject in projects.filter(project => !project.archived && !project.deleted)"
 					:key="eachProject.ID"
+					class="with-tasks"
 					:class="{active : project.ID == eachProject.ID}"
 				>
 					<nuxt-link :to="`/project/${eachProject.ID}`" v-html="eachProject.title"></nuxt-link>
+
+					<div
+						class="tasks-count"
+						v-if="eachProject.incomplete_tasks > 0 || eachProject.complete_tasks > 0"
+					>
+						<div
+							class="left tooltip-not-contained"
+							data-tooltip="Incomplete"
+							v-if="eachProject.incomplete_tasks > 0"
+						>{{ eachProject.incomplete_tasks }}</div>
+						<div
+							class="done tooltip-not-contained"
+							data-tooltip="Solved"
+							v-if="eachProject.complete_tasks > 0"
+						>{{ eachProject.complete_tasks }}</div>
+					</div>
 				</li>
 			</ul>
 		</div>
