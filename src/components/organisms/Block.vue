@@ -114,25 +114,17 @@
 						<details>
 							<summary>
 								<div class="button radius">
-									<VersionIcon />v1
+									<VersionIcon />
+									v{{blockData.versions.length}}
 									<ChevronDownIcon />
 								</div>
 							</summary>
 							<div class="details-menu sub-menu compact lines versions-list">
 								<ul>
-									<li>
+									<li v-for="(version, index) in blockData.versions" :key="index">
 										<a href="#">
-											<VersionIcon />v1 (2 months ago)
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<VersionIcon />v2 (1 week ago)
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<VersionIcon />v3 (a day ago)
+											<VersionIcon />
+											v{{index + 1}} ({{timeSince(version.created)}} ago)
 										</a>
 									</li>
 								</ul>
