@@ -19,12 +19,12 @@
 					class="with-tasks"
 					:class="{active : project.ID == eachProject.ID}"
 				>
-					<nuxt-link :to="`/project/${eachProject.ID}`" v-html="eachProject.title"></nuxt-link>
+					<nuxt-link :to="`/project/${eachProject.ID}`">
+						<span v-html="eachProject.title"></span>
+						<span class="jumper-plus-icon" @click.prevent="bringPages(eachProject.ID)">+</span>
+					</nuxt-link>
 
-					<div
-						class="tasks-count"
-						v-if="eachProject.incomplete_tasks > 0 || eachProject.complete_tasks > 0"
-					>
+					<div class="tasks-count">
 						<div
 							class="left tooltip-not-contained"
 							data-tooltip="Incomplete"
@@ -45,10 +45,12 @@
 <script>
 	import { mapGetters } from "vuex";
 	import CaretDownIcon from "~/components/atoms/icon-caret-down.vue";
+	import PlusIcon from "~/components/atoms/icon-plus.vue";
 
 	export default {
 		components: {
-			CaretDownIcon
+			CaretDownIcon,
+			PlusIcon
 		},
 		computed: {
 			...mapGetters({
@@ -70,6 +72,9 @@
 		methods: {
 			fetchProjects() {
 				if (!this.projects.length) this.$store.dispatch("projects/fetch");
+			},
+			bringPages(projectID) {
+				console.log("ASD");
 			}
 		}
 	};
@@ -81,6 +86,24 @@
 
 		.current {
 			text-transform: capitalize;
+		}
+
+		.with-tasks {
+			.tasks-count > * {
+				width: 15px;
+				height: 15px;
+				font-size: 9px;
+			}
+
+			.jumper-plus-icon {
+				margin-left: 10px;
+				font-size: 18px;
+				color: #9ea5ab;
+
+				&:hover {
+					color: black;
+				}
+			}
 		}
 	}
 </style>
