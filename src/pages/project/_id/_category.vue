@@ -15,8 +15,8 @@
 
 	export default {
 		async validate({ params, store }) {
-			if (!store.getters["projects/getCategories"].length)
-				await store.dispatch("projects/fetchCategories"); // Page Cat !!!
+			if (!store.getters["pages/getCategories"].length)
+				await store.dispatch("pages/fetchCategories");
 
 			if (
 				params.category == "archived" ||
@@ -28,8 +28,7 @@
 				return true;
 
 			if (
-				store.getters["projects/getCategories"].find(
-					// Page Cat !!!
+				store.getters["pages/getCategories"].find(
 					category => category.slug == params.category
 				)
 			)
@@ -42,10 +41,9 @@
 		},
 		computed: {
 			...mapGetters({
-				// Pages !!!
-				categories: "projects/getCategories",
-				blocks: "projects/get",
-				blocksFetching: "projects/status"
+				categories: "pages/getCategories",
+				blocks: "pages/get",
+				blocksFetching: "pages/status"
 			})
 		}
 	};
