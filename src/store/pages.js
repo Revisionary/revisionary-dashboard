@@ -43,11 +43,11 @@ export const actions = {
 	},
 
 	// Fetch Pages
-	async fetch({ commit, dispatch }) {
+	async fetch({ commit, dispatch }, projectID) {
 
 		commit("setFetching", true);
 
-		await this.$axios.get('pages').then(({ status, data }) => {
+		await this.$axios.get('project/' + projectID + '/pages').then(({ status, data }) => {
 			if (status === 200) {
 
 				const pages = data.pages;

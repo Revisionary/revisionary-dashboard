@@ -445,6 +445,7 @@
 			}
 
 			.description {
+				display: none;
 				color: #78808b;
 				font-size: 15px;
 				line-height: 20px;

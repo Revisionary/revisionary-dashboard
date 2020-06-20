@@ -15,15 +15,18 @@
 	export default {
 		async validate({ params, store }) {
 			await store.dispatch("projects/fetchProject", params.id);
-			return store.getters["projects/getProject"].ID == params.id;
+
+			// If project found
+			if (store.getters["projects/getProject"].ID == params.id) {
+				store.dispatch("pages/fetchCategories", params.id);
+				store.dispatch("pages/fetch", params.id);
+				return true;
+			}
+			return false;
 		},
 		components: {
 			SubHeader,
 			Footer
-		},
-		created() {
-			this.$store.dispatch("pages/fetchCategories", this.$route.params.id);
-			this.$store.dispatch("pages/fetch");
 		}
 	};
 </script>
