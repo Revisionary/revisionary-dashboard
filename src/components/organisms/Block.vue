@@ -112,7 +112,11 @@
 							</summary>
 							<div class="details-menu sub-menu compact lines versions-list">
 								<ul>
-									<li v-for="(version, index) in blockData.versions" :key="index">
+									<li
+										v-for="(version, index) in blockData.versions"
+										:key="index"
+										:class="{active : index == blockData.versions.length - 1}"
+									>
 										<a href="#">
 											<VersionIcon />
 											v{{index + 1}} ({{timeSince(version.created)}} ago)
