@@ -84,6 +84,12 @@
 	#jump-to {
 		margin-left: 120px;
 
+		& > .details-menu {
+			max-height: calc(90vh - 65px);
+			overflow-x: hidden;
+			overflow-y: auto;
+		}
+
 		.current {
 			text-transform: capitalize;
 		}
@@ -93,6 +99,7 @@
 				width: 15px;
 				height: 15px;
 				font-size: 9px;
+				letter-spacing: -1px;
 			}
 
 			.jumper-plus-icon {
