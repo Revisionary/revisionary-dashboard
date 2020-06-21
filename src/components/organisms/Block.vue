@@ -71,36 +71,27 @@
 
 						<details v-else>
 							<summary class="rotate-icon">
-								<div class="button rounded with-icon icon-right">
+								<div
+									class="button rounded with-icon icon-right"
+									@click="getDevices(blockData.versions[blockData.versions.length-1].ID)"
+								>
 									OPEN
 									<ChevronDownIcon />
 								</div>
 							</summary>
 							<div class="details-menu sub-menu center compact lines">
 								<ul>
-									<li>
-										<a href="#">
-											<WindowIcon />Custom (1544x780)
-										</a>
+									<li v-if="devicesFetching">
+										<span>Loading...</span>
 									</li>
-									<li>
+									<li v-for="device in devices" :key="device.ID">
 										<a href="#">
-											<DesktopIcon />Desktop (1544x780)
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<LaptopIcon />Laptop (1544x780)
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<TabletIcon />Tablet (1544x780)
-										</a>
-									</li>
-									<li>
-										<a href="#">
-											<MobileIcon />Mobile (1544x780)
+											<WindowIcon v-if="device.cat_ID == 5" />
+											<DesktopIcon v-if="device.cat_ID == 1" />
+											<LaptopIcon v-if="device.cat_ID == 2" />
+											<TabletIcon v-if="device.cat_ID == 3" />
+											<MobileIcon v-if="device.cat_ID == 4" />
+											{{device.cat_name}} ({{ device.width ? device.screen_width : device.screen_width }}x{{ device.height ? device.height: device.screen_height }})
 										</a>
 									</li>
 								</ul>
@@ -223,6 +214,12 @@
 			MobileIcon,
 			ProfilePic
 		},
+		data() {
+			return {
+				devicesFetching: false,
+				devices: []
+			};
+		},
 		methods: {
 			toggleFavorite() {
 				const blockID = this.blockData.ID;
@@ -237,12 +234,27 @@
 			userInfo(ID) {
 				let foundUser = this.$store.getters["users/getUser"](ID);
 
-				// if (!foundUser) {
-				// 	this.$store.dispatch("users/fetch", [ID]);
-				// 	foundUser = this.$store.getters["users/getUser"](ID);
-				// }
-
 				return foundUser;
+			},
+			async getDevices(phaseID) {
+				this.devicesFetching = phaseID;
+				await this.$axios
+					.get("phase/" + phaseID + "/devices")
+					.then(({ status, data }) => {
+						if (status === 200) {
+							const devices = data.devices;
+							console.log("DEVICES: ", devices);
+
+							this.devices = devices;
+							this.devicesFetching = false;
+						}
+					})
+					.catch(function(error) {
+						console.log("ERROR: ", error);
+						this.devicesFetching = false;
+					});
+
+				console.log(this.devices);
 			},
 			timeSince(date) {
 				date = new Date(date);
@@ -289,9 +301,6 @@
 			blockData: {
 				type: Object
 			}
-		},
-		data() {
-			return {};
 		}
 	};
 </script>
