@@ -6,7 +6,11 @@
 		</summary>
 		<div class="details-menu sub-menu">
 			<ul>
-				<li :class="{active : $route.name === 'projects'}" v-if="$route.name !== 'projects'">
+				<li
+					:class="{active : $route.name === 'projects'}"
+					v-if="$route.name !== 'projects'"
+					@click="resetPages"
+				>
 					<nuxt-link to="/projects/">All Projects</nuxt-link>
 				</li>
 				<li v-if="fetching">
@@ -18,6 +22,7 @@
 					:key="eachProject.ID"
 					class="with-tasks"
 					:class="{active : project.ID == eachProject.ID}"
+					@click="resetPages"
 				>
 					<nuxt-link :to="`/project/${eachProject.ID}`">
 						<span v-html="eachProject.title"></span>
@@ -106,6 +111,9 @@
 			fetchProjects() {
 				if (!this.projects.length) this.$store.dispatch("projects/fetch");
 			},
+			resetPages() {
+				this.pages = [];
+			},
 			async bringPages(projectID) {
 				this.pagesFetching = projectID;
 				await this.$axios
@@ -113,8 +121,6 @@
 					.then(({ status, data }) => {
 						if (status === 200) {
 							const pages = data.pages;
-							console.log("J PAGES: ", pages);
-
 							this.pages = pages;
 							this.pagesFetching = false;
 						}
