@@ -21,7 +21,12 @@
 				>
 					<nuxt-link :to="`/project/${eachProject.ID}`">
 						<span v-html="eachProject.title"></span>
-						<span class="jumper-plus-icon" @click.prevent="bringPages(eachProject.ID)">+</span>
+						<span
+							class="jumper-plus-icon"
+							v-if="!pages.filter(page => page.project_ID == eachProject.ID).length && pagesFetching != eachProject.ID"
+							@click.prevent="bringPages(eachProject.ID)"
+						>+</span>
+						<span class="jumper-plus-icon" v-else>-</span>
 					</nuxt-link>
 
 					<div class="tasks-count">
@@ -36,10 +41,26 @@
 							v-if="eachProject.complete_tasks > 0"
 						>{{ eachProject.complete_tasks }}</div>
 					</div>
-
 					<ul class="submenu">
-						<li v-for="page in pages.filter(page => page.project_ID == eachProject.ID)" :key="page.ID">
+						<li v-if="pagesFetching == eachProject.ID">Loading...</li>
+						<li
+							class="with-tasks"
+							v-for="page in pages.filter(page => page.project_ID == eachProject.ID)"
+							:key="page.ID"
+						>
 							<a href="#">{{page.title}}</a>
+							<span class="tasks-count">
+								<div
+									class="left tooltip-not-contained"
+									data-tooltip="Incomplete"
+									v-if="page.incomplete_tasks > 0"
+								>{{ page.incomplete_tasks }}</div>
+								<div
+									class="done tooltip-not-contained"
+									data-tooltip="Solved"
+									v-if="page.complete_tasks > 0"
+								>{{ page.complete_tasks }}</div>
+							</span>
 						</li>
 					</ul>
 				</li>
@@ -86,7 +107,7 @@
 				if (!this.projects.length) this.$store.dispatch("projects/fetch");
 			},
 			async bringPages(projectID) {
-				this.pagesFetching = true;
+				this.pagesFetching = projectID;
 				await this.$axios
 					.get("project/" + projectID + "/pages")
 					.then(({ status, data }) => {
@@ -124,11 +145,12 @@
 		}
 
 		.with-tasks {
+			position: relative;
+
 			.tasks-count > * {
 				width: 15px;
 				height: 15px;
 				font-size: 9px;
-				letter-spacing: -1px;
 			}
 
 			.jumper-plus-icon {
@@ -138,6 +160,15 @@
 
 				&:hover {
 					color: black;
+				}
+			}
+		}
+
+		.submenu {
+			.with-tasks {
+				.tasks-count {
+					opacity: 0.7;
+					top: 0;
 				}
 			}
 		}

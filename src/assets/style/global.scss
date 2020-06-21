@@ -259,12 +259,15 @@ details {
 
 					&.with-tasks {
 						position: relative;
-						padding-right: 40px;
+
+						& > a {
+							padding-right: 50px;
+						}
 
 						.tasks-count {
 							position: absolute;
 							right: 10px;
-							top: 10px;
+							top: 8px;
 							width: 35px;
 							justify-content: flex-end;
 						}
