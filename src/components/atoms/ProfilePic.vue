@@ -4,7 +4,8 @@
 		:style="`background-image: url(${pictureUrl});`"
 		:data-tooltip="(fullName != '' ? fullName : null)"
 	>
-		<span>{{abbr}}</span>
+		<MailIcon v-if="abbr == '?'" />
+		<span v-else>{{abbr}}</span>
 	</picture>
 </template>
 
@@ -228,6 +229,8 @@
 		return url;
 	}
 
+	import MailIcon from "~/components/atoms/icon-mail.vue";
+
 	export default {
 		props: {
 			firstName: {
@@ -250,6 +253,9 @@
 				type: String,
 				default: ""
 			}
+		},
+		components: {
+			MailIcon
 		},
 		computed: {
 			pictureUrl() {
