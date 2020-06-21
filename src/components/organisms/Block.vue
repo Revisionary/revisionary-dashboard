@@ -84,7 +84,7 @@
 									<li v-if="devicesFetching">
 										<span>Loading...</span>
 									</li>
-									<li v-for="device in devices" :key="device.ID">
+									<li v-else v-for="device in devices" :key="device.ID">
 										<a href="#">
 											<WindowIcon v-if="device.cat_ID == 5" />
 											<DesktopIcon v-if="device.cat_ID == 1" />
