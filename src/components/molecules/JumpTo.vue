@@ -36,6 +36,12 @@
 							v-if="eachProject.complete_tasks > 0"
 						>{{ eachProject.complete_tasks }}</div>
 					</div>
+
+					<ul class="submenu">
+						<li v-for="page in pages.filter(page => page.project_ID == eachProject.ID)" :key="page.ID">
+							<a href="#">{{page.title}}</a>
+						</li>
+					</ul>
 				</li>
 			</ul>
 		</div>
@@ -51,6 +57,12 @@
 		components: {
 			CaretDownIcon,
 			PlusIcon
+		},
+		data() {
+			return {
+				pagesFetching: false,
+				pages: []
+			};
 		},
 		computed: {
 			...mapGetters({
@@ -73,8 +85,25 @@
 			fetchProjects() {
 				if (!this.projects.length) this.$store.dispatch("projects/fetch");
 			},
-			bringPages(projectID) {
-				console.log("ASD");
+			async bringPages(projectID) {
+				this.pagesFetching = true;
+				await this.$axios
+					.get("project/" + projectID + "/pages")
+					.then(({ status, data }) => {
+						if (status === 200) {
+							const pages = data.pages;
+							console.log("J PAGES: ", pages);
+
+							this.pages = pages;
+							this.pagesFetching = false;
+						}
+					})
+					.catch(function(error) {
+						console.log("ERROR: ", error);
+						this.pagesFetching = false;
+					});
+
+				console.log(this.pages);
 			}
 		}
 	};
