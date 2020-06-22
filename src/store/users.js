@@ -27,7 +27,18 @@ export const getters = {
 export const actions = {
 
 	// Fetch Multiple Users
-	async fetch({ commit }, IDs) {
+	async fetch({ commit, state }, IDs) {
+
+		// Find the users from store
+		//console.log('UNFILTERED USERS: ', IDs);
+		IDs = IDs.filter(ID => typeof state.users[ID] == "undefined");
+		//console.log('FILTERED USERS: ', IDs);
+
+
+		if (!IDs.length) {
+			//console.log('No new users to fetch.');
+			return;
+		}
 
 		//console.log('FETCHING USERS: ', IDs);
 
@@ -35,11 +46,10 @@ export const actions = {
 
 		await this.$axios.post('users', {
 			IDs: IDs
-		}).then(res => {
-			//console.log('RESPONSE: ', res);
-			if (res.status === 200) {
-				console.log('USERS: ', res.data.users);
-				commit('addMultiple', res.data.users);
+		}).then(({ status, data }) => {
+			if (status === 200) {
+				console.log('USERS: ', data.users);
+				commit('addMultiple', data.users);
 				commit("setFetching", false);
 			}
 		}).catch(function (error) {

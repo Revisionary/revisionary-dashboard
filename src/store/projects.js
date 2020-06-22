@@ -90,9 +90,8 @@ export const actions = {
 	// Get singular project
 	async fetchProject({ commit, state, dispatch }, projectID) {
 
-		console.log('PROJECT FETCHING');
 
-		// Find the project
+		// Find the project from store
 		const projectFound = state.projects.find(function (project) {
 			return project.ID == projectID;
 		});
@@ -111,7 +110,7 @@ export const actions = {
 			if (status === 200) {
 
 				const project = data.project;
-				console.log('PROJECT: ', project);
+				console.log('SINGLE PROJECT: ', project);
 
 				commit('setProject', project);
 				commit("setFetching", false);

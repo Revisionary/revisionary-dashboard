@@ -14,12 +14,25 @@
 
 	export default {
 		async validate({ params, store }) {
-			await store.dispatch("projects/fetchProject", params.id);
+			// If project info already exists
+			if (store.getters["projects/getProject"].ID != parseInt(params.id))
+				await store.dispatch("projects/fetchProject", params.id);
 
 			// If project found
-			if (store.getters["projects/getProject"].ID == params.id) {
-				store.dispatch("pages/fetchCategories", params.id);
-				store.dispatch("pages/fetch", params.id);
+			if (store.getters["projects/getProject"].ID == parseInt(params.id)) {
+				if (
+					typeof store.getters["pages/getCategories"][0] == "undefined" ||
+					store.getters["pages/getCategories"][0].project_ID !=
+						parseInt(params.id)
+				)
+					store.dispatch("pages/fetchCategories", params.id);
+
+				if (
+					typeof store.getters["pages/get"][0] == "undefined" ||
+					store.getters["pages/get"][0].project_ID != parseInt(params.id)
+				)
+					store.dispatch("pages/fetch", params.id);
+
 				return true;
 			}
 			return false;
