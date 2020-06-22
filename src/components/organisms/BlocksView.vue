@@ -30,7 +30,7 @@
 			>
 				<div
 					class="category-title"
-					v-if="category.ID != 0 || (category.ID == 0 && blocksOfCategory(0).length && blockCategories.length > 1)"
+					v-if="category.ID != 0 || (category.ID == 0 && blocksOfCategory(0).length && blockCategories.length > 1 && favoriteBlocks.length)"
 				>
 					<span class="handle" v-if="category.ID != 0">
 						<MoveIcon />
