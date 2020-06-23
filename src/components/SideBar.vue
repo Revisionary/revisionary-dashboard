@@ -91,7 +91,7 @@
 						color: #372d2d;
 						position: relative;
 
-						&::after {
+						&::before {
 							content: "";
 							position: absolute;
 							bottom: 9px;
@@ -136,7 +136,7 @@
 				&.active {
 					background-color: #f4f6fc;
 
-					&::after {
+					&::before {
 						display: none;
 					}
 				}
