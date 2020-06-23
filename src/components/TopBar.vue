@@ -159,6 +159,7 @@
 
 		.menu-icon {
 			cursor: pointer;
+			user-select: none;
 
 			&.active {
 				svg > rect:first-child {

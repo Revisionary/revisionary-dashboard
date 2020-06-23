@@ -2,19 +2,32 @@
 	<aside id="sidebar">
 		<div class="wrapper">
 			<div class="top-section">
-				<nuxt-link to="/projects/" :class="{ active: this.$route.name === 'projects' }">
-					<DashboardIcon />Projects
+				<nuxt-link
+					to="/projects/"
+					class="right-tooltip"
+					:class="{ active: this.$route.name === 'projects' }"
+					:data-tooltip="$store.state.isSideBarOpen ? null : 'Projects'"
+				>
+					<DashboardIcon />
+					<span class="menu-label">Projects</span>
 				</nuxt-link>
-				<a href="#">
-					<NotificationIcon />Notifications
+				<a
+					href="#"
+					class="right-tooltip"
+					:data-tooltip="$store.state.isSideBarOpen ? null : 'Notifications'"
+				>
+					<NotificationIcon />
+					<span class="menu-label">Notifications</span>
 				</a>
-				<a href="#">
-					<TasksIcon />Tasks (24)
+				<a href="#" class="right-tooltip" :data-tooltip="$store.state.isSideBarOpen ? null : 'Tasks'">
+					<TasksIcon />
+					<span class="menu-label">Tasks (24)</span>
 				</a>
 			</div>
 			<div class="bottom-section">
-				<a href="#">
-					<SupportIcon />Support
+				<a href="#" class="right-tooltip" :data-tooltip="$store.state.isSideBarOpen ? null : 'Support'">
+					<SupportIcon />
+					<span class="menu-label">Support</span>
 				</a>
 			</div>
 		</div>
@@ -39,7 +52,6 @@
 
 <style lang="scss">
 	aside#sidebar {
-		width: 190px;
 		height: inherit;
 		opacity: 1;
 		background-color: #ffffff;
@@ -114,8 +126,25 @@
 
 	.sidebarClosed {
 		aside#sidebar {
-			width: 0;
-			opacity: 0;
+			& > .wrapper > * > a {
+				padding: 14px 24px 14px 24px;
+
+				& > svg {
+					margin-right: 0;
+				}
+
+				&.active {
+					background-color: #f4f6fc;
+
+					&::after {
+						display: none;
+					}
+				}
+			}
+
+			.menu-label {
+				display: none;
+			}
 		}
 	}
 </style>
