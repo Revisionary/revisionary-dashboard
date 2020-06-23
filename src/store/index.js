@@ -1,5 +1,6 @@
 export const state = () => ({
 	isSideBarOpen: true,
+	openTab: null,
 	fetching: false,
 	pageLoading: false
 });
@@ -20,5 +21,9 @@ export const mutations = {
 		state.isSideBarOpen = !state.isSideBarOpen;
 		if (forceState !== null) state.isSideBarOpen = forceState;
 		localStorage.setItem('revisionarySidebar', state.isSideBarOpen);
+	},
+	toggleTab(state, tabName) {
+		if (state.openTab == null) state.openTab = tabName;
+		else state.openTab = null;
 	}
 };

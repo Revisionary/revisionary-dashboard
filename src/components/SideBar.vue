@@ -5,7 +5,7 @@
 				<nuxt-link
 					to="/projects/"
 					class="right-tooltip"
-					:class="{ active: this.$route.name === 'projects' }"
+					:class="{ active: $route.name === 'projects' }"
 					:data-tooltip="$store.state.isSideBarOpen ? null : 'Projects'"
 				>
 					<DashboardIcon />
@@ -15,6 +15,7 @@
 					href="#"
 					class="right-tooltip"
 					:data-tooltip="$store.state.isSideBarOpen ? null : 'Notifications'"
+					@click.prevent="toggleTab('notifications')"
 				>
 					<NotificationIcon />
 					<span class="menu-label">Notifications</span>
@@ -31,6 +32,10 @@
 				</a>
 			</div>
 		</div>
+
+		<aside id="panel" :class="{open: $store.state.openTab == 'notifications'}">
+			<div class="panel-title">Notifications</div>
+		</aside>
 	</aside>
 </template>
 
@@ -46,6 +51,11 @@
 			NotificationIcon,
 			TasksIcon,
 			SupportIcon
+		},
+		methods: {
+			toggleTab(tabName) {
+				this.$store.commit("toggleTab", tabName);
+			}
 		}
 	};
 </script>
@@ -53,13 +63,15 @@
 <style lang="scss">
 	aside#sidebar {
 		height: inherit;
-		opacity: 1;
-		background-color: #ffffff;
-		border: 1px solid #eaedf3;
-		border-top: none;
 		transition: 500ms;
+		position: relative;
 
 		& > .wrapper {
+			background-color: #ffffff;
+			border: 1px solid #eaedf3;
+			border-top: none;
+			position: relative;
+			z-index: 2;
 			height: inherit;
 			display: flex;
 			flex-direction: column;
@@ -71,7 +83,7 @@
 				width: 100%;
 				white-space: nowrap;
 
-				& > a {
+				& > * {
 					display: flex;
 					justify-content: left;
 					align-items: center;
@@ -117,16 +129,45 @@
 				padding: 0;
 				border-top: 1px solid #eaedf3;
 
-				& > a {
+				& > * {
 					justify-content: center;
 				}
 			}
 		}
 	}
 
+	aside#panel {
+		width: 285px;
+		position: absolute;
+		z-index: 1;
+		top: 0;
+		left: 100%;
+		height: 100%;
+		border-right: 1px solid #eaedf3;
+		background-color: #f5f7fa;
+		transition: 500ms;
+		transform: translateX(-100%);
+
+		&.open {
+			transform: translateX(0%);
+		}
+
+		& > .panel-title {
+			background-color: #fff;
+			font-weight: 600;
+			font-size: 12px;
+			line-height: 14px;
+			text-transform: uppercase;
+			padding: 20px 26px;
+			//border: inherit;
+			border-left: none;
+			border-right: none;
+		}
+	}
+
 	.sidebarClosed {
 		aside#sidebar {
-			& > .wrapper > * > a {
+			& > .wrapper > * > * {
 				padding: 14px 24px 14px 24px;
 
 				& > svg {
