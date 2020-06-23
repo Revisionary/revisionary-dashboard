@@ -1,10 +1,10 @@
 <template>
 	<div id="landing-page">
 		<header>
-			<nuxt-link class="logo" to="/">
+			<nuxt-link class="logo" to="/projects/">
 				<Logo />
 			</nuxt-link>
-			<nuxt-link class="back-home" to="/">
+			<nuxt-link class="back-home" to="/projects/">
 				<ArrowLeftIcon />Back to home page
 			</nuxt-link>
 		</header>
@@ -27,7 +27,7 @@
 	import ArrowLeftIcon from "~/components/atoms/icon-arrow-left.vue";
 
 	export default {
-		middleware: "authentication",
+		middleware: "auth",
 		components: {
 			Logo,
 			ArrowLeftIcon

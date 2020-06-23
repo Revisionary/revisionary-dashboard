@@ -13,7 +13,7 @@
 	import SideBar from "~/components/SideBar.vue";
 
 	export default {
-		middleware: "authentication",
+		middleware: "auth",
 		components: {
 			TopBar,
 			SideBar

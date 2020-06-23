@@ -17,7 +17,6 @@
 
 <script>
 	export default {
-		// middleware: "authentication",
 		layout: "landing",
 		data() {
 			return {

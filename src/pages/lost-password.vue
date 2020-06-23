@@ -20,7 +20,6 @@
 	import ArrowLeftIcon from "~/components/atoms/icon-arrow-left.vue";
 
 	export default {
-		// middleware: "authentication",
 		layout: "landing",
 		components: {
 			ArrowLeftIcon

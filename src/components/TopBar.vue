@@ -1,7 +1,7 @@
 <template>
 	<div id="top-bar">
 		<div class="left-side">
-			<nuxt-link class="logo" to="/">
+			<nuxt-link class="logo" to="/projects/">
 				<Logo />
 			</nuxt-link>
 			<span
@@ -51,7 +51,7 @@
 			</details>
 		</div>
 		<div class="right-side" v-else>
-			<a href="/">Back to homepage</a>
+			<a href="/projects/">Back to homepage</a>
 		</div>
 	</div>
 </template>
