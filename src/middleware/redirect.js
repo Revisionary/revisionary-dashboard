@@ -1,5 +1,6 @@
-export default function ({ redirect }) {
+export default function ({ redirect, $auth }) {
 
-	redirect('/projects/');
+	if ($auth.loggedIn) redirect('/projects/');
+	else redirect('/login/');
 
 }

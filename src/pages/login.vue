@@ -17,7 +17,7 @@
 
 <script>
 	export default {
-		layout: "landing",
+		auth: "guest",
 		data() {
 			return {
 				username: "",
@@ -26,7 +26,8 @@
 		},
 		methods: {
 			login() {
-				if (process.browser) window.$nuxt.$root.$loading.start();
+				this.$nuxt.$loading.start();
+
 				this.$auth
 					.loginWith("local", {
 						data: {
@@ -43,14 +44,11 @@
 							});
 
 							this.$store.commit("toggleSideBar", true);
-
-							if (process.browser)
-								window.$nuxt.$root.$loading.finish();
 						}
 					})
 					.catch(error => {
 						console.log("ERROR: ", error);
-						if (process.browser) window.$nuxt.$root.$loading.fail();
+						//if (process.browser) window.$nuxt.$root.$loading.fail();
 					});
 			}
 		}

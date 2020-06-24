@@ -31,13 +31,19 @@ export default {
 	},
 	router: {
 		prefetchLinks: false,
-		middleware: 'dropdown-closer'
+		middleware: ['auth', 'dropdown-closer']
 	},
 	/*
 	 ** Customize the progress-bar color
 	 */
 	//loading: '~/components/Loading.vue',
-	loading: { color: "#037ef3" },
+	loading: {
+		color: "#037ef3",
+		height: '2px',
+		trottle: 200,
+		duration: 1000,
+		continuous: true
+	},
 	/*
 	 ** Global CSS
 	 */
@@ -80,9 +86,9 @@ export default {
 	},
 	auth: {
 		redirect: {
-			login: '/projects/',
+			login: '/login/',
 			logout: '/login/',
-			home: '/projects/'
+			home: '/'
 		},
 		strategies: {
 			local: {

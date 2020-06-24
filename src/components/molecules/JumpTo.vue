@@ -129,8 +129,6 @@
 						console.log("ERROR: ", error);
 						this.pagesFetching = false;
 					});
-
-				console.log(this.pages);
 			}
 		}
 	};

@@ -89,6 +89,7 @@
 		},
 		methods: {
 			logout() {
+				this.$nuxt.$loading.start();
 				this.$auth.logout();
 				this.$store.commit("toggleSideBar", false);
 			}

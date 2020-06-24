@@ -241,6 +241,7 @@
 				return foundUser;
 			},
 			async getDevices(phaseID) {
+				this.$nuxt.$loading.start();
 				this.devicesFetching = phaseID;
 				await this.$axios
 					.get("phase/" + phaseID + "/devices")
@@ -257,8 +258,6 @@
 						console.log("ERROR: ", error);
 						this.devicesFetching = false;
 					});
-
-				console.log(this.devices);
 			},
 			timeSince(date) {
 				date = new Date(date);

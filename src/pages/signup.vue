@@ -18,7 +18,7 @@
 
 <script>
 	export default {
-		layout: "landing",
+		auth: "guest",
 		data() {
 			return {
 				email: "",

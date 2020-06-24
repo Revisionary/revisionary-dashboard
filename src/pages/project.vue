@@ -13,6 +13,7 @@
 	import Footer from "~/components/Footer.vue";
 
 	export default {
+		layout: "app",
 		async validate({ params, store }) {
 			// If project info already exists
 			if (store.getters["projects/getProject"].ID != parseInt(params.id))
@@ -40,6 +41,11 @@
 		components: {
 			SubHeader,
 			Footer
+		},
+		created() {
+			this.$nextTick(() => {
+				this.$nuxt.$loading.start();
+			});
 		}
 	};
 </script>
