@@ -40,7 +40,9 @@
 
 		<aside class="panel notifications" :class="{open: $store.state.openTab == 'notifications'}">
 			<div class="panel-title">Notifications</div>
-			<div class="panel-content">Notifications here...</div>
+			<div class="panel-content">
+				<Notifications v-if="$store.state.openTab == 'notifications'" />
+			</div>
 		</aside>
 
 		<aside class="panel tasks" :class="{open: $store.state.openTab == 'tasks'}">
@@ -56,12 +58,15 @@
 	import TasksIcon from "~/components/atoms/icon-tasks.vue";
 	import SupportIcon from "~/components/atoms/icon-support.vue";
 
+	import Notifications from "~/components/organisms/Notifications.vue";
+
 	export default {
 		components: {
 			DashboardIcon,
 			NotificationIcon,
 			TasksIcon,
-			SupportIcon
+			SupportIcon,
+			Notifications
 		},
 		methods: {
 			toggleTab(tabName) {
