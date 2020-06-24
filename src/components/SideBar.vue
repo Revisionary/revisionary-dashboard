@@ -11,19 +11,24 @@
 					<DashboardIcon />
 					<span class="menu-label">Projects</span>
 				</nuxt-link>
-				<a
-					href="#"
-					class="right-tooltip"
+				<span
+					class="right-tooltip notifications"
+					:class="{ active: $store.state.openTab == 'notifications' }"
 					:data-tooltip="$store.state.isSideBarOpen ? null : 'Notifications'"
 					@click.prevent="toggleTab('notifications')"
 				>
 					<NotificationIcon />
 					<span class="menu-label">Notifications</span>
-				</a>
-				<a href="#" class="right-tooltip" :data-tooltip="$store.state.isSideBarOpen ? null : 'Tasks'">
+				</span>
+				<span
+					class="right-tooltip"
+					:class="{ active: $store.state.openTab == 'tasks' }"
+					:data-tooltip="$store.state.isSideBarOpen ? null : 'Tasks'"
+					@click.prevent="toggleTab('tasks')"
+				>
 					<TasksIcon />
 					<span class="menu-label">Tasks (24)</span>
-				</a>
+				</span>
 			</div>
 			<div class="bottom-section">
 				<a href="#" class="right-tooltip" :data-tooltip="$store.state.isSideBarOpen ? null : 'Support'">
@@ -33,8 +38,14 @@
 			</div>
 		</div>
 
-		<aside id="panel" :class="{open: $store.state.openTab == 'notifications'}">
+		<aside class="panel notifications" :class="{open: $store.state.openTab == 'notifications'}">
 			<div class="panel-title">Notifications</div>
+			<div class="panel-content">Notifications here...</div>
+		</aside>
+
+		<aside class="panel tasks" :class="{open: $store.state.openTab == 'tasks'}">
+			<div class="panel-title">Tasks</div>
+			<div class="panel-content">Tasks here...</div>
 		</aside>
 	</aside>
 </template>
@@ -71,7 +82,7 @@
 			border: 1px solid #eaedf3;
 			border-top: none;
 			position: relative;
-			z-index: 2;
+			z-index: 3;
 			height: inherit;
 			display: flex;
 			flex-direction: column;
@@ -93,6 +104,7 @@
 					font-size: 15px;
 					line-height: 18px;
 					font-weight: 600;
+					cursor: pointer;
 
 					& > svg {
 						margin-right: 14px;
@@ -116,6 +128,10 @@
 						& > svg > path {
 							stroke: #037ef3;
 						}
+
+						&.notifications::before {
+							width: 18px;
+						}
 					}
 
 					&:hover {
@@ -136,10 +152,10 @@
 		}
 	}
 
-	aside#panel {
+	aside.panel {
 		width: 285px;
 		position: absolute;
-		z-index: 1;
+		z-index: 2;
 		top: 0;
 		left: 100%;
 		height: 100%;
@@ -162,6 +178,10 @@
 			//border: inherit;
 			border-left: none;
 			border-right: none;
+		}
+
+		& > .panel-content {
+			padding: 20px 25px;
 		}
 	}
 

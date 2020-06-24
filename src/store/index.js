@@ -23,7 +23,8 @@ export const mutations = {
 		localStorage.setItem('revisionarySidebar', state.isSideBarOpen);
 	},
 	toggleTab(state, tabName) {
-		if (state.openTab == null) state.openTab = tabName;
-		else state.openTab = null;
+		if (state.openTab == tabName) state.openTab = null;
+		else state.openTab = tabName;
+
 	}
 };
