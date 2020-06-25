@@ -1,6 +1,6 @@
 <template>
 	<ul class="notifications-wrapper">
-		<li class="notification">
+		<li class="notification new">
 			<div class="user">
 				<ProfilePic picture="https://www.bilaltas.net/wp-content/uploads/2013/02/duvar11-300x300.jpg" />
 			</div>
@@ -20,7 +20,7 @@
 				</div>
 			</div>
 		</li>
-		<li class="notification">
+		<li class="notification new">
 			<div class="user">
 				<ProfilePic picture="https://www.bilaltas.net/wp-content/uploads/2013/02/duvar11-300x300.jpg" />
 			</div>
@@ -109,6 +109,24 @@
 			display: grid;
 			grid-template-columns: 38px 1fr;
 			gap: 10px;
+
+			&.new {
+				position: relative;
+
+				& > .user > picture::after {
+					content: "";
+					width: 7px;
+					height: 7px;
+					background-color: #f39754;
+					border: 2px solid white;
+					box-sizing: content-box;
+					border-radius: 50%;
+					position: absolute;
+					top: 50%;
+					transform: translateY(-50%);
+					left: -18px;
+				}
+			}
 
 			& > .user {
 				picture {
