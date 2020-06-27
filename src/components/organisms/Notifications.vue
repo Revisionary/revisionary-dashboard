@@ -19,7 +19,8 @@
 			</div>
 			<div class="content">
 				<div class="subject">
-					<b>{{ notification.first_name }} {{ notification.last_name }}</b> completed a task:
+					<b>{{ notification.first_name }} {{ notification.last_name }}</b>
+					{{ notification.type }}d a {{ notification.object_type }}:
 				</div>
 				<div class="info">
 					on
@@ -35,84 +36,84 @@
 		</li>
 
 		<!-- <li class="notification new">
-			<div class="user">
-				<ProfilePic picture="https://www.bilaltas.net/wp-content/uploads/2013/02/duvar11-300x300.jpg" />
-			</div>
-			<div class="content">
-				<div class="subject">
-					<b>Bill Tas</b> completed a
-					<b>live pin</b>:
+				<div class="user">
+					<ProfilePic picture="https://www.bilaltas.net/wp-content/uploads/2013/02/duvar11-300x300.jpg" />
 				</div>
-				<div class="info">
-					on
-					<span>
-						<a href="#">Home[ThunderWear]</a>
-					</span>
+				<div class="content">
+					<div class="subject">
+						<b>Bill Tas</b> completed a
+						<b>live pin</b>:
+					</div>
+					<div class="info">
+						on
+						<span>
+							<a href="#">Home[ThunderWear]</a>
+						</span>
+					</div>
+					<div class="date">
+						<TimeIcon />2 hours ago
+					</div>
 				</div>
-				<div class="date">
-					<TimeIcon />2 hours ago
+			</li>
+			<li class="notification new">
+				<div class="user">
+					<ProfilePic picture="https://www.bilaltas.net/wp-content/uploads/2013/02/duvar11-300x300.jpg" />
 				</div>
-			</div>
-		</li>
-		<li class="notification new">
-			<div class="user">
-				<ProfilePic picture="https://www.bilaltas.net/wp-content/uploads/2013/02/duvar11-300x300.jpg" />
-			</div>
-			<div class="content">
-				<div class="subject">
-					<b>Bill Tas</b> completed a
-					<b>live pin</b>:
+				<div class="content">
+					<div class="subject">
+						<b>Bill Tas</b> completed a
+						<b>live pin</b>:
+					</div>
+					<div class="info">
+						on
+						<span>
+							<a href="#">Home[ThunderWear]</a>
+						</span>
+					</div>
+					<div class="date">
+						<TimeIcon />2 hours ago
+					</div>
 				</div>
-				<div class="info">
-					on
-					<span>
-						<a href="#">Home[ThunderWear]</a>
-					</span>
+			</li>
+			<li class="notification">
+				<div class="user">
+					<ProfilePic picture="https://www.bilaltas.net/wp-content/uploads/2013/02/duvar11-300x300.jpg" />
 				</div>
-				<div class="date">
-					<TimeIcon />2 hours ago
+				<div class="content">
+					<div class="subject">
+						<b>Bill Tas</b> completed a
+						<b>live pin</b>:
+					</div>
+					<div class="info">
+						on
+						<span>
+							<a href="#">Home[ThunderWear]</a>
+						</span>
+					</div>
+					<div class="date">
+						<TimeIcon />2 hours ago
+					</div>
 				</div>
-			</div>
-		</li>
-		<li class="notification">
-			<div class="user">
-				<ProfilePic picture="https://www.bilaltas.net/wp-content/uploads/2013/02/duvar11-300x300.jpg" />
-			</div>
-			<div class="content">
-				<div class="subject">
-					<b>Bill Tas</b> completed a
-					<b>live pin</b>:
+			</li>
+			<li class="notification">
+				<div class="user">
+					<ProfilePic picture="https://www.bilaltas.net/wp-content/uploads/2013/02/duvar11-300x300.jpg" />
 				</div>
-				<div class="info">
-					on
-					<span>
-						<a href="#">Home[ThunderWear]</a>
-					</span>
+				<div class="content">
+					<div class="subject">
+						<b>Bill Tas</b> completed a
+						<b>live pin</b>:
+					</div>
+					<div class="info">
+						on
+						<span>
+							<a href="#">Home[ThunderWear]</a>
+						</span>
+					</div>
+					<div class="date">
+						<TimeIcon />2 hours ago
+					</div>
 				</div>
-				<div class="date">
-					<TimeIcon />2 hours ago
-				</div>
-			</div>
-		</li>
-		<li class="notification">
-			<div class="user">
-				<ProfilePic picture="https://www.bilaltas.net/wp-content/uploads/2013/02/duvar11-300x300.jpg" />
-			</div>
-			<div class="content">
-				<div class="subject">
-					<b>Bill Tas</b> completed a
-					<b>live pin</b>:
-				</div>
-				<div class="info">
-					on
-					<span>
-						<a href="#">Home[ThunderWear]</a>
-					</span>
-				</div>
-				<div class="date">
-					<TimeIcon />2 hours ago
-				</div>
-			</div>
 		</li>-->
 
 		<li v-if="hasMore">
@@ -149,6 +150,9 @@
 		},
 		methods: {
 			async fetch(page = 1) {
+				this.$nextTick(() => {
+					this.$nuxt.$loading.start();
+				});
 				this.fetching = true;
 
 				await this.$axios
@@ -173,13 +177,13 @@
 							this.totalNotifications = total;
 
 							// Scroll
-							setTimeout(function() {
+							this.$nextTick(() => {
 								document
 									.getElementById(
 										"notification-" + notifications[0].ID
 									)
 									.scrollIntoView(false);
-							}, 200);
+							});
 
 							this.page = page;
 							this.fetching = false;
