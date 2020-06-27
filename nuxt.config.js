@@ -106,8 +106,8 @@ export default {
 	},
 	proxy: {
 		'/v1/': {
-			target: 'http://dapi.revisionary.co/' // Local
-			//target: 'https://new.revisionaryapp.com/' // Live
+			//target: 'http://dapi.revisionary.co/' // Local
+			target: 'https://new.revisionaryapp.com/' // Live
 		}
 	},
 	// proxy: {
