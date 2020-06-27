@@ -1,17 +1,20 @@
 <template>
 	<ul class="notifications-wrapper">
+		<li v-if="fetching">Loading...</li>
 		<li
 			class="notification"
 			:class="{new : !notification.isRead}"
-			v-for="notification in $store.state.notifications"
+			v-for="notification in notifications"
 			:key="notification.ID"
+			:id="'notification-' + notification.ID"
 		>
 			<div class="user">
 				<ProfilePic picture="https://www.bilaltas.net/wp-content/uploads/2013/02/duvar11-300x300.jpg" />
 			</div>
 			<div class="content">
 				<div class="subject">
-					<b>ASDBill Tas</b> completed a
+					{{ notification.ID }}
+					<b>Bill Tas</b> completed a
 					<b>live pin</b>:
 				</div>
 				<div class="info">
@@ -26,8 +29,6 @@
 				</div>
 			</div>
 		</li>
-
-		<li v-if="isFetching">Loading...</li>
 
 		<!-- <li class="notification new">
 			<div class="user">
@@ -111,7 +112,11 @@
 		</li>-->
 
 		<li v-if="hasMore">
-			<button class="full transparent-big">Load More Notifications</button>
+			<button
+				class="full transparent-big"
+				@click="fetch(page + 1)"
+				:disabled="fetching"
+			>{{ fetching ? 'Loading...' : 'Load More Notifications - ' + (page + 1) }}</button>
 		</li>
 	</ul>
 </template>
@@ -125,20 +130,65 @@
 			ProfilePic,
 			TimeIcon
 		},
+		data() {
+			return {
+				notifications: [],
+				page: 1,
+				totalNotifications: 0,
+				fetching: false
+			};
+		},
 		computed: {
-			isFetching() {
-				return this.$store.state.notificationsFetching;
-			},
 			hasMore() {
-				let notificationsCount = this.$store.state.notifications.length;
-				let currentPage = this.$store.state.notificationsPage;
-				let total = this.$store.state.totalNotifications;
+				return this.notifications.length < this.totalNotifications;
+			}
+		},
+		methods: {
+			async fetch(page = 1) {
+				this.fetching = true;
 
-				return notificationsCount < total;
+				await this.$axios
+					.get("notifications/" + page)
+					.then(({ status, data }) => {
+						if (status === 200) {
+							const notifications = data.notifications;
+							const total = data.totalCount;
+							console.log(
+								"NOTIFICATIONS (" + page + "): ",
+								notifications,
+								total
+							);
+
+							if (page == 1) this.notifications = notifications;
+							else
+								this.notifications = [
+									...this.notifications,
+									...notifications
+								];
+
+							this.totalNotifications = total;
+
+							// Scroll
+							setTimeout(function() {
+								document
+									.getElementById(
+										"notification-" + notifications[0].ID
+									)
+									.scrollIntoView(false);
+							}, 200);
+
+							this.page = page;
+							this.fetching = false;
+						}
+					})
+					.catch(function(error) {
+						console.log("ERROR: ", error);
+						this.fetching = false;
+					});
 			}
 		},
 		created() {
-			this.$store.dispatch("fetchNotifications");
+			this.fetch();
 		}
 	};
 </script>
