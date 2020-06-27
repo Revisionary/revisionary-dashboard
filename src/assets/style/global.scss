@@ -72,6 +72,10 @@ input[type="reset"] {
 		opacity: 0.9;
 	}
 
+	&.full {
+		width: 100%;
+	}
+
 	&.with-icon {
 		& > svg {
 			margin-right: 5px;
@@ -101,6 +105,22 @@ input[type="reset"] {
 
 		&:hover {
 			background-color: rgba(255, 255, 255, 0.12);
+		}
+	}
+
+	&.transparent-big {
+		background: none;
+		height: 40px;
+		border-radius: 0;
+		border: 1px solid #C3CAD8;
+		color: #7D8A98 !important;
+		font-size: 14px;
+		line-height: 17px;
+		font-weight: 500;
+
+		&:hover {
+			color: black !important;
+			border-color: black;
 		}
 	}
 
@@ -148,6 +168,11 @@ input[type="reset"] {
 		&:hover {
 			opacity: 0.8;
 		}
+	}
+
+	&[disabled] {
+		opacity: 0.3;
+		pointer-events: none;
 	}
 }
 

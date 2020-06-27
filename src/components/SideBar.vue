@@ -180,13 +180,14 @@
 			line-height: 14px;
 			text-transform: uppercase;
 			padding: 20px 26px;
-			//border: inherit;
 			border-left: none;
 			border-right: none;
 		}
 
 		& > .panel-content {
 			padding: 20px 25px;
+			overflow: auto;
+			max-height: calc(100% - 55px);
 		}
 	}
 

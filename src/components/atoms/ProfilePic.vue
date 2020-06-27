@@ -252,6 +252,10 @@
 			abbreviation: {
 				type: String,
 				default: ""
+			},
+			ID: {
+				type: Number,
+				default: 0
 			}
 		},
 		components: {

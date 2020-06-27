@@ -1,7 +1,8 @@
 <template>
 	<ul class="notifications-wrapper">
 		<li
-			class="notification new"
+			class="notification"
+			:class="{new : !notification.isRead}"
 			v-for="notification in $store.state.notifications"
 			:key="notification.ID"
 		>
@@ -26,7 +27,9 @@
 			</div>
 		</li>
 
-		<li class="notification new">
+		<li v-if="isFetching">Loading...</li>
+
+		<!-- <li class="notification new">
 			<div class="user">
 				<ProfilePic picture="https://www.bilaltas.net/wp-content/uploads/2013/02/duvar11-300x300.jpg" />
 			</div>
@@ -105,6 +108,10 @@
 					<TimeIcon />2 hours ago
 				</div>
 			</div>
+		</li>-->
+
+		<li v-if="hasMore">
+			<button class="full transparent-big">Load More Notifications</button>
 		</li>
 	</ul>
 </template>
@@ -117,6 +124,18 @@
 		components: {
 			ProfilePic,
 			TimeIcon
+		},
+		computed: {
+			isFetching() {
+				return this.$store.state.notificationsFetching;
+			},
+			hasMore() {
+				let notificationsCount = this.$store.state.notifications.length;
+				let currentPage = this.$store.state.notificationsPage;
+				let total = this.$store.state.totalNotifications;
+
+				return notificationsCount < total;
+			}
 		},
 		created() {
 			this.$store.dispatch("fetchNotifications");
