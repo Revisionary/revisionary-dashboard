@@ -87,7 +87,7 @@
 			border: 1px solid #eaedf3;
 			border-top: none;
 			position: relative;
-			z-index: 3;
+			z-index: 8;
 			height: inherit;
 			display: flex;
 			flex-direction: column;
@@ -160,7 +160,7 @@
 	aside.panel {
 		width: 285px;
 		position: absolute;
-		z-index: 2;
+		z-index: 7;
 		top: 0;
 		left: 100%;
 		height: 100%;

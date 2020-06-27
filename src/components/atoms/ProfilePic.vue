@@ -2,7 +2,7 @@
 	<picture
 		class="bottom-tooltip tooltip-not-contained"
 		:style="`background-image: url(${pictureUrl});`"
-		:data-tooltip="(fullName != '' ? fullName : null)"
+		:data-tooltip="(fullName != '' && tooltip ? fullName : null)"
 	>
 		<MailIcon v-if="abbr == '?'" />
 		<span v-else>{{abbr}}</span>
@@ -252,6 +252,10 @@
 			abbreviation: {
 				type: String,
 				default: ""
+			},
+			tooltip: {
+				type: Boolean,
+				default: true
 			},
 			ID: {
 				type: Number,

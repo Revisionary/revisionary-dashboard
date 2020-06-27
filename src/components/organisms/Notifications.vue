@@ -9,13 +9,17 @@
 			:id="'notification-' + notification.ID"
 		>
 			<div class="user">
-				<ProfilePic picture="https://www.bilaltas.net/wp-content/uploads/2013/02/duvar11-300x300.jpg" />
+				<ProfilePic
+					:firstName="notification.first_name"
+					:lastName="notification.last_name"
+					:picture="notification.picture"
+					:email="notification.email"
+					:tooltip="false"
+				/>
 			</div>
 			<div class="content">
 				<div class="subject">
-					{{ notification.ID }}
-					<b>Bill Tas</b> completed a
-					<b>live pin</b>:
+					<b>{{ notification.first_name }} {{ notification.last_name }}</b> completed a task:
 				</div>
 				<div class="info">
 					on
