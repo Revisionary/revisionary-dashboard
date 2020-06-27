@@ -120,7 +120,7 @@
 				class="full transparent-big"
 				@click="fetch(page + 1)"
 				:disabled="fetching"
-			>{{ fetching ? 'Loading...' : 'Load More Notifications - ' + (page + 1) }}</button>
+			>{{ fetching ? 'Loading...' : 'Load More Notifications' }}</button>
 		</li>
 	</ul>
 </template>
