@@ -17,7 +17,7 @@
 					:data-tooltip="$store.state.isSideBarOpen ? null : 'Notifications'"
 					@click.prevent="toggleTab('notifications')"
 				>
-					<NotificationIcon />
+					<NotificationIcon :hasNew="$store.state.newNotificationsCount > 0" />
 					<span class="menu-label">Notifications</span>
 				</span>
 				<span

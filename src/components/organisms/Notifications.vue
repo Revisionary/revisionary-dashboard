@@ -1,5 +1,31 @@
 <template>
 	<ul class="notifications-wrapper">
+		<li
+			class="notification new"
+			v-for="notification in $store.state.notifications"
+			:key="notification.ID"
+		>
+			<div class="user">
+				<ProfilePic picture="https://www.bilaltas.net/wp-content/uploads/2013/02/duvar11-300x300.jpg" />
+			</div>
+			<div class="content">
+				<div class="subject">
+					<b>ASDBill Tas</b> completed a
+					<b>live pin</b>:
+				</div>
+				<div class="info">
+					on
+					<span>
+						<a href="#">Home[ThunderWear]</a>
+					</span>
+				</div>
+				<div class="date">
+					<TimeIcon />
+					{{ $timeSince(notification.time) }}
+				</div>
+			</div>
+		</li>
+
 		<li class="notification new">
 			<div class="user">
 				<ProfilePic picture="https://www.bilaltas.net/wp-content/uploads/2013/02/duvar11-300x300.jpg" />
@@ -93,7 +119,7 @@
 			TimeIcon
 		},
 		created() {
-			console.log("Notifications fetching...");
+			this.$store.dispatch("fetchNotifications");
 		}
 	};
 </script>

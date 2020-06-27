@@ -16,6 +16,20 @@
 		components: {
 			TopBar,
 			SideBar
+		},
+		created() {
+			console.log("APP CREATED");
+
+			let $this = this;
+			setTimeout(function() {
+				// First notification check after 2 sconds
+				$this.$store.dispatch("checkNotifications");
+
+				// Check notifications every 10 seconds
+				setInterval(function() {
+					$this.$store.dispatch("checkNotifications");
+				}, 10000);
+			}, 2000);
 		}
 	};
 </script>

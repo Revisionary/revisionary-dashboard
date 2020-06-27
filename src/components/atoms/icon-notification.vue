@@ -14,8 +14,18 @@
 			stroke-linecap="round"
 			stroke-linejoin="round"
 		/>
-		<circle cx="13" cy="6" r="5" fill="#F39754" stroke="white" stroke-width="2" />
+		<circle cx="13" cy="6" r="5" fill="#F39754" stroke="white" stroke-width="2" v-if="hasNew" />
 	</svg>
 </template>
+<script>
+	export default {
+		props: {
+			hasNew: {
+				required: false,
+				default: false
+			}
+		}
+	};
+</script>
 <style>
 </style>
