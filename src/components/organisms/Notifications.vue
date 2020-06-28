@@ -178,11 +178,19 @@
 
 							// Scroll
 							this.$nextTick(() => {
-								document
-									.getElementById(
+								if (
+									typeof document.getElementById(
 										"notification-" + notifications[0].ID
-									)
-									.scrollIntoView(false);
+									) !== "undefined" &&
+									document.getElementById(
+										"notification-" + notifications[0].ID
+									) !== null
+								)
+									document
+										.getElementById(
+											"notification-" + notifications[0].ID
+										)
+										.scrollIntoView(false);
 							});
 
 							this.page = page;
