@@ -184,8 +184,10 @@
 									return value["ID"];
 								});
 
-							console.log("Unread Notifications: ", unread_IDs);
-							this.read(unread_IDs);
+							if (unread_IDs.length) {
+								console.log("Unread Notifications: ", unread_IDs);
+								this.read(unread_IDs);
+							}
 						}
 					})
 					.catch(function(error) {
