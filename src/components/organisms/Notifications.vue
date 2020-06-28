@@ -21,20 +21,73 @@
 			<div class="content">
 				<div class="subject">
 					<b>{{ notification.first_name }} {{ notification.last_name }}</b>
-					<span v-if="notification.type == 'new'">added a task:</span>
+
+					<span v-if="notification.type == 'new'">added:</span>
 					<span v-else-if="notification.type == 'complete'">completed:</span>
 					<span v-else-if="notification.type == 'incomplete'">marked incomplete:</span>
 					<span v-else-if="notification.type == 'comment'">wrote:</span>
 					<span v-else-if="notification.type == 'share'">shared:</span>
 					<span v-else-if="notification.type == 'unshare'">unshared:</span>
-					<span v-else>Cadded a task:</span>
+					<span v-else>{{ notification.notification }}</span>
 				</div>
+
 				<div class="info">
-					on
-					<span>
-						<a href="#">Home[ThunderWear]</a>
+					<span v-if="notification.type == 'new'">
+						Task #{{ notification.notification }} on
+						<span>
+							<a href="#" v-if="notification.page_name">
+								<span>{{ notification.page_name }}</span>
+								<span v-if="notification.project_name">[{{ notification.project_name }}]</span>
+							</a>
+						</span>
 					</span>
+					<span v-else-if="notification.type == 'complete'">
+						Task #{{ notification.notification }} on
+						<span>
+							<a href="#" v-if="notification.page_name">
+								<span>{{ notification.page_name }}</span>
+								<span v-if="notification.project_name">[{{ notification.project_name }}]</span>
+							</a>
+						</span>
+					</span>
+					<span v-else-if="notification.type == 'incomplete'">
+						Task #{{ notification.notification }} on
+						<span>
+							<a href="#" v-if="notification.page_name">
+								<span>{{ notification.page_name }}</span>
+								<span v-if="notification.project_name">[{{ notification.project_name }}]</span>
+							</a>
+						</span>
+					</span>
+					<span v-else-if="notification.type == 'comment'">
+						<i>"{{ notification.notification }}..."</i>
+						<div>
+							on
+							<span>
+								<a href="#" v-if="notification.page_name">
+									<span>{{ notification.page_name }}</span>
+									<span v-if="notification.project_name">[{{ notification.project_name }}]</span>
+								</a>
+							</span>
+						</div>
+					</span>
+					<span v-else-if="notification.type == 'share'">
+						<span v-if="notification.project_name && !notification.page_name">
+							<a href="#">{{ notification.project_name }}</a> Project
+						</span>
+						<span v-if="notification.page_name">
+							<a href="#">
+								{{ notification.page_name }}
+								<span v-if="notification.project_name">[{{ notification.project_name }}]</span>
+							</a> Page
+						</span>
+					</span>
+					<span v-else-if="notification.type == 'unshare'">
+						<i>{{ notification.notification }}</i>
+					</span>
+					<span v-else>{{ notification.notification }}</span>
 				</div>
+
 				<div class="date">
 					<TimeIcon />
 					{{ $timeSince(notification.time) }}
