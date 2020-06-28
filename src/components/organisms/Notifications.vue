@@ -1,6 +1,7 @@
 <template>
 	<ul class="notifications-wrapper">
 		<li v-if="fetching">Loading...</li>
+
 		<li
 			class="notification"
 			:class="{new : !notification.isRead}"
@@ -20,7 +21,13 @@
 			<div class="content">
 				<div class="subject">
 					<b>{{ notification.first_name }} {{ notification.last_name }}</b>
-					{{ notification.type }}d a {{ notification.object_type }}:
+					<span v-if="notification.type == 'new'">added a task:</span>
+					<span v-else-if="notification.type == 'complete'">completed:</span>
+					<span v-else-if="notification.type == 'incomplete'">marked incomplete:</span>
+					<span v-else-if="notification.type == 'comment'">wrote:</span>
+					<span v-else-if="notification.type == 'share'">shared:</span>
+					<span v-else-if="notification.type == 'unshare'">unshared:</span>
+					<span v-else>Cadded a task:</span>
 				</div>
 				<div class="info">
 					on
@@ -34,87 +41,6 @@
 				</div>
 			</div>
 		</li>
-
-		<!-- <li class="notification new">
-				<div class="user">
-					<ProfilePic picture="https://www.bilaltas.net/wp-content/uploads/2013/02/duvar11-300x300.jpg" />
-				</div>
-				<div class="content">
-					<div class="subject">
-						<b>Bill Tas</b> completed a
-						<b>live pin</b>:
-					</div>
-					<div class="info">
-						on
-						<span>
-							<a href="#">Home[ThunderWear]</a>
-						</span>
-					</div>
-					<div class="date">
-						<TimeIcon />2 hours ago
-					</div>
-				</div>
-			</li>
-			<li class="notification new">
-				<div class="user">
-					<ProfilePic picture="https://www.bilaltas.net/wp-content/uploads/2013/02/duvar11-300x300.jpg" />
-				</div>
-				<div class="content">
-					<div class="subject">
-						<b>Bill Tas</b> completed a
-						<b>live pin</b>:
-					</div>
-					<div class="info">
-						on
-						<span>
-							<a href="#">Home[ThunderWear]</a>
-						</span>
-					</div>
-					<div class="date">
-						<TimeIcon />2 hours ago
-					</div>
-				</div>
-			</li>
-			<li class="notification">
-				<div class="user">
-					<ProfilePic picture="https://www.bilaltas.net/wp-content/uploads/2013/02/duvar11-300x300.jpg" />
-				</div>
-				<div class="content">
-					<div class="subject">
-						<b>Bill Tas</b> completed a
-						<b>live pin</b>:
-					</div>
-					<div class="info">
-						on
-						<span>
-							<a href="#">Home[ThunderWear]</a>
-						</span>
-					</div>
-					<div class="date">
-						<TimeIcon />2 hours ago
-					</div>
-				</div>
-			</li>
-			<li class="notification">
-				<div class="user">
-					<ProfilePic picture="https://www.bilaltas.net/wp-content/uploads/2013/02/duvar11-300x300.jpg" />
-				</div>
-				<div class="content">
-					<div class="subject">
-						<b>Bill Tas</b> completed a
-						<b>live pin</b>:
-					</div>
-					<div class="info">
-						on
-						<span>
-							<a href="#">Home[ThunderWear]</a>
-						</span>
-					</div>
-					<div class="date">
-						<TimeIcon />2 hours ago
-					</div>
-				</div>
-		</li>-->
 
 		<li v-if="hasMore">
 			<button
