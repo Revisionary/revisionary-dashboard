@@ -78,7 +78,9 @@
 						<span v-if="notification.page_name">
 							<a href="#">
 								{{ notification.page_name }}
-								<span v-if="notification.project_name">[{{ notification.project_name }}]</span>
+								<span
+									v-if="notification.project_name"
+								>[{{ notification.project_name }}]</span>
 							</a> Page
 						</span>
 					</span>
@@ -174,11 +176,36 @@
 
 							this.page = page;
 							this.fetching = false;
+
+							// Read Notifications
+							const unread_IDs = notifications
+								.filter(notification => !notification.isRead)
+								.map(function(value, index) {
+									return value["ID"];
+								});
+
+							console.log("Unread Notifications: ", unread_IDs);
+							this.read(unread_IDs);
 						}
 					})
 					.catch(function(error) {
 						console.log("ERROR: ", error);
 						this.fetching = false;
+					});
+			},
+
+			async read(IDs) {
+				await this.$axios
+					.post("readnotifications", {
+						IDs: IDs
+					})
+					.then(({ status, data }) => {
+						if (status === 200) {
+							console.log("Notifications Marked Read: ", IDs);
+						}
+					})
+					.catch(function(error) {
+						console.log("ERROR: ", error);
 					});
 			}
 		},
