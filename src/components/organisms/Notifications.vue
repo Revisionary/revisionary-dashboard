@@ -204,6 +204,15 @@
 					.then(({ status, data }) => {
 						if (status === 200) {
 							console.log("Notifications Marked Read: ", IDs);
+
+							// Decrease the unread count in store
+							const currentCount = this.$store.state
+								.newNotificationsCount;
+
+							this.$store.commit(
+								"setNotificationsCount",
+								currentCount - IDs.length
+							);
 						}
 					})
 					.catch(function(error) {
