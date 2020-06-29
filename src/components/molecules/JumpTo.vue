@@ -20,52 +20,36 @@
 					v-else
 					v-for="eachProject in projects.filter(project => !project.archived && !project.deleted)"
 					:key="eachProject.ID"
-					class="with-tasks"
-					:class="{active : project.ID == eachProject.ID}"
+					:class="{active : pages.filter(page => page.project_ID == eachProject.ID).length || pagesFetching == eachProject.ID, projectactive : project.ID == eachProject.ID}"
 					@click="resetPages"
 				>
 					<nuxt-link :to="`/project/${eachProject.ID}`">
+						<div class="status" :class="{done: eachProject.incomplete_tasks == 0}"></div>
 						<span v-html="eachProject.title"></span>
-						<span
-							class="jumper-plus-icon"
-							v-if="!pages.filter(page => page.project_ID == eachProject.ID).length && pagesFetching != eachProject.ID"
+						<div
+							class="bring-pages"
+							:class="{active: pages.filter(page => page.project_ID == eachProject.ID).length || pagesFetching == eachProject.ID}"
 							@click.prevent="bringPages(eachProject.ID)"
-						>+</span>
-						<span class="jumper-plus-icon" v-else>-</span>
+						>
+							<ChevronDownIcon />
+						</div>
 					</nuxt-link>
 
-					<div class="tasks-count">
-						<div
-							class="left tooltip-not-contained"
-							data-tooltip="Incomplete"
-							v-if="eachProject.incomplete_tasks > 0"
-						>{{ eachProject.incomplete_tasks }}</div>
-						<div
-							class="done tooltip-not-contained"
-							data-tooltip="Solved"
-							v-if="eachProject.complete_tasks > 0"
-						>{{ eachProject.complete_tasks }}</div>
-					</div>
-					<ul class="submenu">
-						<li v-if="pagesFetching == eachProject.ID">Loading...</li>
-						<li
-							class="with-tasks"
-							v-for="page in pages.filter(page => page.project_ID == eachProject.ID)"
-							:key="page.ID"
-						>
-							<a href="#">{{page.title}}</a>
-							<span class="tasks-count">
-								<div
-									class="left tooltip-not-contained"
-									data-tooltip="Incomplete"
-									v-if="page.incomplete_tasks > 0"
-								>{{ page.incomplete_tasks }}</div>
-								<div
-									class="done tooltip-not-contained"
-									data-tooltip="Solved"
-									v-if="page.complete_tasks > 0"
-								>{{ page.complete_tasks }}</div>
-							</span>
+					<ul
+						class="submenu"
+						v-if="pages.filter(page => page.project_ID == eachProject.ID).length || pagesFetching == eachProject.ID"
+					>
+						<li v-if="pagesFetching == eachProject.ID">
+							<span>Loading...</span>
+						</li>
+						<li v-for="page in pages.filter(page => page.project_ID == eachProject.ID)" :key="page.ID">
+							<a href="#">
+								<div class="status" :class="{done: page.incomplete_tasks == 0}"></div>
+								<span v-html="page.title"></span>
+								<span class="open-phases">
+									<ChevronRightIcon />
+								</span>
+							</a>
 						</li>
 					</ul>
 				</li>
@@ -77,11 +61,15 @@
 <script>
 	import { mapGetters } from "vuex";
 	import CaretDownIcon from "~/components/atoms/icon-caret-down.vue";
+	import ChevronDownIcon from "~/components/atoms/icon-chevron-down.vue";
+	import ChevronRightIcon from "~/components/atoms/icon-chevron-right.vue";
 	import PlusIcon from "~/components/atoms/icon-plus.vue";
 
 	export default {
 		components: {
 			CaretDownIcon,
+			ChevronDownIcon,
+			ChevronRightIcon,
 			PlusIcon
 		},
 		data() {
@@ -142,39 +130,123 @@
 			max-height: calc(90vh - 65px);
 			overflow-x: hidden;
 			overflow-y: auto;
+
+			.status {
+				pointer-events: all;
+				width: 5px;
+				height: 5px;
+				border-width: 1px;
+				margin-right: 10px;
+			}
+
+			& > ul {
+				& > li {
+					& > a {
+						font-weight: 500;
+						font-size: 14px;
+						line-height: 17px;
+						padding: 10px 45px 10px 10px;
+						color: #8b96ad;
+						letter-spacing: 0.1px;
+						min-width: 250px;
+						position: relative;
+
+						&:hover {
+							color: black;
+						}
+
+						& > .bring-pages {
+							position: absolute;
+							right: 0;
+							top: 50%;
+							transform: translateY(-50%);
+							padding: 10px 15px;
+							justify-content: flex-end;
+							cursor: pointer;
+
+							svg {
+								width: auto;
+
+								path {
+									stroke: #8b96ad;
+								}
+							}
+
+							&.active,
+							&:hover {
+								svg path {
+									stroke: #037ef3;
+								}
+							}
+						}
+					}
+
+					&.projectactive {
+						& > a {
+							color: black !important;
+						}
+					}
+
+					&.active {
+						& > a {
+							color: #037ef3 !important;
+						}
+					}
+
+					& > .submenu {
+						background-color: #f5f7fa;
+						box-shadow: inset 0px 3px 2px rgba(0, 0, 0, 0.01);
+						//padding: 12px 20px 20px;
+						padding: 0;
+						padding-left: 18px;
+						list-style-type: none;
+
+						& > li {
+							& > a,
+							& > span {
+								font-size: 14px;
+								font-weight: 500;
+								line-height: 17px;
+								padding: 10px 45px 10px 10px;
+								position: relative;
+								display: flex;
+								align-items: center;
+
+								& > .status {
+									opacity: 0.5;
+								}
+
+								& > .open-phases {
+									position: absolute;
+									right: 0;
+									top: 50%;
+									transform: translateY(-50%);
+									padding: 10px 15px;
+
+									svg {
+										display: block;
+									}
+								}
+
+								&:hover {
+									svg path {
+										stroke: #037ef3;
+									}
+								}
+							}
+
+							.tasks-count {
+								opacity: 0.7;
+								top: 0;
+							}
+						}
+					}
+				}
+			}
 		}
 
 		.current {
 			text-transform: capitalize;
-		}
-
-		.with-tasks {
-			position: relative;
-
-			.tasks-count > * {
-				width: 15px;
-				height: 15px;
-				font-size: 9px;
-			}
-
-			.jumper-plus-icon {
-				margin-left: 10px;
-				font-size: 18px;
-				color: #9ea5ab;
-
-				&:hover {
-					color: black;
-				}
-			}
-		}
-
-		.submenu {
-			.with-tasks {
-				.tasks-count {
-					opacity: 0.7;
-					top: 0;
-				}
-			}
 		}
 	}
 </style>
