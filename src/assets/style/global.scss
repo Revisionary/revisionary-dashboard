@@ -247,81 +247,30 @@ details {
 			right: auto;
 		}
 
-		&.sub-menu {
-			margin-top: 5px;
+		ul.menu {
+			padding-left: 0;
+			list-style-type: none;
+			overflow: auto;
 
-			& > ul {
-				list-style-type: none;
-				display: inline-block;
+			&.boxed {
+				margin-top: 5px;
 				background-color: #fff;
 				border: 1px solid #eaedf3;
 				border-radius: 4px;
 				padding: 8px 0;
 				box-shadow: 0px 0px 3px rgba(237, 241, 250, 0.5);
-
-				& > li {
-					white-space: nowrap;
-
-					& > a,
-					& > span {
-						font-size: 15px;
-						line-height: 18px;
-						font-weight: 500;
-						display: flex;
-						align-items: center;
-						padding: 8px 14px;
-						color: #9ea5ab;
-
-						& > svg {
-							width: 20px;
-							margin-right: 5px;
-						}
-
-						&:hover {
-							color: #037ef3;
-						}
-
-					}
-
-					&.with-status {
-
-					}
-
-					&.with-tasks {
-						position: relative;
-
-						& > a {
-							padding-right: 50px;
-						}
-
-						.tasks-count {
-							position: absolute;
-							right: 10px;
-							top: 8px;
-							width: 35px;
-							justify-content: flex-end;
-						}
-
-					}
-
-					&.active {
-						& > a,
-						& > span {
-							font-weight: 600;
-							color: #333333 !important;
-							//background-color: red;
-						}
-					}
-				}
 			}
 
 			&.compact {
-				& > ul {
-					& > li {
-						& > a,
-						& > span {
-							padding: 3px 12px;
-						}
+				padding: 0;
+
+				& > li {
+					& > a,
+					& > span {
+						padding: 3px 12px;
+						font-weight: 500;
+						font-size: 12px;
+						line-height: 14px;
 					}
 				}
 			}
@@ -329,21 +278,162 @@ details {
 			&.lines {
 				padding: 0;
 
-				& > ul {
-					& > li {
-						border-bottom: 1px solid #eaedf3;
+				& > li {
+					border-bottom: 1px solid #eaedf3;
 
-						& > a,
-						& > span {
-							padding: 8px 14px;
-							font-weight: 500;
-							font-size: 12px;
-							line-height: 14px;
+					& > a,
+					& > span {
+						padding: 8px 14px;
+
+					}
+				}
+
+			}
+
+			&.sub {
+				background-color: #f5f7fa;
+				box-shadow: inset 0px 3px 2px rgba(0, 0, 0, 0.01);
+
+				& > li {
+
+					> span {
+						padding-left: 30px;
+					}
+
+					> ul > li {
+
+						> span {
+							padding-left: 45px;
 						}
+
+						> ul > li {
+
+							> span {
+								padding-left: 60px;
+							}
+
+						}
+
+					}
+
+				}
+			}
+
+			&.sub2 {
+				background-color: #edf3fd;
+				box-shadow: inset 0px 3px 2px rgba(0, 0, 0, 0.01);
+			}
+
+			&.sub3 {
+				background-color: white;
+				box-shadow: inset 0px 0px 10px rgba(0, 0, 0, 0.1);
+			}
+
+			& > li {
+				white-space: nowrap;
+
+				& > a,
+				& > span {
+					font-size: 14px;
+					line-height: 17px;
+					font-weight: 500;
+					color: #8b96ad;
+					letter-spacing: 0.1px;
+
+					display: flex;
+					align-items: center;
+					justify-content: space-between;
+					padding: 8px 14px;
+					cursor: pointer;
+
+					& > svg {
+						width: 20px;
+						margin-right: 5px;
+						display: block;
+					}
+
+					& > span,
+					& > div {
+						display: flex;
+						align-items: center;
+
+						& > svg {
+							width: 20px;
+							margin-right: 5px;
+							display: block;
+						}
+
+						&.left {
+							display: flex;
+							align-items: center;
+						}
+
+						&.right {
+							margin-left: 15px;
+
+							svg {
+								width: auto;
+								margin-right: 0;
+								display: block;
+
+								path {
+									stroke: #8b96ad;
+								}
+							}
+
+							&:hover {
+								svg path {
+									stroke: black;
+								}
+							}
+
+							&.active {
+								svg path {
+									stroke: #037ef3;
+								}
+							}
+
+						}
+
+					}
+
+
+					&:hover {
+						& > a,
+						& > span,
+						& > div {
+							color: black !important;
+						}
+
+						svg {
+							path {
+								stroke: black !important;
+							}
+						}
+					}
+
+				}
+
+				&.active {
+					& > a,
+					& > span,
+					& > div {
+						font-weight: 600;
+						color: #037ef3 !important;
+
+						svg {
+							path {
+								stroke: #037ef3 !important;
+							}
+						}
+
 					}
 				}
 			}
 		}
+
+
+
 	}
 
 	&:not([open]) > *:not(summary) {

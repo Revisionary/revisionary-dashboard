@@ -4,8 +4,8 @@
 			<span class="current" v-html="current"></span>
 			<CaretDownIcon />
 		</summary>
-		<div class="details-menu sub-menu">
-			<ul>
+		<div class="details-menu">
+			<ul class="menu boxed">
 				<li
 					:class="{active : $route.name === 'projects'}"
 					v-if="$route.name !== 'projects'"
@@ -20,41 +20,45 @@
 					v-else
 					v-for="eachProject in projects.filter(project => !project.archived && !project.deleted)"
 					:key="eachProject.ID"
-					:class="{active : pages.filter(page => page.project_ID == eachProject.ID).length || pagesFetching == eachProject.ID, projectactive : project.ID == eachProject.ID}"
+					:class="{
+						active : pages.filter(page => page.project_ID == eachProject.ID).length || pagesFetching == eachProject.ID,
+						projectactive : project.ID == eachProject.ID
+					}"
 				>
 					<nuxt-link :to="`/project/${eachProject.ID}`">
-						<div class="status" :class="{done: eachProject.incomplete_tasks == 0}"></div>
-						<span v-html="eachProject.title" @click="resetPages"></span>
-						<div
-							class="bring-pages"
-							:class="{active: pages.filter(page => page.project_ID == eachProject.ID).length || pagesFetching == eachProject.ID}"
-							@click.prevent="bringPages(eachProject.ID)"
-						>
+						<div class="left" @click.prevent="bringPages(eachProject.ID)">
+							<span class="status" :class="{done: eachProject.incomplete_tasks == 0}"></span>
+							<span v-html="eachProject.title"></span>
+						</div>
+						<div class="right" @click.prevent="bringPages(eachProject.ID)">
 							<ChevronDownIcon />
 						</div>
 					</nuxt-link>
 
 					<ul
-						class="inner-submenu"
+						class="menu sub"
 						v-if="pages.filter(page => page.project_ID == eachProject.ID).length || pagesFetching == eachProject.ID"
 					>
 						<li v-if="pagesFetching == eachProject.ID">
 							<span>Loading...</span>
 						</li>
-						<li v-for="page in pages.filter(page => page.project_ID == eachProject.ID)" :key="page.ID">
-							<span
-								@click="bringPhases(page.ID)"
-								:class="{active: phases.filter(phase => phase.page_ID == page.ID).length || phasesFetching == page.ID}"
-							>
-								<div class="status" :class="{done: page.incomplete_tasks == 0}"></div>
-								<span v-html="page.title"></span>
-								<span class="open-phases">
-									<ChevronRightIcon />
-								</span>
+						<li
+							v-for="page in pages.filter(page => page.project_ID == eachProject.ID)"
+							:key="page.ID"
+							:class="{active: phases.filter(phase => phase.page_ID == page.ID).length || phasesFetching == page.ID}"
+						>
+							<span @click="bringPhases(page.ID)">
+								<div class="left">
+									<span class="status" :class="{done: page.incomplete_tasks == 0}"></span>
+									<span v-html="page.title"></span>
+								</div>
+								<div class="right">
+									<ChevronDownIcon />
+								</div>
 							</span>
 
 							<ul
-								class="submenu"
+								class="menu sub2"
 								v-if="phases.filter(phase => phase.page_ID == page.ID).length || phasesFetching == page.ID"
 							>
 								<li v-if="phasesFetching == page.ID">
@@ -63,17 +67,20 @@
 								<li
 									v-for="(phase, index) in phases.filter(phase => phase.page_ID == page.ID)"
 									:key="phase.ID"
+									:class="{active: devices.filter(device => device.phase_ID == phase.ID).length || devicesFetching == phase.ID}"
 								>
 									<span @click="bringDevices(phase.ID)">
-										<div class="status" :class="{done: phase.incomplete_tasks == 0}"></div>
-										<span>v{{ index + 1 }}</span>
-										<span class="open-devices">
-											<ChevronRightIcon />
+										<div class="left">
+											<span class="status" :class="{done: phase.incomplete_tasks == 0}"></span>
+											<span>v{{ index + 1 }}</span>
+										</div>
+										<span class="right">
+											<ChevronDownIcon />
 										</span>
 									</span>
 
 									<ul
-										class="submenu"
+										class="menu sub3"
 										v-if="devices.filter(device => device.phase_ID == phase.ID).length || devicesFetching == phase.ID"
 									>
 										<li v-if="devicesFetching == phase.ID">
@@ -83,17 +90,22 @@
 											v-for="device in devices.filter(device => device.phase_ID == phase.ID)"
 											:key="device.ID"
 										>
-											<a href="#">
-												<div class="status" :class="{done: device.incomplete_tasks == 0}"></div>
-												<span>
-													<WindowIcon v-if="device.cat_ID == 5" />
-													<DesktopIcon v-if="device.cat_ID == 1" />
-													<LaptopIcon v-if="device.cat_ID == 2" />
-													<TabletIcon v-if="device.cat_ID == 3" />
-													<MobileIcon v-if="device.cat_ID == 4" />
-													{{device.cat_name}} ({{ device.width ? device.screen_width : device.screen_width }}x{{ device.height ? device.height: device.screen_height }})
-												</span>
-											</a>
+											<span>
+												<div class="left">
+													<span class="status" :class="{done: device.incomplete_tasks == 0}"></span>
+													<span>
+														<WindowIcon v-if="device.cat_ID == 5" />
+														<DesktopIcon v-if="device.cat_ID == 1" />
+														<LaptopIcon v-if="device.cat_ID == 2" />
+														<TabletIcon v-if="device.cat_ID == 3" />
+														<MobileIcon v-if="device.cat_ID == 4" />
+														{{device.cat_name}} ({{ device.width ? device.screen_width : device.screen_width }}x{{ device.height ? device.height: device.screen_height }})
+													</span>
+												</div>
+												<div class="right">
+													<ChevronRightIcon />
+												</div>
+											</span>
 										</li>
 									</ul>
 								</li>
@@ -164,17 +176,23 @@
 			},
 			resetPages() {
 				this.pages = [];
+				this.phases = [];
+				this.devices = [];
 			},
 			async bringPages(projectID) {
 				if (
 					this.pages.filter(page => page.project_ID == projectID).length
 				) {
 					this.pages = [];
+					this.phases = [];
+					this.devices = [];
 					return false;
 				}
 
 				this.pagesFetching = projectID;
 				this.pages = [];
+				this.phases = [];
+				this.devices = [];
 				await this.$axios
 					.get("project/" + projectID + "/pages")
 					.then(({ status, data }) => {
@@ -192,6 +210,7 @@
 			async bringPhases(pageID) {
 				if (this.phases.filter(phase => phase.page_ID == pageID).length) {
 					this.phases = [];
+					this.devices = [];
 					return false;
 				}
 
@@ -199,6 +218,7 @@
 
 				this.phasesFetching = pageID;
 				this.phases = [];
+				this.devices = [];
 				await this.$axios
 					.get("page/" + pageID + "/phases")
 					.then(({ status, data }) => {
@@ -249,162 +269,26 @@
 	#jump-to {
 		margin-left: 120px;
 
-		& > .details-menu {
-			max-height: calc(90vh - 65px);
-			overflow-y: auto;
-			width: 100vw;
-
-			.status {
-				pointer-events: all;
-				width: 5px;
-				height: 5px;
-				border-width: 1px;
-				margin-right: 10px;
-			}
-
-			& > ul {
-				& > li {
-					& > a {
-						font-weight: 500;
-						font-size: 14px;
-						line-height: 17px;
-						padding: 10px 45px 10px 10px;
-						color: #8b96ad;
-						letter-spacing: 0.1px;
-						min-width: 250px;
-						position: relative;
-
-						&:hover {
-							color: black;
-						}
-
-						& > .bring-pages {
-							position: absolute;
-							right: 0;
-							top: 50%;
-							transform: translateY(-50%);
-							padding: 10px 15px;
-							justify-content: flex-end;
-							cursor: pointer;
-
-							svg {
-								width: auto;
-
-								path {
-									stroke: #8b96ad;
-								}
-							}
-
-							&.active,
-							&:hover {
-								svg path {
-									stroke: #037ef3;
-								}
-							}
-						}
-					}
-
-					&.projectactive {
-						& > a {
-							color: black !important;
-						}
-					}
-
-					&.active {
-						& > a {
-							color: #037ef3 !important;
-						}
-					}
-
-					& > .inner-submenu {
-						background-color: #f5f7fa;
-						box-shadow: inset 0px 3px 2px rgba(0, 0, 0, 0.01);
-						padding: 0;
-						padding-left: 18px;
-						list-style-type: none;
-
-						& > li {
-							position: relative;
-
-							& > a,
-							& > span {
-								font-size: 14px;
-								font-weight: 500;
-								line-height: 17px;
-								padding: 10px 45px 10px 10px;
-								position: relative;
-								display: flex;
-								align-items: center;
-								cursor: pointer;
-
-								& > .status {
-									opacity: 0.5;
-								}
-
-								& > .open-phases {
-									position: absolute;
-									right: 0;
-									top: 50%;
-									transform: translateY(-50%);
-									padding: 10px 15px;
-
-									svg {
-										display: block;
-									}
-								}
-
-								&.active,
-								&:hover {
-									color: black;
-
-									svg path {
-										stroke: #037ef3;
-									}
-								}
-							}
-
-							.submenu {
-								position: absolute;
-								left: 100%;
-								top: 0;
-								background-color: #fff;
-								border: 1px solid #eaedf3;
-								padding: 0;
-								list-style-type: none;
-
-								& > li {
-									position: relative;
-
-									& > a,
-									& > span {
-										display: flex;
-										align-items: center;
-										padding: 10px 45px 10px 10px;
-										cursor: pointer;
-
-										& > .open-devices {
-											position: absolute;
-											right: 0;
-											top: 50%;
-											transform: translateY(-50%);
-											padding: 10px 15px;
-											justify-content: flex-end;
-										}
-
-										&:hover {
-											color: black;
-										}
-									}
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-
 		.current {
 			text-transform: capitalize;
+		}
+
+		.status {
+			pointer-events: all;
+			width: 5px;
+			height: 5px;
+			border-width: 1px;
+			margin-right: 10px;
+		}
+
+		ul.menu.boxed {
+			max-height: calc(90vh - 65px);
+		}
+
+		.projectactive {
+			& > a {
+				color: black;
+			}
 		}
 	}
 </style>

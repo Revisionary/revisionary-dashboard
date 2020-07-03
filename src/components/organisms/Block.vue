@@ -41,8 +41,8 @@
 							<summary>
 								<MoreIcon />
 							</summary>
-							<div class="details-menu sub-menu compact right">
-								<ul>
+							<div class="details-menu right">
+								<ul class="menu boxed compact">
 									<li>
 										<a href="#">Edit</a>
 									</li>
@@ -79,19 +79,21 @@
 									<ChevronDownIcon />
 								</div>
 							</summary>
-							<div class="details-menu sub-menu center compact lines">
-								<ul>
+							<div class="details-menu center">
+								<ul class="menu boxed compact lines">
 									<li v-if="devicesFetching">
 										<span>Loading...</span>
 									</li>
 									<li v-else v-for="device in devices" :key="device.ID">
 										<a href="#">
-											<WindowIcon v-if="device.cat_ID == 5" />
-											<DesktopIcon v-if="device.cat_ID == 1" />
-											<LaptopIcon v-if="device.cat_ID == 2" />
-											<TabletIcon v-if="device.cat_ID == 3" />
-											<MobileIcon v-if="device.cat_ID == 4" />
-											{{device.cat_name}} ({{ device.width ? device.screen_width : device.screen_width }}x{{ device.height ? device.height: device.screen_height }})
+											<span>
+												<WindowIcon v-if="device.cat_ID == 5" />
+												<DesktopIcon v-if="device.cat_ID == 1" />
+												<LaptopIcon v-if="device.cat_ID == 2" />
+												<TabletIcon v-if="device.cat_ID == 3" />
+												<MobileIcon v-if="device.cat_ID == 4" />
+												{{device.cat_name}} ({{ device.width ? device.screen_width : device.screen_width }}x{{ device.height ? device.height: device.screen_height }})
+											</span>
 										</a>
 									</li>
 								</ul>
@@ -110,16 +112,18 @@
 									<ChevronDownIcon />
 								</div>
 							</summary>
-							<div class="details-menu sub-menu compact lines versions-list">
-								<ul>
+							<div class="details-menu versions-list">
+								<ul class="menu boxed compact lines">
 									<li
 										v-for="(version, index) in blockData.versions"
 										:key="index"
 										:class="{active : index == blockData.versions.length - 1}"
 									>
 										<a href="#">
-											<VersionIcon />
-											v{{index + 1}} ({{$timeSince(version.created)}} ago)
+											<span>
+												<VersionIcon />
+												v{{index + 1}} ({{$timeSince(version.created)}} ago)
+											</span>
 										</a>
 									</li>
 								</ul>

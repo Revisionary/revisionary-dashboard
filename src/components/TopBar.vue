@@ -32,8 +32,8 @@
 					/>
 					<ChevronDownIcon />
 				</summary>
-				<div class="details-menu sub-menu right">
-					<ul>
+				<div class="details-menu right">
+					<ul class="menu boxed">
 						<li>
 							<a href="#">Account</a>
 						</li>
@@ -99,7 +99,6 @@
 
 <style lang="scss">
 	#top-bar {
-		background-color: #232830;
 		background-color: white;
 		display: flex;
 		flex-direction: row;
@@ -109,19 +108,6 @@
 		height: 60px;
 		color: #9ea5ab;
 		border: 1px solid #eaedf3;
-
-		a {
-			color: #9ea5ab;
-			text-decoration: none;
-
-			&:hover {
-				color: #037ef3;
-
-				svg > rect {
-					fill: #037ef3;
-				}
-			}
-		}
 
 		& > * {
 			display: flex;
@@ -135,6 +121,8 @@
 		}
 
 		&.dark {
+			background-color: #232830;
+
 			a {
 				color: #9ea5ab;
 				text-decoration: none;

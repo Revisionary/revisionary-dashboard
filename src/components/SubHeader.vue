@@ -32,8 +32,8 @@
 								</span>
 							</h1>
 						</summary>
-						<div class="details-menu sub-menu right">
-							<ul>
+						<div class="details-menu right">
+							<ul class="menu boxed">
 								<li :class="{ active: $route.params.category == null }">
 									<nuxt-link
 										:to="currentPath + '/'"
