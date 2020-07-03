@@ -35,14 +35,17 @@
 					</nuxt-link>
 
 					<ul
-						class="submenu"
+						class="inner-submenu"
 						v-if="pages.filter(page => page.project_ID == eachProject.ID).length || pagesFetching == eachProject.ID"
 					>
 						<li v-if="pagesFetching == eachProject.ID">
 							<span>Loading...</span>
 						</li>
 						<li v-for="page in pages.filter(page => page.project_ID == eachProject.ID)" :key="page.ID">
-							<span @click="bringPhases(page.ID)">
+							<span
+								@click="bringPhases(page.ID)"
+								:class="{active: phases.filter(phase => phase.page_ID == page.ID).length || phasesFetching == page.ID}"
+							>
 								<div class="status" :class="{done: page.incomplete_tasks == 0}"></div>
 								<span v-html="page.title"></span>
 								<span class="open-phases">
@@ -68,6 +71,31 @@
 											<ChevronRightIcon />
 										</span>
 									</span>
+
+									<ul
+										class="submenu"
+										v-if="devices.filter(device => device.phase_ID == phase.ID).length || devicesFetching == phase.ID"
+									>
+										<li v-if="devicesFetching == phase.ID">
+											<span>Loading...</span>
+										</li>
+										<li
+											v-for="device in devices.filter(device => device.phase_ID == phase.ID)"
+											:key="device.ID"
+										>
+											<a href="#">
+												<div class="status" :class="{done: device.incomplete_tasks == 0}"></div>
+												<span>
+													<WindowIcon v-if="device.cat_ID == 5" />
+													<DesktopIcon v-if="device.cat_ID == 1" />
+													<LaptopIcon v-if="device.cat_ID == 2" />
+													<TabletIcon v-if="device.cat_ID == 3" />
+													<MobileIcon v-if="device.cat_ID == 4" />
+													{{device.cat_name}} ({{ device.width ? device.screen_width : device.screen_width }}x{{ device.height ? device.height: device.screen_height }})
+												</span>
+											</a>
+										</li>
+									</ul>
 								</li>
 							</ul>
 						</li>
@@ -85,12 +113,23 @@
 	import ChevronRightIcon from "~/components/atoms/icon-chevron-right.vue";
 	import PlusIcon from "~/components/atoms/icon-plus.vue";
 
+	import WindowIcon from "~/components/atoms/devices/icon-custom.vue";
+	import DesktopIcon from "~/components/atoms/devices/icon-desktop.vue";
+	import LaptopIcon from "~/components/atoms/devices/icon-laptop.vue";
+	import TabletIcon from "~/components/atoms/devices/icon-tablet.vue";
+	import MobileIcon from "~/components/atoms/devices/icon-mobile.vue";
+
 	export default {
 		components: {
 			CaretDownIcon,
 			ChevronDownIcon,
 			ChevronRightIcon,
-			PlusIcon
+			PlusIcon,
+			WindowIcon,
+			DesktopIcon,
+			LaptopIcon,
+			TabletIcon,
+			MobileIcon
 		},
 		data() {
 			return {
@@ -212,8 +251,8 @@
 
 		& > .details-menu {
 			max-height: calc(90vh - 65px);
-			//overflow-x: hidden;
-			//overflow-y: scroll;
+			overflow-y: auto;
+			width: 100vw;
 
 			.status {
 				pointer-events: all;
@@ -277,7 +316,7 @@
 						}
 					}
 
-					& > .submenu {
+					& > .inner-submenu {
 						background-color: #f5f7fa;
 						box-shadow: inset 0px 3px 2px rgba(0, 0, 0, 0.01);
 						padding: 0;
@@ -314,6 +353,7 @@
 									}
 								}
 
+								&.active,
 								&:hover {
 									color: black;
 
@@ -323,7 +363,7 @@
 								}
 							}
 
-							& > .submenu {
+							.submenu {
 								position: absolute;
 								left: 100%;
 								top: 0;

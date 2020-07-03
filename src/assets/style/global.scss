@@ -248,16 +248,16 @@ details {
 		}
 
 		&.sub-menu {
-			background-color: #fff;
-			border: 1px solid #eaedf3;
-			border-radius: 4px;
-			padding: 8px 0;
 			margin-top: 5px;
-			box-shadow: 0px 0px 3px rgba(237, 241, 250, 0.5);
 
 			& > ul {
 				list-style-type: none;
-				padding: 0;
+				display: inline-block;
+				background-color: #fff;
+				border: 1px solid #eaedf3;
+				border-radius: 4px;
+				padding: 8px 0;
+				box-shadow: 0px 0px 3px rgba(237, 241, 250, 0.5);
 
 				& > li {
 					white-space: nowrap;

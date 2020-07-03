@@ -211,12 +211,12 @@
 			VersionIcon,
 			ShareIcon,
 			ChevronDownIcon,
+			ProfilePic,
 			WindowIcon,
 			DesktopIcon,
 			LaptopIcon,
 			TabletIcon,
-			MobileIcon,
-			ProfilePic
+			MobileIcon
 		},
 		data() {
 			return {
