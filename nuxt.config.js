@@ -27,7 +27,10 @@ export default {
 				content: process.env.npm_package_description || ""
 			}
 		],
-		link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
+		link: [
+			{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
+			{ rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" }
+		]
 	},
 	router: {
 		prefetchLinks: false,
@@ -48,6 +51,9 @@ export default {
 	 ** Global CSS
 	 */
 	css: ["~/assets/style/global"],
+	styleResources: {
+		scss: ['~/assets/style/*.scss']
+	},
 	/*
 	 ** Plugins to load before mounting the App
 	 */
@@ -60,13 +66,12 @@ export default {
 	 ** Nuxt.js modules
 	 */
 	modules: [
-		// Doc: https://axios.nuxtjs.org/usage
+		"@nuxtjs/style-resources",
 		"@nuxtjs/axios",
 		"@nuxtjs/proxy",
 		'@nuxtjs/auth',
 		"@nuxtjs/pwa",
-		// Doc: https://github.com/nuxt-community/dotenv-module
-		"@nuxtjs/dotenv"
+		"@nuxtjs/dotenv" // Doc: https://github.com/nuxt-community/dotenv-module
 	],
 	/*
 	 ** Axios module configuration

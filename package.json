@@ -20,6 +20,7 @@
     "vuedraggable": "^2.23.2"
   },
   "devDependencies": {
+    "@nuxtjs/style-resources": "^1.0.0",
     "node-sass": "^4.14.0",
     "sass-loader": "^8.0.2"
   }
