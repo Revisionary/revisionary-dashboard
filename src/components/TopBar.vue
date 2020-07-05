@@ -229,6 +229,7 @@
 						.right {
 							min-width: 80px;
 							justify-content: flex-end;
+							color: black;
 						}
 					}
 				}
