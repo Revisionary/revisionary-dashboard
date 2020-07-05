@@ -1,7 +1,8 @@
 $color-primary: #037ef3;
 
 html {
-	font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell",
+		"Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
 	font-size: 15px;
 	word-spacing: 1px;
 	-ms-text-size-adjust: 100%;
@@ -41,7 +42,7 @@ a {
 	}
 
 	&:hover {
-		color: #037ef3;
+		color: $color-primary;
 	}
 }
 
@@ -109,8 +110,8 @@ input[type="reset"] {
 		background: none;
 		height: 40px;
 		border-radius: 0;
-		border: 1px solid #C3CAD8;
-		color: #7D8A98 !important;
+		border: 1px solid #c3cad8;
+		color: #7d8a98 !important;
 		font-size: 14px;
 		line-height: 17px;
 		font-weight: 500;
@@ -281,10 +282,8 @@ details {
 					& > a,
 					& > span {
 						padding: 8px 14px;
-
 					}
 				}
-
 			}
 
 			&.sub {
@@ -292,27 +291,21 @@ details {
 				box-shadow: inset 0px 3px 2px rgba(0, 0, 0, 0.01);
 
 				& > li {
-
 					> span {
 						padding-left: 30px;
 					}
 
 					> ul > li {
-
 						> span {
 							padding-left: 45px;
 						}
 
 						> ul > li {
-
 							> span {
 								padding-left: 60px;
 							}
-
 						}
-
 					}
-
 				}
 			}
 
@@ -386,14 +379,11 @@ details {
 
 							&.active {
 								svg path {
-									stroke: #037ef3;
+									stroke: $color-primary;
 								}
 							}
-
 						}
-
 					}
-
 
 					&:hover {
 						& > a,
@@ -408,7 +398,6 @@ details {
 							}
 						}
 					}
-
 				}
 
 				&.active {
@@ -416,21 +405,27 @@ details {
 					& > span,
 					& > div {
 						font-weight: 600;
-						color: #037ef3 !important;
+						color: $color-primary !important;
 
 						svg {
 							path {
-								stroke: #037ef3 !important;
+								stroke: $color-primary !important;
 							}
 						}
+					}
+				}
 
+				&.title {
+					& > a,
+					& > span {
+						color: black;
+						border-bottom: 1px solid #ECECEC;
+						padding-top: 0;
+						justify-content: center;
 					}
 				}
 			}
 		}
-
-
-
 	}
 
 	&:not([open]) > *:not(summary) {
@@ -592,11 +587,9 @@ details {
 		}
 
 		& + * {
-
 			& > picture {
 				margin-left: -9px;
 			}
-
 		}
 
 		&:nth-child(2) {

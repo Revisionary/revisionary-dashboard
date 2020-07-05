@@ -510,11 +510,11 @@
 					&.nuxt-link-exact-active {
 						color: #4d5058;
 						font-weight: 600;
-						border-color: #037ef3;
+						border-color: $color-primary;
 					}
 
 					&:hover {
-						border-color: #037ef3;
+						border-color: $color-primary;
 					}
 				}
 			}
@@ -537,7 +537,7 @@
 					transition: 500ms;
 
 					&.dark {
-						background-color: #037ef3;
+						background-color: $color-primary;
 					}
 
 					&:hover {

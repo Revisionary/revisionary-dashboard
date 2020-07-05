@@ -279,7 +279,7 @@
 
 				& > .info {
 					a {
-						color: #037ef3;
+						color: $color-primary;
 					}
 
 					span {

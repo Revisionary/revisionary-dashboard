@@ -17,7 +17,58 @@
 		</div>
 		<div class="center-side"></div>
 		<div class="right-side" v-if="$auth.loggedIn">
-			<a href="#" class="plan-limitations">Free Plan</a>
+			<details class="plan-limitations">
+				<summary>Free Plan</summary>
+				<div class="details-menu center">
+					<ul class="menu boxed">
+						<li class="title">
+							<span>Limitations</span>
+						</li>
+						<li>
+							<span>
+								<span class="left">Projects</span>
+								<span class="right">4/∞</span>
+							</span>
+						</li>
+						<li>
+							<span>
+								<span class="left">Pages</span>
+								<span class="right">4/∞</span>
+							</span>
+						</li>
+						<li>
+							<span>
+								<span class="left">Phases</span>
+								<span class="right">4/∞</span>
+							</span>
+						</li>
+						<li>
+							<span>
+								<span class="left">Screens</span>
+								<span class="right">4/∞</span>
+							</span>
+						</li>
+						<li>
+							<span>
+								<span class="left">Live Pins</span>
+								<span class="right">4/∞</span>
+							</span>
+						</li>
+						<li>
+							<span>
+								<span class="left">Comment Pins</span>
+								<span class="right">4/∞</span>
+							</span>
+						</li>
+						<li>
+							<span>
+								<span class="left">MB Files</span>
+								<span class="right">14.2/2048</span>
+							</span>
+						</li>
+					</ul>
+				</div>
+			</details>
 
 			<a href="#" class="button upgrade">Upgrade</a>
 
@@ -152,15 +203,36 @@
 
 			&.active {
 				svg > rect:first-child {
-					fill: #037ef3;
+					fill: $color-primary;
 				}
 			}
 		}
 
 		.plan-limitations {
-			text-transform: uppercase;
-			border-bottom: 1px dashed;
-			padding-bottom: 3px;
+			& > summary {
+				text-transform: uppercase;
+				border-bottom: 1px dashed;
+				padding-bottom: 3px;
+
+				&:hover {
+					color: $color-primary;
+				}
+			}
+
+			&[open] > summary {
+				color: $color-primary;
+			}
+
+			.menu {
+				& > li {
+					& > span {
+						.right {
+							min-width: 80px;
+							justify-content: flex-end;
+						}
+					}
+				}
+			}
 		}
 
 		.profile-pic {

@@ -128,11 +128,11 @@
 							left: 24px;
 							width: 21px;
 							height: 1px;
-							background-color: #037ef3;
+							background-color: $color-primary;
 						}
 
 						& > svg > path {
-							stroke: #037ef3;
+							stroke: $color-primary;
 						}
 
 						&.notifications::before {
