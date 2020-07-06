@@ -213,6 +213,7 @@
 				text-transform: uppercase;
 				border-bottom: 1px dashed;
 				padding-bottom: 3px;
+				font-weight: 500;
 
 				&:hover {
 					color: $color-primary;
