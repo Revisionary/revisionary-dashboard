@@ -17,58 +17,7 @@
 		</div>
 		<div class="center-side"></div>
 		<div class="right-side" v-if="$auth.loggedIn">
-			<details class="plan-limitations">
-				<summary>Free Plan</summary>
-				<div class="details-menu center">
-					<ul class="menu boxed">
-						<li class="title">
-							<span>Limitations</span>
-						</li>
-						<li>
-							<span>
-								<span class="left">Projects</span>
-								<span class="right">4/∞</span>
-							</span>
-						</li>
-						<li>
-							<span>
-								<span class="left">Pages</span>
-								<span class="right">4/∞</span>
-							</span>
-						</li>
-						<li>
-							<span>
-								<span class="left">Phases</span>
-								<span class="right">4/∞</span>
-							</span>
-						</li>
-						<li>
-							<span>
-								<span class="left">Screens</span>
-								<span class="right">4/∞</span>
-							</span>
-						</li>
-						<li>
-							<span>
-								<span class="left">Live Pins</span>
-								<span class="right">4/∞</span>
-							</span>
-						</li>
-						<li>
-							<span>
-								<span class="left">Comment Pins</span>
-								<span class="right">4/∞</span>
-							</span>
-						</li>
-						<li>
-							<span>
-								<span class="left">MB Files</span>
-								<span class="right">14.2/2048</span>
-							</span>
-						</li>
-					</ul>
-				</div>
-			</details>
+			<Limitations />
 
 			<a href="#" class="button upgrade">Upgrade</a>
 
@@ -111,6 +60,8 @@
 	import Logo from "~/components/atoms/Logo.vue";
 	import JumpTo from "~/components/molecules/JumpTo.vue";
 
+	import Limitations from "~/components/molecules/Limitations.vue";
+
 	import ProfilePic from "~/components/atoms/ProfilePic.vue";
 
 	import MenuIcon from "~/components/atoms/icon-menu.vue";
@@ -120,6 +71,7 @@
 		components: {
 			Logo,
 			JumpTo,
+			Limitations,
 			MenuIcon,
 			ProfilePic,
 			ChevronDownIcon
@@ -204,35 +156,6 @@
 			&.active {
 				svg > rect:first-child {
 					fill: $color-primary;
-				}
-			}
-		}
-
-		.plan-limitations {
-			& > summary {
-				text-transform: uppercase;
-				border-bottom: 1px dashed;
-				padding-bottom: 3px;
-				font-weight: 500;
-
-				&:hover {
-					color: $color-primary;
-				}
-			}
-
-			&[open] > summary {
-				color: $color-primary;
-			}
-
-			.menu {
-				& > li {
-					& > span {
-						.right {
-							min-width: 80px;
-							justify-content: flex-end;
-							color: black;
-						}
-					}
 				}
 			}
 		}
