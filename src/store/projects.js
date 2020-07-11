@@ -45,11 +45,42 @@ export const actions = {
 	},
 
 	// Fetch Projects
-	async fetch({ commit, dispatch }) {
+	async fetch({ commit, dispatch, state }) {
+
+		this.$axios.all = function all(promises) {
+			return Promise.all(promises);
+		};
+
+		let actions = [
+			this.$axios.get('projects')
+		];
+
+		// If categories not already fetched
+		if (!state.projectCategories.length) {
+			actions.push(
+				this.$axios.get('projectcategories')
+			);
+		}
+
 
 		commit("setFetching", true);
 
-		await this.$axios.get('projects').then(({ status, data }) => {
+		await this.$axios.all(actions).then((res) => {
+
+			const { status, data } = res[0];
+
+			if (res.length > 1) {
+
+				const catResp = res[1];
+				if (catResp.status === 200) {
+
+					console.log('PROJECT CATS: ', catResp.data.categories);
+					commit('setCategories', catResp.data.categories);
+					commit("setFetching", false);
+
+				}
+
+			}
 
 			if (status === 200) {
 
