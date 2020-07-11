@@ -72,7 +72,7 @@
 									<span @click="bringDevices(phase.ID)">
 										<div class="left">
 											<span class="status" :class="{done: phase.incomplete_tasks == 0}"></span>
-											<span>v{{ index + 1 }}</span>
+											<span>v{{ index + 1 }} ({{$timeSince(phase.created)}} ago)</span>
 										</div>
 										<span class="right">
 											<ChevronDownIcon />
