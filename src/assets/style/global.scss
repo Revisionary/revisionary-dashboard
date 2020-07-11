@@ -265,7 +265,7 @@ details {
 				& > li {
 					& > a,
 					& > span {
-						padding: 3px 12px;
+						padding: 3px 8px;
 						font-weight: 500;
 						font-size: 12px;
 						line-height: 14px;
@@ -386,6 +386,8 @@ details {
 					}
 
 					&:hover {
+						color: black;
+
 						& > a,
 						& > span,
 						& > div {
