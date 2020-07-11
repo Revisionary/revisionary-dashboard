@@ -198,7 +198,9 @@
 					.then(({ status, data }) => {
 						if (status === 200) {
 							const pages = data.pages;
-							this.pages = pages;
+							this.pages = pages.filter(
+								page => !page.archived && !page.deleted
+							);
 							this.pagesFetching = false;
 						}
 					})
