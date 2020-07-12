@@ -48,7 +48,10 @@
 
 				<div
 					class="empty-category"
-					v-if="(category.ID != 0 && !blocksOfCategory(category.ID).length) || (category.ID == 0 && !blocksOfCategory(0).length && blockCategories.length == 1 )"
+					v-if="
+						(category.ID != 0 && !blocksOfCategory(category.ID).length)
+						|| (category.ID == 0 && !blocksOfCategory(0).length && blockCategories.length == 1 )
+					"
 				>There's nothing here yet.</div>
 
 				<draggable class="blocks" group="blocks" draggable=".sortable" animation="200">
@@ -58,7 +61,11 @@
 
 					<div
 						class="block add-new"
-						v-if="!filter && category.ID != 0 || (category.ID == 0 && blocksOfCategory(0).length && blockCategories.length > 1)"
+						v-if="
+							(category.ID != 0 && !filter)
+							|| (category.ID == 0 && blocksOfCategory(0).length && blockCategories.length > 1)
+							|| (category.ID == 0 && blockCategories.length == 1)
+						"
 					>
 						<AddNewBlock />
 					</div>
