@@ -89,11 +89,11 @@
 		},
 		methods: {
 			async fetchUsage() {
+				this.fetching = true;
+
 				this.$nextTick(() => {
 					this.$nuxt.$loading.start();
 				});
-
-				this.fetching = true;
 
 				await this.$axios
 					.get("usage")
