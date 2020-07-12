@@ -1,10 +1,9 @@
 <template>
 	<ul class="notifications-wrapper">
 		<li v-if="fetching">Loading...</li>
-		<li v-else-if="!notifications.length">No notifications yet.</li>
+		<li v-if="!notifications.length && !fetching">No notifications yet.</li>
 
 		<li
-			v-else
 			class="notification"
 			:class="{new : !notification.isRead}"
 			v-for="notification in notifications"
