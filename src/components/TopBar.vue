@@ -19,7 +19,12 @@
 		<div class="right-side" v-if="$auth.loggedIn">
 			<Limitations />
 
-			<a href="#" class="button upgrade">Upgrade</a>
+			<a
+				href="#"
+				class="button upgrade"
+				v-if="currentUser.level_ID != 1 && currentUser.level_ID != 4"
+			>Upgrade</a>
+			<a href="#" class="button upgrade" v-else>Invite</a>
 
 			<details>
 				<summary class="rotate-icon">
