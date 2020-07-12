@@ -1,7 +1,6 @@
 export const state = () => ({
 	pageCategories: [],
 	pages: [],
-	page: {},
 	fetching: false
 });
 
@@ -11,9 +10,6 @@ export const getters = {
 	},
 	getCategories(state) {
 		return state.pageCategories;
-	},
-	getProject(state) {
-		return state.page;
 	},
 	status(state) {
 		return state.fetching;
@@ -84,72 +80,10 @@ export const actions = {
 
 	},
 
-	// Get singular project
-	async fetchPage({ commit, state, dispatch }, pageID) {
-
-		console.log('PAGE FETCHING');
-
-		// Find the project
-		const projectFound = state.projects.find(function (project) {
-			return project.ID == projectID;
-		});
-
-		if (projectFound) {
-			commit("setProject", projectFound);
-			return;
-		}
-
-
-
-		commit("setFetching", true);
-
-		await this.$axios.get('project/' + projectID).then(({ status, data }) => {
-
-			if (status === 200) {
-
-				const project = data.project;
-				console.log('PROJECT: ', project);
-
-				commit('setProject', project);
-				commit("setFetching", false);
-
-
-				// Take users to batch fetch
-				let usersToFetch = [];
-				project.users.forEach(user => {
-					usersToFetch.push(parseInt(user));
-				});
-				usersToFetch = usersToFetch.filter((v, i, a) => a.indexOf(v) === i); // Make it unique
-
-
-				// Get the users info
-				dispatch("users/fetch", usersToFetch, { root: true });
-
-			}
-		}).catch(function (error) {
-
-			console.log('ERROR: ', error);
-			commit("setFetching", false);
-
-		});
-
-
-
-	},
-
-	// Reset Selected Project
-	resetProject({ commit }) {
-		commit("setProject", {});
-	},
-
-	// Reset Selected Project
-	updateProject({ commit }, payload) {
-
-		// DO IT ON BACKEND !!!
-
-		// If successful
-		commit("update", payload);
-
+	// Reset Pages
+	resetPages({ commit }) {
+		commit("set", []);
+		commit("setCategories", []);
 	}
 };
 
@@ -188,9 +122,6 @@ export const mutations = {
 	},
 	remove(state, page) {
 		state.pages.splice(state.page.indexOf(project), 1);
-	},
-	setPage(state, page) {
-		state.page = page;
 	},
 	setFetching(state, status) {
 		state.fetching = status;

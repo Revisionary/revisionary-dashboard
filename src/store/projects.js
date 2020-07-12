@@ -197,6 +197,13 @@ export const actions = {
 		commit("setProject", {});
 	},
 
+	// Reset All Projects
+	resetProjects({ commit }) {
+		commit("set", []);
+		commit("setCategories", []);
+		commit("setProject", {});
+	},
+
 	// Reset Selected Project
 	updateProject({ commit }, payload) {
 

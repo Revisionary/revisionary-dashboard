@@ -95,6 +95,12 @@
 				this.$nuxt.$loading.start();
 				this.$auth.logout();
 				this.$store.commit("toggleSideBar", false);
+
+				// Reset Projects
+				this.$store.dispatch("projects/resetProjects");
+
+				// Reset Pages
+				this.$store.dispatch("pages/resetPages");
 			}
 		}
 	};
