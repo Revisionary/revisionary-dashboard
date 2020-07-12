@@ -41,7 +41,7 @@
 				<li>
 					<span>
 						<span class="left">MB Files</span>
-						<span class="right">14.2/{{ currentUser.max_load }}</span>
+						<span class="right">{{ fetching ? "Loading" : usage.load }}/{{ currentUser.max_load }}</span>
 					</span>
 				</li>
 			</ul>
