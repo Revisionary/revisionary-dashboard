@@ -11,37 +11,55 @@
 				<li>
 					<span>
 						<span class="left">Projects</span>
-						<span class="right">{{ fetching ? "Loading" : usage.projects }}/{{ maxProjects }}</span>
+						<span class="right">
+							<LoadingIcon v-if="fetching" />
+							<span v-else>{{ usage.projects }}/{{ maxProjects }}</span>
+						</span>
 					</span>
 				</li>
 				<li>
 					<span>
 						<span class="left">Pages and Phases</span>
-						<span class="right">{{ fetching ? "Loading" : usage.phases }}/{{ maxPages }}</span>
+						<span class="right">
+							<LoadingIcon v-if="fetching" />
+							<span v-else>{{ usage.phases }}/{{ maxPages }}</span>
+						</span>
 					</span>
 				</li>
 				<li>
 					<span>
 						<span class="left">Screens</span>
-						<span class="right">{{ fetching ? "Loading" : usage.devices }}/{{ maxScreens }}</span>
+						<span class="right">
+							<LoadingIcon v-if="fetching" />
+							<span v-else>{{ usage.devices }}/{{ maxScreens }}</span>
+						</span>
 					</span>
 				</li>
 				<li>
 					<span>
 						<span class="left">Live Pins</span>
-						<span class="right">{{ fetching ? "Loading" : usage.livePins }}/{{ maxLivePins }}</span>
+						<span class="right">
+							<LoadingIcon v-if="fetching" />
+							<span v-else>{{ usage.livePins }}/{{ maxLivePins }}</span>
+						</span>
 					</span>
 				</li>
 				<li>
 					<span>
 						<span class="left">Comment Pins</span>
-						<span class="right">{{ fetching ? "Loading" : usage.commentPins }}/{{ maxCommentPins }}</span>
+						<span class="right">
+							<LoadingIcon v-if="fetching" />
+							<span v-else>{{ usage.commentPins }}/{{ maxCommentPins }}</span>
+						</span>
 					</span>
 				</li>
 				<li>
 					<span>
 						<span class="left">MB Files</span>
-						<span class="right">{{ fetching ? "Loading" : usage.load }}/{{ currentUser.max_load }}</span>
+						<span class="right">
+							<LoadingIcon v-if="fetching" />
+							<span v-else>{{ usage.load }}/{{ currentUser.max_load }}</span>
+						</span>
 					</span>
 				</li>
 			</ul>
@@ -50,7 +68,12 @@
 </template>
 
 <script>
+	import LoadingIcon from "~/components/atoms/icon-loading.vue";
+
 	export default {
+		components: {
+			LoadingIcon
+		},
 		data() {
 			return {
 				fetching: false,
