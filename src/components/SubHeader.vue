@@ -32,12 +32,12 @@
 								</span>
 							</h1>
 						</summary>
-						<div class="details-menu right">
+						<div class="details-menu left">
 							<ul class="menu boxed">
 								<li :class="{ active: $route.params.category == null }">
 									<nuxt-link
 										:to="currentPath + '/'"
-									>All {{ $route.name == 'projects' || $route.name == 'projects-category' ? 'Projects' : 'Pages' }} {{ dataCount }}</nuxt-link>
+									>All {{ $route.name == 'projects' || $route.name == 'projects-category' ? 'Projects' : 'Pages' }} ({{ blocksData.filter(block => !block.archived && !block.deleted).length }})</nuxt-link>
 								</li>
 								<li :class="{ active: $route.params.category == 'archived' }">
 									<nuxt-link
@@ -201,9 +201,17 @@
 				return this.$store.getters["pages/get"];
 			},
 			dataCount() {
-				const availableCount = this.blocksData.filter(
+				let availableCount = this.blocksData.filter(
 					block => !block.archived && !block.deleted
 				).length;
+
+				if (this.$route.params.category == "archived")
+					availableCount = this.blocksData.filter(block => block.archived)
+						.length;
+
+				if (this.$route.params.category == "deleted")
+					availableCount = this.blocksData.filter(block => block.deleted)
+						.length;
 
 				if (availableCount) return " (" + availableCount + ")";
 				return "";
