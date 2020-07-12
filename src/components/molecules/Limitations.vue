@@ -1,12 +1,12 @@
 <template>
 	<details class="plan-limitations">
 		<summary>
-			<span @click="fetchUsage">Free Plan</span>
+			<span @click="fetchUsage">{{ currentUser.level_name }} Plan</span>
 		</summary>
 		<div class="details-menu center">
 			<ul class="menu boxed">
 				<li class="title">
-					<span>Limitations</span>
+					<span>{{ currentUser.level_name }} Plan Usage</span>
 				</li>
 				<li>
 					<span>
