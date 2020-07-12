@@ -1,8 +1,10 @@
 <template>
 	<ul class="notifications-wrapper">
 		<li v-if="fetching">Loading...</li>
+		<li v-else-if="!notifications.length">No notifications yet.</li>
 
 		<li
+			v-else
 			class="notification"
 			:class="{new : !notification.isRead}"
 			v-for="notification in notifications"
@@ -143,7 +145,7 @@
 							const notifications = data.notifications;
 							const total = data.totalCount;
 							console.log(
-								"NOTIFICATIONS (" + page + "): ",
+								"NOTIFICATIONS (Page: " + page + "): ",
 								notifications,
 								total
 							);
@@ -158,21 +160,24 @@
 							this.totalNotifications = total;
 
 							// Scroll
-							this.$nextTick(() => {
-								if (
-									typeof document.getElementById(
-										"notification-" + notifications[0].ID
-									) !== "undefined" &&
-									document.getElementById(
-										"notification-" + notifications[0].ID
-									) !== null
-								)
-									document
-										.getElementById(
+							if (notifications.length) {
+								this.$nextTick(() => {
+									if (
+										typeof document.getElementById(
 											"notification-" + notifications[0].ID
-										)
-										.scrollIntoView(false);
-							});
+										) !== "undefined" &&
+										document.getElementById(
+											"notification-" + notifications[0].ID
+										) !== null
+									)
+										document
+											.getElementById(
+												"notification-" +
+													notifications[0].ID
+											)
+											.scrollIntoView(false);
+								});
+							}
 
 							this.page = page;
 							this.fetching = false;

@@ -16,6 +16,9 @@
 				<li v-if="fetching">
 					<span>Loading...</span>
 				</li>
+				<li v-else-if="!projects.filter(project => !project.archived && !project.deleted).length">
+					<span>No projects added yet.</span>
+				</li>
 				<li
 					v-else
 					v-for="eachProject in projects.filter(project => !project.archived && !project.deleted)"
