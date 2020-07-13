@@ -20,15 +20,14 @@
 		created() {
 			console.log("APP CREATED");
 
-			let $this = this;
-			setTimeout(function() {
+			setTimeout(() => {
 				// First notification check after 2 sconds
-				$this.$store.dispatch("checkNotifications");
+				this.$store.dispatch("checkNotifications");
 
 				// Check notifications every 10 seconds
-				setInterval(function() {
-					if ($this.$auth.loggedIn)
-						$this.$store.dispatch("checkNotifications");
+				setInterval(() => {
+					if (this.$auth.loggedIn)
+						this.$store.dispatch("checkNotifications");
 				}, 10000);
 			}, 2000);
 		}
