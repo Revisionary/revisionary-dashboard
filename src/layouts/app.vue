@@ -27,7 +27,8 @@
 
 				// Check notifications every 10 seconds
 				setInterval(function() {
-					$this.$store.dispatch("checkNotifications");
+					if ($this.$auth.loggedIn)
+						$this.$store.dispatch("checkNotifications");
 				}, 10000);
 			}, 2000);
 		}
