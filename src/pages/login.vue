@@ -2,8 +2,8 @@
 	<div id="login-form" class="wrapper">
 		<h1 class="title">Sign in to Revisionary</h1>
 		<form class="form" @submit.prevent="login">
-			<input type="text" v-model="username" placeholder="Email Address" />
-			<input type="password" v-model="password" placeholder="Password" />
+			<input type="text" v-model="username" placeholder="Email Address" autocomplete="email" />
+			<input type="password" v-model="password" placeholder="Password" autocomplete="current-password" />
 			<button>Login</button>
 		</form>
 		<hr />
@@ -37,11 +37,11 @@
 					})
 					.then(({ status, data }) => {
 						if (status === 200) {
+							console.log("Logged In");
+
 							this.$auth.setUser(data.userInfo);
 
-							this.$store.commit("users/add", data.userInfo, {
-								root: true
-							});
+							this.$store.commit("users/add", data.userInfo);
 
 							this.$store.commit("toggleSideBar", true);
 						}

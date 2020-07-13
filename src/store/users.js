@@ -60,7 +60,12 @@ export const actions = {
 		});
 
 
-	}
+	},
+
+	// Reset Users Pool
+	resetUsers({ commit }) {
+		commit("set", {});
+	},
 
 };
 

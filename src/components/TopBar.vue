@@ -98,14 +98,31 @@
 		methods: {
 			logout() {
 				this.$nuxt.$loading.start();
-				this.$auth.logout();
-				this.$store.commit("toggleSideBar", false);
 
-				// Reset Projects
-				this.$store.dispatch("projects/resetProjects");
+				this.$auth
+					.logout()
+					.then(() => {
+						console.log("Logged out");
 
-				// Reset Pages
-				this.$store.dispatch("pages/resetPages");
+						// Close the sidebar
+						this.$store.commit("toggleSideBar", false);
+
+						// Reset Projects
+						this.$store.dispatch("projects/resetProjects");
+
+						// Reset Pages
+						this.$store.dispatch("pages/resetPages");
+
+						// Reset Users Pool
+						this.$store.dispatch("users/resetUsers");
+
+						// Redirect to login page
+						this.$router.push({ path: "/login/" });
+					})
+					.catch(error => {
+						console.log("ERROR: ", error);
+						//if (process.browser) window.$nuxt.$root.$loading.fail();
+					});
 			}
 		}
 	};
