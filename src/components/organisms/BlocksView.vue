@@ -126,7 +126,9 @@
 			},
 			categorizedBlocks() {
 				if (this.filter == "archived")
-					return this.blocks.filter(block => block.archived);
+					return this.blocks.filter(
+						block => block.archived && !block.deleted
+					);
 
 				if (this.filter == "deleted")
 					return this.blocks.filter(block => block.deleted);
