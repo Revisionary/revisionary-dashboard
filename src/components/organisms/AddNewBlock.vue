@@ -1,9 +1,11 @@
 <template>
-	<div class="card add-new" :class="{open: isOpen}">
+	<div class="card add-new" :class="{open: isOpen, blocked: !isAvailable}">
 		<div class="top" @click.prevent="toggleAddNew">
 			<div class="add-new-opener">
 				<PlusIconLarge />
-				<br />Add New Project
+				<br />
+				Add New {{ dataType }}
+				<div class="category" v-if="cat_ID != 0">Into '{{ cat_title }}' Category</div>
 			</div>
 		</div>
 		<div class="info" v-show="isOpen">
@@ -22,6 +24,15 @@
 			</p>
 		</div>
 		<div class="bottom" v-show="isOpen">Advanced Options</div>
+		<div class="blocked" v-if="!isAvailable">
+			<SadIcon />
+			<p>
+				YOU HAVE REACHED
+				<br />THE
+				<span class="underline">{{ limit }} {{ dataType.toUpperCase() }}S</span> LIMIT.
+			</p>
+			<a href="#" class="button upgrade">Upgrade Now</a>
+		</div>
 	</div>
 </template>
 
@@ -29,16 +40,55 @@
 	import PlusIconLarge from "~/components/atoms/icon-plus-large.vue";
 	import ChevronRightIcon from "~/components/atoms/icon-chevron-right.vue";
 	import QuestionIcon from "~/components/atoms/icon-question.vue";
+	import SadIcon from "~/components/atoms/icon-sad.vue";
 
 	export default {
 		components: {
 			PlusIconLarge,
 			ChevronRightIcon,
-			QuestionIcon
+			QuestionIcon,
+			SadIcon
 		},
 		props: {
-			blockData: {
-				type: Object
+			cat_ID: {
+				type: Number,
+				required: true
+			},
+			cat_title: {
+				type: String
+			}
+		},
+		computed: {
+			dataType() {
+				if (
+					this.$route.name == "projects" ||
+					this.$route.name == "projects-category"
+				)
+					return "project";
+
+				return "page";
+			},
+			limit() {
+				if (this.dataType == "project") return this.$auth.user.max_projects;
+
+				return this.$auth.user.max_phases;
+			},
+			isAvailable() {
+				if (
+					this.dataType == "project" &&
+					this.$store.getters["projects/get"].length >=
+						this.$auth.user.max_projects
+				)
+					return false;
+
+				if (
+					this.dataType == "project" &&
+					this.$store.getters["pages/get"].length >=
+						this.$auth.user.max_phases
+				)
+					return false;
+
+				return true;
 			}
 		},
 		methods: {
@@ -83,8 +133,15 @@
 			}
 
 			.add-new-opener {
+				text-transform: capitalize;
+
 				svg {
 					margin-bottom: 10px;
+				}
+
+				.category {
+					font-weight: 300;
+					font-size: 12px;
 				}
 			}
 		}
@@ -137,6 +194,36 @@
 			justify-content: center;
 			align-items: center;
 			cursor: pointer;
+		}
+
+		&.blocked {
+			position: relative;
+
+			& > .blocked {
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				background-color: #34383b;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				text-align: center;
+				flex-direction: column;
+				color: white;
+				font-weight: 600;
+				font-size: 15px;
+				line-height: 18px;
+				padding: 0 20px;
+
+				& > p {
+					margin: 20px 0 23px;
+
+					.underline {
+						padding-bottom: 3px;
+						border-bottom: 1px solid #8b8e8f;
+					}
+				}
+			}
 		}
 	}
 </style>

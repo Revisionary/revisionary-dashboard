@@ -67,7 +67,7 @@
 							|| (category.ID == 0 && blockCategories.length == 1)
 						"
 					>
-						<AddNewBlock />
+						<AddNewBlock :cat_ID="category.ID" :cat_title="category.title" />
 					</div>
 				</draggable>
 			</div>
