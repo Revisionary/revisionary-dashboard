@@ -24,7 +24,10 @@
 
 			<div
 				class="category"
-				:class="{catsortable : category.ID != 0}"
+				:class="{
+					catsortable: category.ID != 0,
+					hide: category.ID == 0 && !blocksOfCategory(0).length && blockCategories.length > 0
+				}"
 				v-for="category in blockCategories"
 				:key="category.ID"
 			>
@@ -177,6 +180,10 @@
 		gap: 55px;
 
 		& > .category {
+			&.hide {
+				display: none;
+			}
+
 			.category-title {
 				color: black;
 				font-size: 14px;
