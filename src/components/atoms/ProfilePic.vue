@@ -1,6 +1,7 @@
 <template>
 	<picture
 		class="bottom-tooltip tooltip-not-contained"
+		:class="{ fetching: fetching }"
 		:style="`background-image: url(${pictureUrl});`"
 		:data-tooltip="(fullName != '' && tooltip ? fullName : null)"
 	>
@@ -266,6 +267,9 @@
 			MailIcon
 		},
 		computed: {
+			fetching() {
+				return this.$store.getters["users/status"];
+			},
 			pictureUrl() {
 				if (this.picture != "" && this.picture != null) return this.picture;
 				return get_gravatar(this.email);
@@ -327,6 +331,22 @@
 			font-weight: inherit;
 			line-height: inherit;
 			letter-spacing: inherit;
+		}
+
+		&.fetching {
+			background-image: linear-gradient(
+				90deg,
+				#9ea5ab,
+				rgb(230, 230, 230),
+				#9ea5ab
+			) !important;
+			background-size: 300% 100%;
+			animation: gradientBG 3s ease infinite;
+			opacity: 0.8;
+
+			& > span {
+				visibility: hidden;
+			}
 		}
 	}
 </style>

@@ -46,7 +46,7 @@ export const actions = {
 
 		await this.$axios.post('users', {
 			IDs: IDs
-		}).then(({ status, data }) => {
+		}, { progress: false }).then(({ status, data }) => {
 			if (status === 200) {
 				console.log('USERS: ', data.users);
 				commit('addMultiple', data.users);
