@@ -30,13 +30,10 @@
 				>
 					<nuxt-link :to="`/project/${eachProject.ID}`">
 						<div class="left" @click.prevent="bringPages(eachProject.ID)">
-							<span
-								class="status compact"
-								:class="{
-									done: eachProject.incomplete_tasks == 0,
-									notask: eachProject.incomplete_tasks == 0 && eachProject.complete_tasks == 0
-								}"
-							></span>
+							<TasksStatus
+								:incompletedCount="eachProject.incomplete_tasks"
+								:completedCount="eachProject.complete_tasks"
+							/>
 							<span v-html="eachProject.title"></span>
 						</div>
 						<div class="right" @click.prevent="bringPages(eachProject.ID)">
@@ -58,13 +55,10 @@
 						>
 							<span @click="bringPhases(page.ID)">
 								<div class="left">
-									<span
-										class="status compact"
-										:class="{
-											done: page.incomplete_tasks == 0,
-											notask: page.incomplete_tasks == 0 && page.complete_tasks == 0
-										}"
-									></span>
+									<TasksStatus
+										:incompletedCount="page.incomplete_tasks"
+										:completedCount="page.complete_tasks"
+									/>
 									<span v-html="page.title"></span>
 								</div>
 								<div class="right">
@@ -86,13 +80,10 @@
 								>
 									<span @click="bringDevices(phase.ID)">
 										<div class="left">
-											<span
-												class="status compact"
-												:class="{
-												done: phase.incomplete_tasks == 0,
-												notask: phase.incomplete_tasks == 0 && phase.complete_tasks == 0
-											}"
-											></span>
+											<TasksStatus
+												:incompletedCount="phase.incomplete_tasks"
+												:completedCount="phase.complete_tasks"
+											/>
 											<span>v{{ index + 1 }} ({{$timeSince(phase.created)}} ago)</span>
 										</div>
 										<span class="right">
@@ -113,13 +104,10 @@
 										>
 											<span>
 												<div class="left">
-													<span
-														class="status compact"
-														:class="{
-															done: device.incomplete_tasks == 0,
-															notask: device.incomplete_tasks == 0 && device.complete_tasks == 0
-														}"
-													></span>
+													<TasksStatus
+														:incompletedCount="device.incomplete_tasks"
+														:completedCount="device.complete_tasks"
+													/>
 													<span>
 														<WindowIcon v-if="device.cat_ID == 5" />
 														<DesktopIcon v-if="device.cat_ID == 1" />
@@ -158,6 +146,8 @@
 	import TabletIcon from "~/components/atoms/devices/icon-tablet.vue";
 	import MobileIcon from "~/components/atoms/devices/icon-mobile.vue";
 
+	import TasksStatus from "~/components/atoms/tasks-status.vue";
+
 	export default {
 		components: {
 			CaretDownIcon,
@@ -168,7 +158,8 @@
 			DesktopIcon,
 			LaptopIcon,
 			TabletIcon,
-			MobileIcon
+			MobileIcon,
+			TasksStatus
 		},
 		data() {
 			return {

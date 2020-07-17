@@ -87,13 +87,10 @@
 									<li v-else v-for="device in devices" :key="device.ID">
 										<span>
 											<div class="left">
-												<span
-													class="status compact"
-													:class="{
-														done: device.incomplete_tasks == 0,
-														notask: device.incomplete_tasks == 0 && device.complete_tasks == 0
-													}"
-												></span>
+												<TasksStatus
+													:incompletedCount="device.incomplete_tasks"
+													:completedCount="device.complete_tasks"
+												/>
 												<span>
 													<WindowIcon v-if="device.cat_ID == 5" />
 													<DesktopIcon v-if="device.cat_ID == 1" />
@@ -165,14 +162,12 @@
 					</div>
 				</div>
 			</div>
-			<div
-				class="status"
-				:class="{
-					done: blockData.incomplete_tasks == 0,
-					notask: blockData.incomplete_tasks == 0 && blockData.complete_tasks == 0
-				}"
+			<TasksStatus
+				:incompletedCount="blockData.incomplete_tasks"
+				:completedCount="blockData.complete_tasks"
+				:compact="false"
 				v-if="blockData.incomplete_tasks > 0 || blockData.complete_tasks > 0"
-			></div>
+			/>
 		</div>
 		<div class="info">
 			<div class="title">
@@ -222,6 +217,8 @@
 
 	import ProfilePic from "~/components/atoms/ProfilePic.vue";
 
+	import TasksStatus from "~/components/atoms/tasks-status.vue";
+
 	export default {
 		components: {
 			ArrowRightIcon,
@@ -235,7 +232,8 @@
 			DesktopIcon,
 			LaptopIcon,
 			TabletIcon,
-			MobileIcon
+			MobileIcon,
+			TasksStatus
 		},
 		data() {
 			return {
