@@ -381,6 +381,18 @@ details {
 								}
 							}
 						}
+
+						& > span,
+						& > div {
+							display: flex;
+							align-items: center;
+
+							& > svg {
+								width: 20px;
+								margin-right: 5px;
+								display: block;
+							}
+						}
 					}
 
 					&:hover {
@@ -652,9 +664,22 @@ details {
 	border: 3px solid transparentize(#f39754, 0.5);
 	background-clip: padding-box;
 
+	&.compact {
+		pointer-events: all;
+		width: 5px;
+		height: 5px;
+		border-width: 1px;
+		margin-right: 10px;
+	}
+
 	&.done {
 		background-color: #7fcd74;
-		border: 3px solid transparentize(#7fcd74, 0.5);
+		border-color: transparentize(#7fcd74, 0.5);
+	}
+
+	&.notask {
+		background-color: transparent;
+		border-color: transparentize(grey, 0.7);
 	}
 }
 

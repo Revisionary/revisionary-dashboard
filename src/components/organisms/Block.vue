@@ -85,16 +85,28 @@
 										<span>Loading...</span>
 									</li>
 									<li v-else v-for="device in devices" :key="device.ID">
-										<a href="#">
-											<span>
-												<WindowIcon v-if="device.cat_ID == 5" />
-												<DesktopIcon v-if="device.cat_ID == 1" />
-												<LaptopIcon v-if="device.cat_ID == 2" />
-												<TabletIcon v-if="device.cat_ID == 3" />
-												<MobileIcon v-if="device.cat_ID == 4" />
-												{{device.cat_name}} ({{ device.width ? device.screen_width : device.screen_width }}x{{ device.height ? device.height: device.screen_height }})
-											</span>
-										</a>
+										<span>
+											<div class="left">
+												<span
+													class="status compact"
+													:class="{
+														done: device.incomplete_tasks == 0,
+														notask: device.incomplete_tasks == 0 && device.complete_tasks == 0
+													}"
+												></span>
+												<span>
+													<WindowIcon v-if="device.cat_ID == 5" />
+													<DesktopIcon v-if="device.cat_ID == 1" />
+													<LaptopIcon v-if="device.cat_ID == 2" />
+													<TabletIcon v-if="device.cat_ID == 3" />
+													<MobileIcon v-if="device.cat_ID == 4" />
+													<span>{{device.cat_name}} ({{ device.width ? device.screen_width : device.screen_width }}x{{ device.height ? device.height: device.screen_height }})</span>
+												</span>
+											</div>
+											<div class="right">
+												<ChevronRightIcon />
+											</div>
+										</span>
 									</li>
 								</ul>
 							</div>
@@ -155,7 +167,10 @@
 			</div>
 			<div
 				class="status"
-				:class="{done : blockData.incomplete_tasks == 0}"
+				:class="{
+					done: blockData.incomplete_tasks == 0,
+					notask: blockData.incomplete_tasks == 0 && blockData.complete_tasks == 0
+				}"
 				v-if="blockData.incomplete_tasks > 0 || blockData.complete_tasks > 0"
 			></div>
 		</div>

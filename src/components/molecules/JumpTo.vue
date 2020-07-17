@@ -30,7 +30,13 @@
 				>
 					<nuxt-link :to="`/project/${eachProject.ID}`">
 						<div class="left" @click.prevent="bringPages(eachProject.ID)">
-							<span class="status" :class="{done: eachProject.incomplete_tasks == 0}"></span>
+							<span
+								class="status compact"
+								:class="{
+									done: eachProject.incomplete_tasks == 0,
+									notask: eachProject.incomplete_tasks == 0 && eachProject.complete_tasks == 0
+								}"
+							></span>
 							<span v-html="eachProject.title"></span>
 						</div>
 						<div class="right" @click.prevent="bringPages(eachProject.ID)">
@@ -52,7 +58,13 @@
 						>
 							<span @click="bringPhases(page.ID)">
 								<div class="left">
-									<span class="status" :class="{done: page.incomplete_tasks == 0}"></span>
+									<span
+										class="status compact"
+										:class="{
+											done: page.incomplete_tasks == 0,
+											notask: page.incomplete_tasks == 0 && page.complete_tasks == 0
+										}"
+									></span>
 									<span v-html="page.title"></span>
 								</div>
 								<div class="right">
@@ -74,7 +86,13 @@
 								>
 									<span @click="bringDevices(phase.ID)">
 										<div class="left">
-											<span class="status" :class="{done: phase.incomplete_tasks == 0}"></span>
+											<span
+												class="status compact"
+												:class="{
+												done: phase.incomplete_tasks == 0,
+												notask: phase.incomplete_tasks == 0 && phase.complete_tasks == 0
+											}"
+											></span>
 											<span>v{{ index + 1 }} ({{$timeSince(phase.created)}} ago)</span>
 										</div>
 										<span class="right">
@@ -95,14 +113,20 @@
 										>
 											<span>
 												<div class="left">
-													<span class="status" :class="{done: device.incomplete_tasks == 0}"></span>
+													<span
+														class="status compact"
+														:class="{
+															done: device.incomplete_tasks == 0,
+															notask: device.incomplete_tasks == 0 && device.complete_tasks == 0
+														}"
+													></span>
 													<span>
 														<WindowIcon v-if="device.cat_ID == 5" />
 														<DesktopIcon v-if="device.cat_ID == 1" />
 														<LaptopIcon v-if="device.cat_ID == 2" />
 														<TabletIcon v-if="device.cat_ID == 3" />
 														<MobileIcon v-if="device.cat_ID == 4" />
-														{{device.cat_name}} ({{ device.width ? device.screen_width : device.screen_width }}x{{ device.height ? device.height: device.screen_height }})
+														<span>{{device.cat_name}} ({{ device.width ? device.screen_width : device.screen_width }}x{{ device.height ? device.height: device.screen_height }})</span>
 													</span>
 												</div>
 												<div class="right">
@@ -276,14 +300,6 @@
 
 		.current {
 			text-transform: capitalize;
-		}
-
-		.status {
-			pointer-events: all;
-			width: 5px;
-			height: 5px;
-			border-width: 1px;
-			margin-right: 10px;
 		}
 
 		ul.menu.boxed {
