@@ -61,7 +61,7 @@
 						</span>
 					</span>
 					<span v-else-if="notification.type == 'comment'">
-						<i>"{{ notification.notification }}..."</i>
+						<i>"{{ notification.pin_comment != null ? notification.pin_comment : notification.notification }}..."</i>
 						<div>
 							on
 							<span>
