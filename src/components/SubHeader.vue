@@ -424,6 +424,15 @@
 				& > svg > path {
 					stroke: #7884a7;
 				}
+
+				&:hover {
+					color: black !important;
+					border-color: black !important;
+
+					& > svg > path {
+						stroke: black;
+					}
+				}
 			}
 		}
 
