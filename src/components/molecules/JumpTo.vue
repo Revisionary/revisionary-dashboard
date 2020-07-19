@@ -28,18 +28,18 @@
 						projectactive : project.ID == eachProject.ID
 					}"
 				>
-					<nuxt-link :to="`/project/${eachProject.ID}`">
-						<div class="left" @click.prevent="bringPages(eachProject.ID)">
+					<span :to="`/project/${eachProject.ID}`" @click.prevent="bringPages(eachProject.ID)">
+						<div class="left">
 							<TasksStatus
 								:incompletedCount="eachProject.incomplete_tasks"
 								:completedCount="eachProject.complete_tasks"
 							/>
 							<span v-html="eachProject.title"></span>
 						</div>
-						<div class="right" @click.prevent="bringPages(eachProject.ID)">
+						<div class="right">
 							<ChevronDownIcon />
 						</div>
-					</nuxt-link>
+					</span>
 
 					<ul
 						class="menu sub"
