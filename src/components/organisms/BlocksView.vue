@@ -31,7 +31,7 @@
 				class="category"
 				:class="{
 					catsortable: category.ID != 0,
-					hide: category.ID == 0 && !blocksOfCategory(0).length && blockCategories.length > 0
+					hide: category.ID == 0 && !blocksOfCategory(0).length && blockCategories.length > 0 && filter == null
 				}"
 				v-for="category in blockCategories"
 				:key="category.ID"
@@ -72,15 +72,8 @@
 						<Block :blockData="block" />
 					</div>
 
-					<div
-						class="block add-new"
-						v-if="
-							(category.ID != 0 && !filter)
-							|| (category.ID == 0 && blocksOfCategory(0).length && blockCategories.length > 1)
-							|| (category.ID == 0 && blockCategories.length == 1)
-						"
-					>
-						<AddNewBlock :cat_ID="category.ID" :cat_title="category.title" />
+					<div class="block add-new">
+						<AddNewBlock :cat_ID="category.ID" :cat_title="category.title" :filter="filter" />
 					</div>
 				</draggable>
 			</div>
@@ -120,6 +113,15 @@
 			},
 			blocksFetching: {
 				type: Boolean
+			}
+		},
+		methods: {
+			blocksOfCategory(cat_ID) {
+				if (this.filter != null) return this.categorizedBlocks;
+
+				return this.categorizedBlocks.filter(
+					block => block.cat_ID == cat_ID
+				);
 			}
 		},
 		computed: {
@@ -169,15 +171,6 @@
 
 				// If no filter
 				return this.availableBlocks;
-			}
-		},
-		methods: {
-			blocksOfCategory(cat_ID) {
-				if (this.filter != null) return this.categorizedBlocks;
-
-				return this.categorizedBlocks.filter(
-					block => block.cat_ID == cat_ID
-				);
 			}
 		}
 	};

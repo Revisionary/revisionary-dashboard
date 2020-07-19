@@ -1,11 +1,15 @@
 <template>
-	<div class="card add-new" :class="{open: isOpen, blocked: !isAvailable}">
+	<div
+		class="card add-new"
+		:class="{open: isOpen, blocked: !isAvailable}"
+		v-if="filter != 'shared' && filter != 'mine' && filter != 'favorites' && filter != 'archived' && filter != 'deleted'"
+	>
 		<div class="top" @click.prevent="toggleAddNew">
 			<div class="add-new-opener">
 				<PlusIconLarge />
 				<br />
 				Add New {{ dataType }}
-				<div class="category" v-if="cat_ID != 0">Into '{{ cat_title }}' Category</div>
+				<div class="category" v-if="filter !== null || cat_ID != 0">Into '{{ category }}' Category</div>
 			</div>
 		</div>
 		<div class="info" v-show="isOpen">
@@ -56,6 +60,9 @@
 			},
 			cat_title: {
 				type: String
+			},
+			filter: {
+				type: String
 			}
 		},
 		computed: {
@@ -67,6 +74,19 @@
 					return "project";
 
 				return "page";
+			},
+			blockCategories() {
+				if (this.dataType == "project")
+					return this.$store.getters["projects/getCategories"];
+				return this.$store.getters["pages/getCategories"];
+			},
+			category() {
+				if (this.filter !== null)
+					return this.blockCategories.find(
+						category => category.slug == this.filter
+					).title;
+
+				return this.cat_title;
 			},
 			limit() {
 				if (this.dataType == "project") return this.$auth.user.max_projects;
