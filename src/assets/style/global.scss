@@ -247,7 +247,7 @@ details {
 		ul.menu {
 			padding: 8px 0;
 			list-style-type: none;
-			overflow: auto;
+			//overflow: auto;
 
 			&.boxed {
 				margin-top: 5px;
@@ -436,6 +436,26 @@ details {
 						justify-content: center;
 					}
 				}
+			}
+
+			li {
+
+				& > * .show-on-hover {
+					opacity: 0;
+					transition: 500ms;
+					font-size: 16px;
+					height: 16px;
+					display: block;
+				}
+
+				&:hover > * .show-on-hover {
+					opacity: 1;
+
+					&:hover {
+						color: $color-primary;
+					}
+				}
+
 			}
 		}
 	}

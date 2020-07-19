@@ -295,6 +295,7 @@
 
 		ul.menu.boxed {
 			max-height: calc(90vh - 65px);
+			overflow: auto;
 		}
 
 		.projectactive {

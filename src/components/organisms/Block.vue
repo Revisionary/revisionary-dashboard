@@ -101,7 +101,25 @@
 												</span>
 											</div>
 											<div class="right">
-												<ChevronRightIcon />
+												<a
+													href="#"
+													class="show-on-hover tooltip-not-contained"
+													data-tooltip="Delete this device"
+												>&times;</a>
+											</div>
+										</span>
+									</li>
+									<li class="add-new-device" v-if="!devicesFetching">
+										<span>
+											<div class="left">
+												<TasksStatus :incompletedCount="0" :completedCount="0" />
+												<span>
+													<PlusIcon />
+													<span>Add New Device</span>
+												</span>
+											</div>
+											<div class="right">
+												<ChevronRightIcon class="show-on-hover" />
 											</div>
 										</span>
 									</li>
@@ -128,12 +146,32 @@
 										:key="index"
 										:class="{active : index == blockData.versions.length - 1}"
 									>
-										<a href="#">
-											<span>
-												<VersionIcon />
-												v{{index + 1}} ({{$timeSince(version.created)}} ago)
-											</span>
-										</a>
+										<span>
+											<div class="left">
+												<span>
+													<VersionIcon />
+													v{{index + 1}} ({{$timeSince(version.created)}} ago)
+												</span>
+											</div>
+											<div class="right">
+												<a
+													href="#"
+													class="show-on-hover tooltip-not-contained"
+													data-tooltip="Delete this Phase"
+												>&times;</a>
+											</div>
+										</span>
+									</li>
+									<li class="add-new-phase" v-if="!devicesFetching">
+										<span>
+											<div class="left">
+												<span>
+													<PlusIcon />
+													<span>Add New Phase</span>
+												</span>
+											</div>
+											<div class="right"></div>
+										</span>
 									</li>
 								</ul>
 							</div>
@@ -208,12 +246,15 @@
 	import VersionIcon from "~/components/atoms/icon-version.vue";
 	import ShareIcon from "~/components/atoms/icon-share.vue";
 	import ChevronDownIcon from "~/components/atoms/icon-chevron-down.vue";
+	import ChevronRightIcon from "~/components/atoms/icon-chevron-right.vue";
 
 	import WindowIcon from "~/components/atoms/devices/icon-custom.vue";
 	import DesktopIcon from "~/components/atoms/devices/icon-desktop.vue";
 	import LaptopIcon from "~/components/atoms/devices/icon-laptop.vue";
 	import TabletIcon from "~/components/atoms/devices/icon-tablet.vue";
 	import MobileIcon from "~/components/atoms/devices/icon-mobile.vue";
+
+	import PlusIcon from "~/components/atoms/icon-plus.vue";
 
 	import ProfilePic from "~/components/atoms/ProfilePic.vue";
 
@@ -227,13 +268,15 @@
 			VersionIcon,
 			ShareIcon,
 			ChevronDownIcon,
+			ChevronRightIcon,
 			ProfilePic,
 			WindowIcon,
 			DesktopIcon,
 			LaptopIcon,
 			TabletIcon,
 			MobileIcon,
-			TasksStatus
+			TasksStatus,
+			PlusIcon
 		},
 		data() {
 			return {
@@ -459,6 +502,16 @@
 
 			.favorite {
 				cursor: pointer;
+			}
+		}
+
+		.add-new-device {
+			.status {
+				visibility: hidden;
+			}
+
+			.plus-icon path {
+				stroke: #8b96ad;
 			}
 		}
 
