@@ -15,27 +15,14 @@
 	export default {
 		layout: "app",
 		async validate({ params, store }) {
-			// If project info already exists
-			if (store.getters["projects/getProject"].ID != parseInt(params.id))
+			// If project info not exists
+			if (store.getters["projects/getProject"].ID != params.id)
 				await store.dispatch("projects/fetchProject", params.id);
 
 			// If project found
-			if (store.getters["projects/getProject"].ID == parseInt(params.id)) {
-				if (
-					typeof store.getters["pages/getCategories"][0] == "undefined" ||
-					store.getters["pages/getCategories"][0].project_ID !=
-						parseInt(params.id)
-				)
-					store.dispatch("pages/fetchCategories", params.id);
+			if (store.getters["projects/getProject"].ID == params.id) return true;
 
-				if (
-					typeof store.getters["pages/get"][0] == "undefined" ||
-					store.getters["pages/get"][0].project_ID != parseInt(params.id)
-				)
-					store.dispatch("pages/fetch", params.id);
-
-				return true;
-			}
+			// If project not found
 			return false;
 		},
 		components: {
@@ -46,6 +33,8 @@
 			this.$nextTick(() => {
 				this.$nuxt.$loading.start();
 			});
+
+			this.$store.dispatch("pages/fetch", this.$route.params.id);
 		}
 	};
 </script>

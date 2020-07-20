@@ -39,11 +39,42 @@ export const actions = {
 	},
 
 	// Fetch Pages
-	async fetch({ commit, dispatch }, projectID) {
+	async fetch({ commit, dispatch, state }, projectID) {
+
+		this.$axios.all = function all(promises) {
+			return Promise.all(promises);
+		};
+
+		let actions = [
+			this.$axios.get('project/' + projectID + '/pages')
+		];
+
+		// If categories not already fetched
+		if (!state.pageCategories.length || state.pageCategories[0].project_ID != projectID) {
+			actions.push(
+				this.$axios.get('project/' + projectID + '/categories')
+			);
+		}
 
 		commit("setFetching", true);
 
-		await this.$axios.get('project/' + projectID + '/pages').then(({ status, data }) => {
+		await this.$axios.all(actions).then((res) => {
+
+			const { status, data } = res[0];
+
+			if (res.length > 1) {
+
+				const catResp = res[1];
+				if (catResp.status === 200) {
+
+					console.log('PAGE CATS: ', catResp.data.categories);
+					commit('setCategories', catResp.data.categories);
+					commit("setFetching", false);
+
+				}
+
+			}
+
 			if (status === 200) {
 
 				const pages = data.pages;

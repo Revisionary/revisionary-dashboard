@@ -15,8 +15,6 @@
 
 	export default {
 		async validate({ params, store }) {
-			return true;
-
 			if (!store.getters["pages/getCategories"].length)
 				await store.dispatch("pages/fetchCategories", params.id);
 

@@ -5,6 +5,4 @@ export default function ({ store }) {
 		dropdowns[i].removeAttribute('open')
 	}
 
-	store.dispatch('projects/resetProject');
-
 }
