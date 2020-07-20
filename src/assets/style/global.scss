@@ -321,7 +321,8 @@ details {
 				white-space: nowrap;
 
 				& > a,
-				& > span {
+				& > span,
+				& > div {
 					font-size: 14px;
 					line-height: 17px;
 					font-weight: 500;
@@ -340,6 +341,7 @@ details {
 						display: block;
 					}
 
+					& > a,
 					& > span,
 					& > div {
 						display: flex;
@@ -382,6 +384,7 @@ details {
 							}
 						}
 
+						& > a,
 						& > span,
 						& > div {
 							display: flex;
@@ -429,7 +432,8 @@ details {
 
 				&.title {
 					& > a,
-					& > span {
+					& > span,
+					& > div {
 						color: black;
 						border-bottom: 1px solid #ECECEC;
 						padding-top: 0;

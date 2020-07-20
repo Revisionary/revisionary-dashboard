@@ -1,5 +1,5 @@
 <template>
-	<div id="top-bar">
+	<div id="top-bar" :class="{revise: type == 'revise'}">
 		<div class="left-side">
 			<nuxt-link class="logo" to="/projects/">
 				<Logo />
@@ -17,14 +17,16 @@
 		</div>
 		<div class="center-side"></div>
 		<div class="right-side" v-if="$auth.loggedIn">
-			<Limitations />
+			<Limitations v-if="type != 'revise'" />
 
-			<a
-				href="#"
-				class="button upgrade"
-				v-if="currentUser.level_ID != 1 && currentUser.level_ID != 4"
-			>Upgrade</a>
-			<a href="#" class="button upgrade" v-else>Invite</a>
+			<div class="upgrade-button" v-if="type != 'revise'">
+				<a
+					href="#"
+					class="button upgrade"
+					v-if="currentUser.level_ID != 1 && currentUser.level_ID != 4"
+				>Upgrade</a>
+				<a href="#" class="button upgrade" v-else>Invite</a>
+			</div>
 
 			<details>
 				<summary class="rotate-icon">
@@ -80,6 +82,11 @@
 			MenuIcon,
 			ProfilePic,
 			ChevronDownIcon
+		},
+		props: {
+			type: {
+				default: "dashboard"
+			}
 		},
 		created() {
 			if (!this.$auth.loggedIn) this.$store.commit("toggleSideBar", false);
@@ -151,19 +158,22 @@
 			}
 		}
 
-		&.dark {
-			background-color: #232830;
+		&.revise {
+			background-color: #010e28;
+			border-color: #010e28;
 
-			a {
-				color: #9ea5ab;
-				text-decoration: none;
+			#jump-to {
+				margin-left: 0;
 
-				&:hover {
-					color: white;
+				& > summary {
+					border-color: #010e28;
+					background-color: #1a263d;
+				}
+			}
 
-					svg > rect {
-						fill: white;
-					}
+			.rotate-icon {
+				svg > path {
+					stroke: #727781;
 				}
 			}
 		}
@@ -189,7 +199,7 @@
 		}
 
 		.profile-pic {
-			margin-right: 10px;
+			margin-right: 5px;
 		}
 	}
 </style>

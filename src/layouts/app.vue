@@ -1,6 +1,9 @@
 <template>
-	<div id="page" :class="{ sidebarClosed: !$store.state.isSideBarOpen }">
-		<TopBar />
+	<div id="page" :class="{
+		sidebarClosed: !$store.state.isSideBarOpen,
+		revising: isRevising
+	}">
+		<TopBar :type="isRevising ? 'revise' : 'dashboard'" />
 		<main>
 			<SideBar />
 			<nuxt />
@@ -16,6 +19,11 @@
 		components: {
 			TopBar,
 			SideBar
+		},
+		computed: {
+			isRevising() {
+				return this.$route.name == "revise-deviceID";
+			}
 		},
 		created() {
 			console.log("APP CREATED");
