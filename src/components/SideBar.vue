@@ -66,13 +66,13 @@
 			NotificationIcon,
 			TasksIcon,
 			SupportIcon,
-			Notifications
+			Notifications,
 		},
 		methods: {
 			toggleTab(tabName) {
 				this.$store.commit("toggleTab", tabName);
-			}
-		}
+			},
+		},
 	};
 </script>
 
@@ -211,6 +211,18 @@
 			}
 
 			.menu-label {
+				display: none;
+			}
+		}
+	}
+
+	.revising {
+		aside#sidebar {
+			position: fixed;
+		}
+
+		&:not(.sidebarClosed) {
+			aside#sidebar {
 				display: none;
 			}
 		}

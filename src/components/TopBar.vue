@@ -16,11 +16,67 @@
 			<JumpTo v-if="authenticated" />
 		</div>
 		<div class="center-side" v-if="type == 'revise'">
-			<div class="tasks">Count</div>
-			<div class="versions">Versions</div>
+			<div class="tasks">
+				<div class="tasks-count" v-if="incomplete_tasks > 0 || complete_tasks > 0">
+					<div
+						class="left tooltip-not-contained bottom-tooltip"
+						data-tooltip="Incomplete"
+						v-if="incomplete_tasks > 0"
+					>{{ incomplete_tasks }}</div>
+					<div
+						class="done tooltip-not-contained bottom-tooltip"
+						data-tooltip="Solved"
+						v-if="complete_tasks > 0"
+					>{{ complete_tasks }}</div>
+				</div>
+				<div v-else>
+					<small>No Tasks</small>
+				</div>
+			</div>
+			<div class="versions">
+				<details>
+					<summary>
+						<div class="button radius">
+							<VersionIcon />v1
+							<CaretDownIcon />
+						</div>
+					</summary>
+					<div class="details-menu versions-list">
+						<ul class="menu boxed compact lines">
+							<li>
+								<span>
+									<div class="left">
+										<span>
+											<VersionIcon />v2 (2 minutes ago)
+										</span>
+									</div>
+									<div class="right">
+										<a
+											href="#"
+											class="show-on-hover tooltip-not-contained"
+											data-tooltip="Delete this Phase"
+										>&times;</a>
+									</div>
+								</span>
+							</li>
+							<li class="add-new-phase">
+								<span>
+									<div class="left">
+										<span>
+											<PlusIcon />
+											<span>Add New Phase</span>
+										</span>
+									</div>
+									<div class="right"></div>
+								</span>
+							</li>
+						</ul>
+					</div>
+				</details>
+			</div>
 			<div class="screens">Screens</div>
 			<div class="pin-modes">Pin Modes</div>
-			<div class="limitations">Limitations</div>
+			<div class="limitations">27 Live Pins Left</div>
 		</div>
 		<div class="right-side" v-if="$auth.loggedIn">
 			<div class="revise" v-if="type == 'revise'">
@@ -86,6 +142,11 @@
 
 	import MenuIcon from "~/components/atoms/icon-menu.vue";
 	import ChevronDownIcon from "~/components/atoms/icon-chevron-down.vue";
+	import CaretDownIcon from "~/components/atoms/icon-caret-down.vue";
+
+	import PlusIcon from "~/components/atoms/icon-plus.vue";
+
+	import VersionIcon from "~/components/atoms/icon-version.vue";
 
 	export default {
 		components: {
@@ -95,11 +156,20 @@
 			MenuIcon,
 			ProfilePic,
 			ChevronDownIcon,
+			CaretDownIcon,
+			PlusIcon,
+			VersionIcon,
 		},
 		props: {
 			type: {
 				default: "dashboard",
 			},
+		},
+		data() {
+			return {
+				incomplete_tasks: 42,
+				complete_tasks: 9,
+			};
 		},
 		created() {
 			if (!this.$auth.loggedIn) this.$store.commit("toggleSideBar", false);
@@ -194,6 +264,63 @@
 				svg > path {
 					stroke: #727781;
 				}
+			}
+		}
+
+		& > .center-side {
+			background-color: #1a263d;
+			padding: 6px 27px;
+			border-radius: 12px;
+
+			& > * {
+				height: 30px;
+				padding: 0;
+			}
+
+			& > .tasks {
+				background-color: rgba(255, 255, 255, 0.1);
+				padding: 0 9px;
+				border-radius: 3px;
+
+				.tasks-count {
+					& > * {
+						border-color: #2a2d30;
+						font-weight: 700;
+
+						&.done {
+							background-color: #5d9256;
+						}
+					}
+				}
+			}
+
+			& > .versions {
+				summary {
+					.button {
+						height: 30px;
+						background-color: rgba(255, 255, 255, 0.1);
+						padding: 0 5px;
+						font-weight: 500;
+						font-size: 13px;
+						line-height: 16px;
+
+						svg.caret-down {
+							width: 8px;
+
+							path {
+								stroke: transparent;
+								fill: white;
+							}
+						}
+					}
+				}
+			}
+
+			& > .limitations {
+				font-weight: 600;
+				font-size: 13px;
+				line-height: 16px;
+				color: white;
 			}
 		}
 

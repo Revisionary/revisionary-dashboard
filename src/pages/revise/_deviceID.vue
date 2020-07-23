@@ -1,5 +1,8 @@
 <template>
-	<div id="site">CURRENT PAGE: {{ $route.name }}</div>
+	<div id="site" style="display: grid; place-items: center;">
+		<p>CURRENT PAGE: {{ $route.name }}</p>
+		<p>CURRENT PAGE ID: {{ $route.params.deviceID }}</p>
+	</div>
 </template>
 
 <script>
@@ -14,7 +17,7 @@
 			// this.$nextTick(() => {
 			// 	this.$nuxt.$loading.start();
 			// });
-		}
+		},
 	};
 </script>
 
