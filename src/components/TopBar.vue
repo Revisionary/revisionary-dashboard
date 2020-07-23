@@ -15,20 +15,33 @@
 
 			<JumpTo v-if="authenticated" />
 		</div>
-		<div class="center-side"></div>
+		<div class="center-side" v-if="type == 'revise'">
+			<div class="tasks">Count</div>
+			<div class="versions">Versions</div>
+			<div class="screens">Screens</div>
+			<div class="pin-modes">Pin Modes</div>
+			<div class="limitations">Limitations</div>
+		</div>
 		<div class="right-side" v-if="$auth.loggedIn">
-			<Limitations v-if="type != 'revise'" />
-
-			<div class="upgrade-button" v-if="type != 'revise'">
-				<a
-					href="#"
-					class="button upgrade"
-					v-if="currentUser.level_ID != 1 && currentUser.level_ID != 4"
-				>Upgrade</a>
-				<a href="#" class="button upgrade" v-else>Invite</a>
+			<div class="revise" v-if="type == 'revise'">
+				<div class="share">Share</div>
+				<div class="info">Info</div>
 			</div>
 
-			<details>
+			<div class="dashboard" v-else>
+				<Limitations v-if="type != 'revise'" />
+
+				<div class="upgrade-button" v-if="type != 'revise'">
+					<a
+						href="#"
+						class="button upgrade"
+						v-if="currentUser.level_ID != 1 && currentUser.level_ID != 4"
+					>Upgrade</a>
+					<a href="#" class="button upgrade" v-else>Invite</a>
+				</div>
+			</div>
+
+			<details class="profile">
 				<summary class="rotate-icon">
 					<ProfilePic
 						class="profile-pic"
@@ -81,12 +94,12 @@
 			Limitations,
 			MenuIcon,
 			ProfilePic,
-			ChevronDownIcon
+			ChevronDownIcon,
 		},
 		props: {
 			type: {
-				default: "dashboard"
-			}
+				default: "dashboard",
+			},
 		},
 		created() {
 			if (!this.$auth.loggedIn) this.$store.commit("toggleSideBar", false);
@@ -100,7 +113,7 @@
 			},
 			isSideBarOpen() {
 				return this.$store.state.isSideBarOpen;
-			}
+			},
 		},
 		methods: {
 			logout() {
@@ -126,20 +139,21 @@
 						// Redirect to login page
 						this.$router.push({ path: "/login/" });
 					})
-					.catch(error => {
+					.catch((error) => {
 						console.log("ERROR: ", error);
 						//if (process.browser) window.$nuxt.$root.$loading.fail();
 					});
-			}
-		}
+			},
+		},
 	};
 </script>
 
 <style lang="scss">
 	#top-bar {
 		background-color: white;
-		display: flex;
-		flex-direction: row;
+		display: grid;
+		grid-auto-flow: column;
+		gap: 24px;
 		justify-content: space-between;
 		align-items: center;
 		padding: 0 20px;
@@ -148,13 +162,18 @@
 		border: 1px solid #eaedf3;
 
 		& > * {
-			display: flex;
-			flex-direction: row;
-			justify-content: space-between;
-			align-items: center;
+			display: inherit;
+			grid-auto-flow: inherit;
+			gap: inherit;
+			justify-content: inherit;
+			align-items: inherit;
 
 			& > * {
-				margin-right: 24px;
+				display: inherit;
+				grid-auto-flow: inherit;
+				gap: inherit;
+				justify-content: inherit;
+				align-items: inherit;
 			}
 		}
 
