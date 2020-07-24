@@ -18,12 +18,12 @@
 	export default {
 		components: {
 			TopBar,
-			SideBar
+			SideBar,
 		},
 		computed: {
 			isRevising() {
 				return this.$route.name == "revise-deviceID";
-			}
+			},
 		},
 		created() {
 			console.log("APP CREATED");
@@ -38,15 +38,14 @@
 						this.$store.dispatch("checkNotifications");
 				}, 10000);
 			}, 2000);
-		}
+		},
 	};
 </script>
 
 <style lang="scss">
 	main {
-		width: 100%;
 		display: flex;
-		position: relative;
+		width: 100%;
 		height: calc(100vh - 61px);
 
 		& > .content {

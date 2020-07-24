@@ -104,18 +104,18 @@
 												<a
 													href="#"
 													class="show-on-hover tooltip-not-contained"
-													data-tooltip="Delete this device"
+													data-tooltip="Delete this screen"
 												>&times;</a>
 											</div>
 										</span>
 									</li>
-									<li class="add-new-device" v-if="!devicesFetching">
+									<li class="add-new" v-if="!devicesFetching">
 										<span>
 											<div class="left">
 												<TasksStatus :incompletedCount="0" :completedCount="0" />
 												<span>
 													<PlusIcon />
-													<span>Add New Device</span>
+													<span>Add New Screen</span>
 												</span>
 											</div>
 											<div class="right">
@@ -162,7 +162,7 @@
 											</div>
 										</span>
 									</li>
-									<li class="add-new-phase" v-if="!devicesFetching">
+									<li class="add-new" v-if="!devicesFetching">
 										<span>
 											<div class="left">
 												<span>
@@ -276,12 +276,12 @@
 			TabletIcon,
 			MobileIcon,
 			TasksStatus,
-			PlusIcon
+			PlusIcon,
 		},
 		data() {
 			return {
 				devicesFetching: false,
-				devices: []
+				devices: [],
 			};
 		},
 		methods: {
@@ -292,7 +292,7 @@
 				this.$store.dispatch("projects/updateProject", {
 					ID: blockID,
 					name: "favorite",
-					value: !blockFavorite
+					value: !blockFavorite,
 				});
 			},
 			userInfo(ID) {
@@ -314,23 +314,23 @@
 							this.devicesFetching = false;
 						}
 					})
-					.catch(function(error) {
+					.catch(function (error) {
 						console.log("ERROR: ", error);
 						this.devicesFetching = false;
 					});
-			}
+			},
 		},
 		computed: {
 			ownerInfo() {
 				const user_ID = this.blockData.user_ID;
 				return this.userInfo(user_ID);
-			}
+			},
 		},
 		props: {
 			blockData: {
-				type: Object
-			}
-		}
+				type: Object,
+			},
+		},
 	};
 </script>
 
@@ -502,16 +502,6 @@
 
 			.favorite {
 				cursor: pointer;
-			}
-		}
-
-		.add-new-device {
-			.status {
-				visibility: hidden;
-			}
-
-			.plus-icon path {
-				stroke: #8b96ad;
 			}
 		}
 

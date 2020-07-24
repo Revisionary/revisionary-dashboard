@@ -2,7 +2,8 @@
 	<details id="jump-to">
 		<summary class="selectbox" @click="fetchProjects">
 			<span class="current" v-html="current"></span>
-			<CaretDownIcon />
+			<ChevronDownIcon v-if="this.$route.name == 'revise-deviceID'" />
+			<CaretDownIcon v-else />
 		</summary>
 		<div class="details-menu">
 			<ul class="menu boxed">
@@ -159,7 +160,7 @@
 			LaptopIcon,
 			TabletIcon,
 			MobileIcon,
-			TasksStatus
+			TasksStatus,
 		},
 		data() {
 			return {
@@ -168,14 +169,14 @@
 				phasesFetching: false,
 				phases: [],
 				devicesFetching: false,
-				devices: []
+				devices: [],
 			};
 		},
 		computed: {
 			...mapGetters({
 				projects: "projects/get",
 				project: "projects/getProject",
-				fetching: "projects/status"
+				fetching: "projects/status",
 			}),
 			current() {
 				if (
@@ -186,7 +187,7 @@
 					return this.project.title;
 
 				return "Jump to...";
-			}
+			},
 		},
 		methods: {
 			fetchProjects() {
@@ -199,7 +200,7 @@
 			},
 			async bringPages(projectID) {
 				if (
-					this.pages.filter(page => page.project_ID == projectID).length
+					this.pages.filter((page) => page.project_ID == projectID).length
 				) {
 					this.pages = [];
 					this.phases = [];
@@ -217,18 +218,18 @@
 						if (status === 200) {
 							const pages = data.pages;
 							this.pages = pages.filter(
-								page => !page.archived && !page.deleted
+								(page) => !page.archived && !page.deleted
 							);
 							this.pagesFetching = false;
 						}
 					})
-					.catch(function(error) {
+					.catch(function (error) {
 						console.log("ERROR: ", error);
 						this.pagesFetching = false;
 					});
 			},
 			async bringPhases(pageID) {
-				if (this.phases.filter(phase => phase.page_ID == pageID).length) {
+				if (this.phases.filter((phase) => phase.page_ID == pageID).length) {
 					this.phases = [];
 					this.devices = [];
 					return false;
@@ -249,14 +250,15 @@
 							this.phasesFetching = false;
 						}
 					})
-					.catch(function(error) {
+					.catch(function (error) {
 						console.log("ERROR: ", error);
 						this.phasesFetching = false;
 					});
 			},
 			async bringDevices(phaseID) {
 				if (
-					this.devices.filter(device => device.phase_ID == phaseID).length
+					this.devices.filter((device) => device.phase_ID == phaseID)
+						.length
 				) {
 					this.devices = [];
 					return false;
@@ -276,17 +278,17 @@
 							this.devicesFetching = false;
 						}
 					})
-					.catch(function(error) {
+					.catch(function (error) {
 						console.log("ERROR: ", error);
 						this.devicesFetching = false;
 					});
-			}
-		}
+			},
+		},
 	};
 </script>
 
 <style lang="scss">
-	#jump-to {
+	details#jump-to {
 		margin-left: 120px;
 
 		.current {

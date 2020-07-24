@@ -24,23 +24,34 @@ a {
 }
 
 .selectbox {
-	position: relative;
 	border: 1px solid #eaedf3;
 	border-radius: 3px;
-	padding: 8px 50px 8px 14px;
+	padding: 7px 12px;
 	font-weight: 500;
 	font-size: 14px;
-	line-height: 17px;
+	line-height: normal;
+
+	display: grid;
+	grid-auto-flow: column;
+	align-items: center;
+	justify-content: space-between;
+	gap: 8px;
 
 	& > svg.caret-down {
-		position: absolute;
-		right: 12px;
-		top: 50%;
-		transform: translateY(-50%);
+		width: 6px;
+		margin-bottom: -2px;
+	}
+
+	& > svg.chevron-down {
+		margin-bottom: -2px;
 	}
 
 	&:hover {
 		color: $color-primary;
+
+		& > svg.caret-down path {
+			fill: $color-primary;
+		}
 	}
 }
 
@@ -415,6 +426,12 @@ details {
 					}
 				}
 
+				svg {
+					& > path {
+						stroke: #8b96ad;
+					}
+				}
+
 				&.active {
 					& > a,
 					& > span,
@@ -438,6 +455,18 @@ details {
 						border-bottom: 1px solid #ECECEC;
 						padding-top: 0;
 						justify-content: center;
+					}
+				}
+
+				&.add-new {
+					& > a,
+					& > span,
+					& > div {
+
+						.status {
+							visibility: hidden;
+						}
+
 					}
 				}
 			}

@@ -25,9 +25,16 @@
 			// If project not found
 			return false;
 		},
+		head() {
+			return {
+				title:
+					this.$store.getters["projects/getProject"].title +
+					" Project | Revisionary",
+			};
+		},
 		components: {
 			SubHeader,
-			Footer
+			Footer,
 		},
 		created() {
 			this.$nextTick(() => {
@@ -35,7 +42,7 @@
 			});
 
 			this.$store.dispatch("pages/fetch", this.$route.params.id);
-		}
+		},
 	};
 </script>
 

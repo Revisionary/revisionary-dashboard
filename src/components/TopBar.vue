@@ -35,11 +35,10 @@
 			</div>
 			<div class="versions">
 				<details>
-					<summary>
-						<div class="button radius select-box">
-							<VersionIcon />v1
-							<CaretDownIcon />
-						</div>
+					<summary class="selectbox">
+						<VersionIcon />
+						<span>v1</span>
+						<CaretDownIcon />
 					</summary>
 					<div class="details-menu versions-list">
 						<ul class="menu boxed compact lines">
@@ -59,7 +58,7 @@
 									</div>
 								</span>
 							</li>
-							<li class="add-new-phase">
+							<li class="add-new">
 								<span>
 									<div class="left">
 										<span>
@@ -76,11 +75,10 @@
 			</div>
 			<div class="screens">
 				<details>
-					<summary>
-						<div class="button radius select-box">
-							<WindowIcon />Custom Screen
-							<CaretDownIcon />
-						</div>
+					<summary class="selectbox">
+						<WindowIcon />
+						<span>Custom Screen</span>
+						<CaretDownIcon />
 					</summary>
 					<div class="details-menu versions-list">
 						<ul class="menu boxed compact lines">
@@ -88,27 +86,29 @@
 								<span>
 									<div class="left">
 										<span>
-											<VersionIcon />v2 (2 minutes ago)
+											<LaptopIcon />Laptop (1440x900)
 										</span>
 									</div>
 									<div class="right">
 										<a
 											href="#"
 											class="show-on-hover tooltip-not-contained"
-											data-tooltip="Delete this Phase"
+											data-tooltip="Delete this Screen"
 										>&times;</a>
 									</div>
 								</span>
 							</li>
-							<li class="add-new-phase">
+							<li class="add-new">
 								<span>
 									<div class="left">
 										<span>
 											<PlusIcon />
-											<span>Add New Phase</span>
+											<span>Add New Screen</span>
 										</span>
 									</div>
-									<div class="right"></div>
+									<div class="right">
+										<ChevronRightIcon class="show-on-hover" />
+									</div>
 								</span>
 							</li>
 						</ul>
@@ -116,7 +116,9 @@
 				</details>
 			</div>
 			<div class="pin-modes">Pin Modes</div>
-			<div class="limitations">27 Live Pins Left</div>
+			<div class="limitations">
+				<Limitations label="27 Live Pins Left" />
+			</div>
 		</div>
 		<div class="right-side" v-if="$auth.loggedIn">
 			<div class="revise" v-if="type == 'revise'">
@@ -181,7 +183,9 @@
 	import ProfilePic from "~/components/atoms/ProfilePic.vue";
 
 	import MenuIcon from "~/components/atoms/icon-menu.vue";
+
 	import ChevronDownIcon from "~/components/atoms/icon-chevron-down.vue";
+	import ChevronRightIcon from "~/components/atoms/icon-chevron-right.vue";
 	import CaretDownIcon from "~/components/atoms/icon-caret-down.vue";
 
 	import PlusIcon from "~/components/atoms/icon-plus.vue";
@@ -202,6 +206,7 @@
 			MenuIcon,
 			ProfilePic,
 			ChevronDownIcon,
+			ChevronRightIcon,
 			CaretDownIcon,
 			PlusIcon,
 			VersionIcon,
@@ -305,9 +310,20 @@
 			#jump-to {
 				margin-left: 0;
 
-				& > summary {
-					border-color: #010e28;
-					background-color: #1a263d;
+				summary {
+					& > svg.chevron-down {
+						& > path {
+							stroke: white;
+						}
+					}
+
+					&:hover {
+						& > svg.chevron-down {
+							& > path {
+								stroke: $color-primary;
+							}
+						}
+					}
 				}
 			}
 
@@ -315,6 +331,11 @@
 				svg > path {
 					stroke: #727781;
 				}
+			}
+
+			.selectbox {
+				border: none;
+				background-color: rgba(255, 255, 255, 0.1);
 			}
 		}
 
@@ -326,6 +347,16 @@
 			& > * {
 				height: 30px;
 				padding: 0;
+			}
+
+			.selectbox {
+				color: white;
+
+				& > svg.caret-down {
+					& > path {
+						fill: white;
+					}
+				}
 			}
 
 			& > .tasks {
@@ -345,33 +376,21 @@
 				}
 			}
 
-			& > .versions {
+			& > .screens {
 				summary {
+					& > svg:not(.caret-down) path {
+						stroke: white;
+					}
 				}
 			}
 
 			& > .limitations {
-				font-weight: 600;
-				font-size: 13px;
-				line-height: 16px;
-				color: white;
-			}
-		}
-
-		.button.select-box {
-			height: 30px;
-			background-color: rgba(255, 255, 255, 0.1);
-			padding: 0 5px;
-			font-weight: 500;
-			font-size: 13px;
-			line-height: 16px;
-
-			svg.caret-down {
-				width: 8px;
-
-				path {
-					stroke: transparent;
-					fill: white;
+				summary > span {
+					font-weight: 600;
+					font-size: 13px;
+					line-height: 16px;
+					color: white;
+					text-transform: none;
 				}
 			}
 		}

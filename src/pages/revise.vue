@@ -13,7 +13,7 @@
 			// 	this.$nuxt.$loading.start();
 			// });
 			//this.$store.dispatch("projects/fetch");
-		}
+		},
 	};
 </script>
 

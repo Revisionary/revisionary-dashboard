@@ -1,7 +1,8 @@
 <template>
 	<details class="plan-limitations">
 		<summary>
-			<span @click="fetchUsage">{{ currentUser.level_name }} Plan</span>
+			<span @click="fetchUsage" v-if="label != ''">{{ label }}</span>
+			<span @click="fetchUsage" v-else>{{ currentUser.level_name }} Plan</span>
 		</summary>
 		<div class="details-menu center">
 			<ul class="menu boxed">
@@ -72,7 +73,7 @@
 
 	export default {
 		components: {
-			LoadingIcon
+			LoadingIcon,
 		},
 		data() {
 			return {
@@ -83,9 +84,15 @@
 					phases: 0,
 					devices: 0,
 					livePins: 0,
-					commentPins: 0
-				}
+					commentPins: 0,
+				},
 			};
+		},
+		props: {
+			label: {
+				type: String,
+				default: "",
+			},
 		},
 		methods: {
 			async fetchUsage() {
@@ -106,11 +113,11 @@
 							this.fetching = false;
 						}
 					})
-					.catch(function(error) {
+					.catch(function (error) {
 						console.log("ERROR: ", error);
 						this.fetching = false;
 					});
-			}
+			},
 		},
 		computed: {
 			currentUser() {
@@ -140,8 +147,8 @@
 				return this.currentUser.max_comment_pins == "99999"
 					? "∞"
 					: this.currentUser.max_comment_pins;
-			}
-		}
+			},
+		},
 	};
 </script>
 
