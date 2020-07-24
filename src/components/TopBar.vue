@@ -36,7 +36,7 @@
 			<div class="versions">
 				<details>
 					<summary>
-						<div class="button radius">
+						<div class="button radius select-box">
 							<VersionIcon />v1
 							<CaretDownIcon />
 						</div>
@@ -74,7 +74,47 @@
 					</div>
 				</details>
 			</div>
-			<div class="screens">Screens</div>
+			<div class="screens">
+				<details>
+					<summary>
+						<div class="button radius select-box">
+							<WindowIcon />Custom Screen
+							<CaretDownIcon />
+						</div>
+					</summary>
+					<div class="details-menu versions-list">
+						<ul class="menu boxed compact lines">
+							<li>
+								<span>
+									<div class="left">
+										<span>
+											<VersionIcon />v2 (2 minutes ago)
+										</span>
+									</div>
+									<div class="right">
+										<a
+											href="#"
+											class="show-on-hover tooltip-not-contained"
+											data-tooltip="Delete this Phase"
+										>&times;</a>
+									</div>
+								</span>
+							</li>
+							<li class="add-new-phase">
+								<span>
+									<div class="left">
+										<span>
+											<PlusIcon />
+											<span>Add New Phase</span>
+										</span>
+									</div>
+									<div class="right"></div>
+								</span>
+							</li>
+						</ul>
+					</div>
+				</details>
+			</div>
 			<div class="pin-modes">Pin Modes</div>
 			<div class="limitations">27 Live Pins Left</div>
 		</div>
@@ -148,6 +188,12 @@
 
 	import VersionIcon from "~/components/atoms/icon-version.vue";
 
+	import WindowIcon from "~/components/atoms/devices/icon-custom.vue";
+	import DesktopIcon from "~/components/atoms/devices/icon-desktop.vue";
+	import LaptopIcon from "~/components/atoms/devices/icon-laptop.vue";
+	import TabletIcon from "~/components/atoms/devices/icon-tablet.vue";
+	import MobileIcon from "~/components/atoms/devices/icon-mobile.vue";
+
 	export default {
 		components: {
 			Logo,
@@ -159,6 +205,11 @@
 			CaretDownIcon,
 			PlusIcon,
 			VersionIcon,
+			WindowIcon,
+			DesktopIcon,
+			LaptopIcon,
+			TabletIcon,
+			MobileIcon,
 		},
 		props: {
 			type: {
@@ -288,7 +339,7 @@
 						font-weight: 700;
 
 						&.done {
-							background-color: #5d9256;
+							background-color: #79838c;
 						}
 					}
 				}
@@ -296,23 +347,6 @@
 
 			& > .versions {
 				summary {
-					.button {
-						height: 30px;
-						background-color: rgba(255, 255, 255, 0.1);
-						padding: 0 5px;
-						font-weight: 500;
-						font-size: 13px;
-						line-height: 16px;
-
-						svg.caret-down {
-							width: 8px;
-
-							path {
-								stroke: transparent;
-								fill: white;
-							}
-						}
-					}
 				}
 			}
 
@@ -321,6 +355,24 @@
 				font-size: 13px;
 				line-height: 16px;
 				color: white;
+			}
+		}
+
+		.button.select-box {
+			height: 30px;
+			background-color: rgba(255, 255, 255, 0.1);
+			padding: 0 5px;
+			font-weight: 500;
+			font-size: 13px;
+			line-height: 16px;
+
+			svg.caret-down {
+				width: 8px;
+
+				path {
+					stroke: transparent;
+					fill: white;
+				}
 			}
 		}
 
