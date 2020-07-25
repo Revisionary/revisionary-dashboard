@@ -71,7 +71,8 @@ export default {
 		"@nuxtjs/proxy",
 		'@nuxtjs/auth',
 		"@nuxtjs/pwa",
-		"@nuxtjs/dotenv" // Doc: https://github.com/nuxt-community/dotenv-module
+		"@nuxtjs/dotenv", // Doc: https://github.com/nuxt-community/dotenv-module
+		"nuxt-svg-loader"
 	],
 	/*
 	 ** Axios module configuration

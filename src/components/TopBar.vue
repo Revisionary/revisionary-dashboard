@@ -33,6 +33,7 @@
 					<small>No Tasks</small>
 				</div>
 			</div>
+
 			<div class="versions">
 				<details>
 					<summary class="selectbox">
@@ -73,6 +74,7 @@
 					</div>
 				</details>
 			</div>
+
 			<div class="screens">
 				<details>
 					<summary class="selectbox">
@@ -115,7 +117,24 @@
 					</div>
 				</details>
 			</div>
-			<div class="pin-modes">Pin Modes</div>
+
+			<div class="pin-modes">
+				<div class="switch">
+					<span>
+						<BrowseIcon />
+					</span>
+					<span>
+						<CommentIcon />
+					</span>
+					<span>
+						<ContentIcon />
+					</span>
+					<span>
+						<StyleIcon />
+					</span>
+				</div>
+			</div>
+
 			<div class="limitations">
 				<Limitations label="27 Live Pins Left" />
 			</div>
@@ -198,6 +217,11 @@
 	import TabletIcon from "~/components/atoms/devices/icon-tablet.vue";
 	import MobileIcon from "~/components/atoms/devices/icon-mobile.vue";
 
+	import BrowseIcon from "~/components/atoms/pin-modes/icon-browse.svg";
+	import CommentIcon from "~/components/atoms/pin-modes/icon-comment.svg";
+	import ContentIcon from "~/components/atoms/pin-modes/icon-text.svg";
+	import StyleIcon from "~/components/atoms/pin-modes/icon-visual.svg";
+
 	export default {
 		components: {
 			Logo,
@@ -215,6 +239,10 @@
 			LaptopIcon,
 			TabletIcon,
 			MobileIcon,
+			BrowseIcon,
+			CommentIcon,
+			ContentIcon,
+			StyleIcon,
 		},
 		props: {
 			type: {
