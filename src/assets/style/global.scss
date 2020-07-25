@@ -55,6 +55,47 @@ a {
 	}
 }
 
+.switch {
+	background-color: #424751;
+	display: grid;
+	grid-auto-flow: column;
+	grid-template-columns: repeat(4, 40px);
+	justify-content: center;
+	align-items: center;
+	border-radius: 3px;
+
+	& > span {
+		display: grid;
+		place-items: center;
+		border-right: 1px solid rgba(255, 255, 255, 0.06);
+		height: 32px;
+		cursor: pointer;
+
+		& > svg {
+			opacity: 0.8;
+		}
+
+		&:first-child {
+			border-top-left-radius: 3px;
+			border-bottom-left-radius: 3px;
+		}
+
+		&:last-child {
+			border: none;
+			border-top-right-radius: 3px;
+			border-bottom-right-radius: 3px;
+		}
+
+		&.active {
+			background-color: $color-primary;
+
+			& > svg {
+				opacity: 1;
+			}
+		}
+	}
+}
+
 .button,
 button,
 input[type="submit"],

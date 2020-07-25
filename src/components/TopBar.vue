@@ -120,16 +120,36 @@
 
 			<div class="pin-modes">
 				<div class="switch">
-					<span>
+					<span
+						class="bottom-tooltip tooltip-not-contained"
+						:class="{ active: pinMode == 'browse' }"
+						data-tooltip="Browse Mode"
+						@click="changePinMode('browse')"
+					>
 						<BrowseIcon />
 					</span>
-					<span>
+					<span
+						class="bottom-tooltip tooltip-not-contained"
+						:class="{ active: pinMode == 'comment' }"
+						data-tooltip="Comment Mode"
+						@click="changePinMode('comment')"
+					>
 						<CommentIcon />
 					</span>
-					<span>
+					<span
+						class="bottom-tooltip tooltip-not-contained"
+						:class="{ active: pinMode == 'content' }"
+						data-tooltip="Content Mode"
+						@click="changePinMode('content')"
+					>
 						<ContentIcon />
 					</span>
-					<span>
+					<span
+						class="bottom-tooltip tooltip-not-contained"
+						:class="{ active: pinMode == 'style' }"
+						data-tooltip="Style Mode"
+						@click="changePinMode('style')"
+					>
 						<StyleIcon />
 					</span>
 				</div>
@@ -251,6 +271,7 @@
 		},
 		data() {
 			return {
+				pinMode: "browse",
 				incomplete_tasks: 42,
 				complete_tasks: 9,
 			};
@@ -297,6 +318,9 @@
 						console.log("ERROR: ", error);
 						//if (process.browser) window.$nuxt.$root.$loading.fail();
 					});
+			},
+			changePinMode(mode = "browse") {
+				this.pinMode = mode;
 			},
 		},
 	};
