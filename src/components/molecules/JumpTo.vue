@@ -1,12 +1,8 @@
 <template>
 	<details id="jump-to">
-		<summary
-			class="selectbox"
-			:class="{ light: $route.name == 'revise-deviceID' }"
-			@click="fetchProjects"
-		>
+		<summary class="selectbox" :class="{ light: $route.name == 'revise-id' }" @click="fetchProjects">
 			<span class="current" v-html="current"></span>
-			<ChevronDownIcon v-if="$route.name == 'revise-deviceID'" />
+			<ChevronDownIcon v-if="$route.name == 'revise-id'" />
 			<CaretDownIcon v-else />
 		</summary>
 		<div class="details-menu">
@@ -190,8 +186,13 @@
 				)
 					return this.project.title;
 
-				if (this.$route.name == "revise-deviceID")
-					return "Marc Pridmore > Home"; // Get from Device !!!
+				if (this.$route.name == "revise-id") {
+					const deviceInfo = this.$store.getters["device/get"];
+					const pageName = deviceInfo.page_name;
+					const projectName = deviceInfo.project_name;
+
+					return projectName + " > " + pageName;
+				}
 
 				return "Jump to...";
 			},

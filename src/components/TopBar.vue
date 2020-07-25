@@ -28,16 +28,19 @@
 										style="display: grid; grid-auto-flow: row; align-items: flex-start; gap: 5px; color: black;"
 									>
 										<p>
-											<b>Site URL:</b>
-											<br />http://scene12.twelve12.co/why-us/
+											<b>Page URL:</b>
+											<br />
+											{{ $store.getters["device/get"].page_url }}
 										</p>
 
 										<p>
-											<b>Date Created:</b> 2 days ago
+											<b>Date Created:</b>
+											{{ $timeSince($store.getters["device/get"].page_created) }}
 										</p>
 
 										<p>
-											<b>Last Updated:</b> 18 hours ago
+											<b>Last Updated:</b>
+											{{ $timeSince($store.getters["device/get"].page_modified) }}
 										</p>
 
 										<p>

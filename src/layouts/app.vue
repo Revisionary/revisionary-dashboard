@@ -22,7 +22,7 @@
 		},
 		computed: {
 			isRevising() {
-				return this.$route.name == "revise-deviceID";
+				return this.$route.name == "revise-id";
 			},
 		},
 		created() {
