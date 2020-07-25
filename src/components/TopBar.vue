@@ -18,7 +18,12 @@
 			<div class="info" v-if="type == 'revise'">Info</div>
 		</div>
 		<div class="center-side" v-if="type == 'revise'">
-			<div class="tasks tooltip-not-contained bottom-tooltip" data-tooltip="Open Tasks Panel">
+			<div
+				class="tasks tooltip-not-contained bottom-tooltip"
+				data-tooltip="Open Tasks Panel"
+				@click="$store.commit('toggleTab', 'tasks')"
+				:class="{ active: $store.state.openTab == 'tasks' }"
+			>
 				<div class="tasks-count" v-if="incomplete_tasks > 0 || complete_tasks > 0">
 					<div class="left" v-if="incomplete_tasks > 0">{{ incomplete_tasks }}</div>
 					<div class="done" v-if="complete_tasks > 0">{{ complete_tasks }}</div>
@@ -158,7 +163,11 @@
 				<div class="share">
 					<ShareIcon />
 				</div>
-				<div class="notification">
+				<div
+					class="notification"
+					@click="$store.commit('toggleTab', 'notifications')"
+					:class="{ active: $store.state.openTab == 'notifications' }"
+				>
 					<NotificationIcon :count="$store.state.newNotificationsCount" />
 				</div>
 			</div>
@@ -416,6 +425,7 @@
 					}
 				}
 
+				&.active,
 				&:hover {
 					background-color: $color-primary;
 
@@ -453,6 +463,9 @@
 				align-items: center;
 				justify-content: center;
 				gap: 10px;
+				border-right: 1px solid rgba(255, 255, 255, 0.15);
+				margin-right: -10px;
+				padding-right: 15px;
 
 				& > * {
 					width: 30px;
@@ -483,6 +496,7 @@
 						}
 					}
 
+					&.active,
 					&:hover {
 						background-color: $color-primary;
 					}

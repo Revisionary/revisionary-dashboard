@@ -15,7 +15,7 @@
 					class="right-tooltip notifications"
 					:class="{ active: $store.state.openTab == 'notifications' }"
 					:data-tooltip="$store.state.isSideBarOpen ? null : 'Notifications'"
-					@click.prevent="toggleTab('notifications')"
+					@click="toggleTab('notifications')"
 				>
 					<NotificationIcon :count="$store.state.newNotificationsCount" />
 					<span class="menu-label">Notifications</span>
@@ -24,7 +24,7 @@
 					class="right-tooltip"
 					:class="{ active: $store.state.openTab == 'tasks' }"
 					:data-tooltip="$store.state.isSideBarOpen ? null : 'Tasks'"
-					@click.prevent="toggleTab('tasks')"
+					@click="toggleTab('tasks')"
 				>
 					<TasksIcon />
 					<span class="menu-label">Tasks (24)</span>
@@ -217,11 +217,23 @@
 	.revising {
 		aside#sidebar {
 			position: fixed;
+			left: 100%;
+		}
+
+		aside.panel {
+			left: auto;
+			transform: translateX(0);
+			border-left: 1px solid #eaedf3;
+			border-right: none;
+
+			&.open {
+				transform: translateX(-100%);
+			}
 		}
 
 		&:not(.sidebarClosed) {
 			aside#sidebar {
-				display: none;
+				//display: none;
 			}
 		}
 	}
