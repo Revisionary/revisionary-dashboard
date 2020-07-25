@@ -98,81 +98,81 @@
 			EditIcon,
 			TrashIcon,
 			Block,
-			AddNewBlock
+			AddNewBlock,
 		},
 		props: {
 			categories: {
-				type: Array
+				type: Array,
 			},
 			blocks: {
-				type: Array
+				type: Array,
 			},
 			filter: {
 				type: String,
-				default: null
+				default: null,
 			},
 			blocksFetching: {
-				type: Boolean
-			}
+				type: Boolean,
+			},
 		},
 		methods: {
 			blocksOfCategory(cat_ID) {
 				if (this.filter != null) return this.categorizedBlocks;
 
 				return this.categorizedBlocks.filter(
-					block => block.cat_ID == cat_ID
+					(block) => block.cat_ID == cat_ID
 				);
-			}
+			},
 		},
 		computed: {
 			blockCategories() {
 				if (this.filter != null)
-					return this.categories.filter(category => category.ID == 0);
+					return this.categories.filter((category) => category.ID == 0);
 
 				return this.categories;
 			},
 			availableBlocks() {
 				return this.blocks.filter(
-					block => !block.archived && !block.deleted
+					(block) => !block.archived && !block.deleted
 				);
 			},
 			favoriteBlocks() {
-				return this.availableBlocks.filter(block => block.favorite);
+				return this.availableBlocks.filter((block) => block.favorite);
 			},
 			categorizedBlocks() {
 				if (this.filter == "archived")
 					return this.blocks.filter(
-						block => block.archived && !block.deleted
+						(block) => block.archived && !block.deleted
 					);
 
 				if (this.filter == "deleted")
-					return this.blocks.filter(block => block.deleted);
+					return this.blocks.filter((block) => block.deleted);
 
 				if (this.filter == "mine")
 					return this.availableBlocks.filter(
-						block => block.user_ID == this.$auth.user.ID
+						(block) => block.user_ID == this.$auth.user.ID
 					);
 
 				if (this.filter == "shared")
 					return this.availableBlocks.filter(
-						block => block.user_ID != this.$auth.user.ID
+						(block) => block.user_ID != this.$auth.user.ID
 					);
 
 				if (this.filter == "favorites")
-					return this.availableBlocks.filter(block => block.favorite);
+					return this.availableBlocks.filter((block) => block.favorite);
 
 				const foundCat = this.categories.find(
-					category => category.slug == this.filter
+					(category) => category.slug == this.filter
 				);
 				if (foundCat)
 					return this.availableBlocks.filter(
-						block => block.cat_ID == foundCat.ID
+						(block) => block.cat_ID == foundCat.ID
 					);
 
 				// If no filter
 				return this.availableBlocks;
-			}
-		}
+			},
+		},
 	};
 </script>
 
@@ -253,7 +253,7 @@
 
 	.blocks {
 		display: grid;
-		grid-template-columns: 1fr 1fr 1fr 1fr;
+		grid-template-columns: repeat(4, 1fr);
 		gap: 40px;
 
 		& > .block {
