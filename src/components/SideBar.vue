@@ -230,11 +230,5 @@
 				transform: translateX(-100%);
 			}
 		}
-
-		&:not(.sidebarClosed) {
-			aside#sidebar {
-				//display: none;
-			}
-		}
 	}
 </style>
