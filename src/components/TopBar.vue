@@ -467,7 +467,7 @@
 		}
 
 		& > .center-side {
-			background-color: #1a263d;
+			background-color: rgba(255, 255, 255, 0.1);
 			padding: 6px 27px;
 			border-radius: 12px;
 
