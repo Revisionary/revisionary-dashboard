@@ -14,20 +14,14 @@
 			</span>
 
 			<JumpTo v-if="authenticated" />
+
+			<div class="info" v-if="type == 'revise'">Info</div>
 		</div>
 		<div class="center-side" v-if="type == 'revise'">
-			<div class="tasks">
+			<div class="tasks tooltip-not-contained bottom-tooltip" data-tooltip="Open Tasks Panel">
 				<div class="tasks-count" v-if="incomplete_tasks > 0 || complete_tasks > 0">
-					<div
-						class="left tooltip-not-contained bottom-tooltip"
-						data-tooltip="Incomplete Tasks"
-						v-if="incomplete_tasks > 0"
-					>{{ incomplete_tasks }}</div>
-					<div
-						class="done tooltip-not-contained bottom-tooltip"
-						data-tooltip="Solved Tasks"
-						v-if="complete_tasks > 0"
-					>{{ complete_tasks }}</div>
+					<div class="left" v-if="incomplete_tasks > 0">{{ incomplete_tasks }}</div>
+					<div class="done" v-if="complete_tasks > 0">{{ complete_tasks }}</div>
 				</div>
 				<div v-else>
 					<small>No Tasks</small>
@@ -161,8 +155,12 @@
 		</div>
 		<div class="right-side" v-if="$auth.loggedIn">
 			<div class="revise" v-if="type == 'revise'">
-				<div class="share">Share</div>
-				<div class="info">Info</div>
+				<div class="share">
+					<ShareIcon />
+				</div>
+				<div class="notification">
+					<NotificationIcon :count="$store.state.newNotificationsCount" />
+				</div>
 			</div>
 
 			<div class="dashboard" v-else>
@@ -222,13 +220,14 @@
 	import ProfilePic from "~/components/atoms/ProfilePic.vue";
 
 	import MenuIcon from "~/components/atoms/icon-menu.vue";
+	import ShareIcon from "~/components/atoms/icon-share.vue";
+	import NotificationIcon from "~/components/atoms/icon-notification.vue";
 
 	import ChevronDownIcon from "~/components/atoms/icon-chevron-down.vue";
 	import ChevronRightIcon from "~/components/atoms/icon-chevron-right.vue";
 	import CaretDownIcon from "~/components/atoms/icon-caret-down.vue";
 
 	import PlusIcon from "~/components/atoms/icon-plus.vue";
-
 	import VersionIcon from "~/components/atoms/icon-version.vue";
 
 	import WindowIcon from "~/components/atoms/devices/icon-custom.vue";
@@ -248,6 +247,8 @@
 			JumpTo,
 			Limitations,
 			MenuIcon,
+			ShareIcon,
+			NotificationIcon,
 			ProfilePic,
 			ChevronDownIcon,
 			ChevronRightIcon,
@@ -417,6 +418,12 @@
 
 				&:hover {
 					background-color: $color-primary;
+
+					.tasks-count {
+						& > * {
+							border-color: transparent;
+						}
+					}
 				}
 			}
 
@@ -435,6 +442,50 @@
 					line-height: 16px;
 					color: white;
 					text-transform: none;
+				}
+			}
+		}
+
+		& > .right-side {
+			& > .revise {
+				display: grid;
+				grid-auto-flow: column;
+				align-items: center;
+				justify-content: center;
+				gap: 10px;
+
+				& > * {
+					width: 30px;
+					height: 30px;
+					background-color: rgba(255, 255, 255, 0.1);
+					border-radius: 50%;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					cursor: pointer;
+
+					svg {
+						width: 12px;
+
+						& > path {
+							stroke: white;
+						}
+					}
+
+					&.notifications {
+					}
+
+					&.share {
+						background-color: #74b65c;
+
+						& > svg {
+							height: 13px;
+						}
+					}
+
+					&:hover {
+						background-color: $color-primary;
+					}
 				}
 			}
 		}

@@ -93,6 +93,12 @@ a {
 			border-bottom-right-radius: 3px;
 		}
 
+		&:hover {
+			& > svg {
+				opacity: 1;
+			}
+		}
+
 		&.active {
 			background-color: $color-primary;
 

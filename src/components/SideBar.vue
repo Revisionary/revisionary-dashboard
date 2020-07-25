@@ -17,7 +17,7 @@
 					:data-tooltip="$store.state.isSideBarOpen ? null : 'Notifications'"
 					@click.prevent="toggleTab('notifications')"
 				>
-					<NotificationIcon :hasNew="$store.state.newNotificationsCount > 0" />
+					<NotificationIcon :count="$store.state.newNotificationsCount" />
 					<span class="menu-label">Notifications</span>
 				</span>
 				<span
@@ -100,9 +100,12 @@
 				white-space: nowrap;
 
 				& > * {
-					display: flex;
+					display: grid;
+					grid-auto-flow: column;
+					grid-template-columns: 20px 1fr;
 					justify-content: left;
 					align-items: center;
+					gap: 14px;
 					padding: 14px 34px 14px 24px;
 					text-decoration: none;
 					color: #9ea5ab;
@@ -111,11 +114,6 @@
 					font-weight: 600;
 					cursor: pointer;
 					user-select: none;
-
-					& > svg {
-						margin-right: 14px;
-						width: 20px;
-					}
 
 					&.active {
 						color: #372d2d;
@@ -131,7 +129,7 @@
 							background-color: $color-primary;
 						}
 
-						& > svg > path {
+						svg > path {
 							stroke: $color-primary;
 						}
 
