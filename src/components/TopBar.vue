@@ -8,7 +8,7 @@
 				class="menu-icon"
 				:class="{ active: isSideBarOpen }"
 				@click="$store.commit('toggleSideBar')"
-				v-if="authenticated"
+				v-if="authenticated && type != 'revise'"
 			>
 				<MenuIcon />
 			</span>
@@ -36,7 +36,7 @@
 
 			<div class="versions">
 				<details>
-					<summary class="selectbox">
+					<summary class="selectbox light">
 						<VersionIcon />
 						<span>v1</span>
 						<CaretDownIcon />
@@ -77,7 +77,7 @@
 
 			<div class="screens">
 				<details>
-					<summary class="selectbox">
+					<summary class="selectbox light">
 						<WindowIcon />
 						<span>Custom Screen</span>
 						<CaretDownIcon />
@@ -368,14 +368,6 @@
 							stroke: white;
 						}
 					}
-
-					&:hover {
-						& > svg.chevron-down {
-							& > path {
-								stroke: $color-primary;
-							}
-						}
-					}
 				}
 			}
 
@@ -383,11 +375,6 @@
 				svg > path {
 					stroke: #727781;
 				}
-			}
-
-			.selectbox {
-				border: none;
-				background-color: rgba(255, 255, 255, 0.1);
 			}
 		}
 
@@ -415,6 +402,7 @@
 				background-color: rgba(255, 255, 255, 0.1);
 				padding: 0 9px;
 				border-radius: 3px;
+				cursor: pointer;
 
 				.tasks-count {
 					& > * {
@@ -425,6 +413,10 @@
 							background-color: #79838c;
 						}
 					}
+				}
+
+				&:hover {
+					background-color: $color-primary;
 				}
 			}
 
