@@ -15,7 +15,85 @@
 
 			<JumpTo v-if="authenticated" />
 
-			<div class="info" v-if="type == 'revise'">Info</div>
+			<div class="revise" v-if="type == 'revise'">
+				<div class="info transparent">
+					<details>
+						<summary>
+							<iIcon />
+						</summary>
+						<div class="details-menu center">
+							<ul class="menu boxed compact lines">
+								<li>
+									<span
+										style="display: grid; grid-auto-flow: row; align-items: flex-start; gap: 5px; color: black;"
+									>
+										<p>
+											<b>Site URL:</b>
+											<br />http://scene12.twelve12.co/why-us/
+										</p>
+
+										<p>
+											<b>Date Created:</b> 2 days ago
+										</p>
+
+										<p>
+											<b>Last Updated:</b> 18 hours ago
+										</p>
+
+										<p>
+											<b>Current Frame Scale:</b> 1.0
+										</p>
+									</span>
+								</li>
+								<li>
+									<span>
+										<div class="left">
+											<span>
+												<PlusIcon />
+												<span>Redownload This Phase</span>
+											</span>
+										</div>
+										<div class="right"></div>
+									</span>
+								</li>
+								<li>
+									<span>
+										<div class="left">
+											<span>
+												<PlusIcon />
+												<span>Redownload For JS Site</span>
+											</span>
+										</div>
+										<div class="right"></div>
+									</span>
+								</li>
+								<li>
+									<span>
+										<div class="left">
+											<span>
+												<PlusIcon />
+												<span>Site Capture Mode</span>
+											</span>
+										</div>
+										<div class="right"></div>
+									</span>
+								</li>
+								<li>
+									<span>
+										<div class="left">
+											<span>
+												<PlusIcon />
+												<span>Integrations</span>
+											</span>
+										</div>
+										<div class="right"></div>
+									</span>
+								</li>
+							</ul>
+						</div>
+					</details>
+				</div>
+			</div>
 		</div>
 		<div class="center-side" v-if="type == 'revise'">
 			<div
@@ -40,7 +118,7 @@
 						<span>v1</span>
 						<CaretDownIcon />
 					</summary>
-					<div class="details-menu versions-list">
+					<div class="details-menu">
 						<ul class="menu boxed compact lines">
 							<li>
 								<span>
@@ -81,7 +159,7 @@
 						<span>Custom Screen</span>
 						<CaretDownIcon />
 					</summary>
-					<div class="details-menu versions-list">
+					<div class="details-menu">
 						<ul class="menu boxed compact lines">
 							<li>
 								<span>
@@ -223,14 +301,13 @@
 <script>
 	import Logo from "~/components/atoms/Logo.vue";
 	import JumpTo from "~/components/molecules/JumpTo.vue";
-
 	import Limitations from "~/components/molecules/Limitations.vue";
-
 	import ProfilePic from "~/components/atoms/ProfilePic.vue";
 
 	import MenuIcon from "~/components/atoms/icon-menu.vue";
 	import ShareIcon from "~/components/atoms/icon-share.vue";
 	import NotificationIcon from "~/components/atoms/icon-notification.vue";
+	import iIcon from "~/components/atoms/svg/icon-i.svg";
 
 	import ChevronDownIcon from "~/components/atoms/icon-chevron-down.vue";
 	import ChevronRightIcon from "~/components/atoms/icon-chevron-right.vue";
@@ -258,6 +335,7 @@
 			MenuIcon,
 			ShareIcon,
 			NotificationIcon,
+			iIcon,
 			ProfilePic,
 			ChevronDownIcon,
 			ChevronRightIcon,
@@ -456,6 +534,7 @@
 			}
 		}
 
+		& > .left-side,
 		& > .right-side {
 			& > .revise {
 				display: grid;
@@ -463,7 +542,6 @@
 				align-items: center;
 				justify-content: center;
 				gap: 10px;
-				border-right: 1px solid rgba(255, 255, 255, 0.15);
 				margin-right: -10px;
 				padding-right: 15px;
 
@@ -477,7 +555,8 @@
 					align-items: center;
 					cursor: pointer;
 
-					svg {
+					& > svg,
+					& > * > svg {
 						width: 12px;
 
 						& > path {
@@ -485,7 +564,24 @@
 						}
 					}
 
-					&.notifications {
+					&.transparent {
+						background-color: transparent;
+						border: 1px solid rgba(255, 255, 255, 0.26);
+					}
+
+					&.info {
+						summary {
+							width: 30px;
+							height: 30px;
+							display: flex;
+							justify-content: center;
+							align-items: center;
+
+							svg {
+								margin-top: -2px;
+								margin-right: -1px;
+							}
+						}
 					}
 
 					&.share {
@@ -500,6 +596,12 @@
 					&:hover {
 						background-color: $color-primary;
 					}
+				}
+			}
+
+			&.right-side {
+				& > .revise {
+					border-right: 1px solid rgba(255, 255, 255, 0.15);
 				}
 			}
 		}

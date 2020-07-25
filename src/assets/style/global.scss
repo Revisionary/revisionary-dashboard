@@ -79,7 +79,7 @@ a {
 		cursor: pointer;
 
 		& > svg {
-			opacity: 0.8;
+			opacity: 0.5;
 		}
 
 		&:first-child {
@@ -391,7 +391,7 @@ details {
 					font-size: 14px;
 					line-height: 17px;
 					font-weight: 500;
-					color: #8b96ad;
+					color: $color-gray;
 					letter-spacing: 0.1px;
 
 					display: flex;
@@ -400,10 +400,17 @@ details {
 					padding: 8px 14px;
 					cursor: pointer;
 
-					& > svg {
+					svg {
 						width: 20px;
-						margin-right: 5px;
 						display: block;
+
+						& > path {
+							stroke: $color-gray;
+						}
+					}
+
+					& > svg {
+						margin-right: 5px;
 					}
 
 					& > a,
@@ -413,9 +420,7 @@ details {
 						align-items: center;
 
 						& > svg {
-							width: 20px;
 							margin-right: 5px;
-							display: block;
 						}
 
 						&.left {
@@ -429,11 +434,6 @@ details {
 							svg {
 								width: auto;
 								margin-right: 0;
-								display: block;
-
-								path {
-									stroke: #8b96ad;
-								}
 							}
 
 							&:hover {
@@ -456,9 +456,7 @@ details {
 							align-items: center;
 
 							& > svg {
-								width: 20px;
 								margin-right: 5px;
-								display: block;
 							}
 						}
 					}
@@ -477,12 +475,6 @@ details {
 								stroke: black !important;
 							}
 						}
-					}
-				}
-
-				svg {
-					& > path {
-						stroke: #8b96ad;
 					}
 				}
 
