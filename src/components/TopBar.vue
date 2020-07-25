@@ -20,12 +20,12 @@
 				<div class="tasks-count" v-if="incomplete_tasks > 0 || complete_tasks > 0">
 					<div
 						class="left tooltip-not-contained bottom-tooltip"
-						data-tooltip="Incomplete"
+						data-tooltip="Incomplete Tasks"
 						v-if="incomplete_tasks > 0"
 					>{{ incomplete_tasks }}</div>
 					<div
 						class="done tooltip-not-contained bottom-tooltip"
-						data-tooltip="Solved"
+						data-tooltip="Solved Tasks"
 						v-if="complete_tasks > 0"
 					>{{ complete_tasks }}</div>
 				</div>
