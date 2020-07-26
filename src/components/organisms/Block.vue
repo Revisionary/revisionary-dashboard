@@ -97,7 +97,7 @@
 													<LaptopIcon v-if="device.cat_ID == 2" />
 													<TabletIcon v-if="device.cat_ID == 3" />
 													<MobileIcon v-if="device.cat_ID == 4" />
-													<span>{{device.cat_name}} ({{ device.width ? device.screen_width : device.screen_width }}x{{ device.height ? device.height: device.screen_height }})</span>
+													<span>{{device.cat_name}} ({{ device.width ? device.width : device.screen_width }}x{{ device.height ? device.height: device.screen_height }})</span>
 												</nuxt-link>
 											</div>
 											<div class="right">
