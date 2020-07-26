@@ -46,7 +46,7 @@
 	main {
 		display: flex;
 		width: 100%;
-		height: calc(100vh - 61px);
+		height: calc(100vh - 60px);
 
 		& > .content {
 			flex: 1;
