@@ -1,31 +1,34 @@
 <template>
-	<div id="projects" class="content">
-		<SubHeader data-type="project" />
+  <div id="projects" class="content">
+    <TopBar data-type="dashboard" />
+    <SubHeader data-type="project" />
 
-		<nuxt-child />
+    <nuxt-child />
 
-		<Footer />
-	</div>
+    <Footer />
+  </div>
 </template>
 
 <script>
-	import SubHeader from "~/components/SubHeader.vue";
-	import Footer from "~/components/Footer.vue";
+import TopBar from "~/components/TopBar.vue";
+import SubHeader from "~/components/SubHeader.vue";
+import Footer from "~/components/Footer.vue";
 
-	export default {
-		layout: "app",
-		components: {
-			SubHeader,
-			Footer
-		},
-		created() {
-			this.$nextTick(() => {
-				this.$nuxt.$loading.start();
-			});
+export default {
+  layout: "app",
+  components: {
+    SubHeader,
+    Footer,
+    TopBar
+  },
+  created() {
+    this.$nextTick(() => {
+      this.$nuxt.$loading.start();
+    });
 
-			this.$store.dispatch("projects/fetch");
-		}
-	};
+    this.$store.dispatch("projects/fetch");
+  }
+};
 </script>
 
 <style lang="scss">

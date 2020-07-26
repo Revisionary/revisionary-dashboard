@@ -8,7 +8,7 @@ html {
 	-moz-osx-font-smoothing: grayscale;
 	-webkit-font-smoothing: antialiased;
 	box-sizing: border-box;
-	background-color: #f5f7fa;
+	background-color: #f7f7f9;
 }
 
 *,
@@ -26,15 +26,15 @@ a {
 .selectbox {
 	border: 1px solid #eaedf3;
 	border-radius: 3px;
-	padding: 7px 12px;
+	padding: 12px 14px;
 	font-weight: 500;
 	font-size: 14px;
 	line-height: normal;
-
 	display: grid;
 	grid-auto-flow: column;
 	align-items: center;
 	justify-content: space-between;
+	grid-gap: 8px;
 	gap: 8px;
 
 	& > svg.caret-down {
@@ -153,6 +153,9 @@ input[type="reset"] {
 
 	&.upgrade {
 		height: 30px;
+		text-transform: uppercase;
+		font-size: 11px;
+		font-weight: 700;
 	}
 
 	&.transparent {
@@ -298,6 +301,7 @@ details {
 		bottom: auto;
 		left: auto;
 		padding: 0;
+		min-width: 205px;
 
 		&.right {
 			right: 0;
@@ -498,7 +502,7 @@ details {
 					& > span,
 					& > div {
 						color: black;
-						border-bottom: 1px solid #ECECEC;
+						border-bottom: 1px solid #ececec;
 						padding-top: 0;
 						justify-content: center;
 					}
@@ -508,17 +512,14 @@ details {
 					& > a,
 					& > span,
 					& > div {
-
 						.status {
 							visibility: hidden;
 						}
-
 					}
 				}
 			}
 
 			li {
-
 				& > * .show-on-hover {
 					opacity: 0;
 					transition: 500ms;
@@ -534,7 +535,6 @@ details {
 						color: $color-primary;
 					}
 				}
-
 			}
 		}
 	}

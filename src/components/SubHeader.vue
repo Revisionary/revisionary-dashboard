@@ -247,7 +247,8 @@ export default {
     },
     title() {
       if (this.isLoading) return "Loading...";
-      else if (this.dataType == "project") return "Projects" + this.dataCount;
+      else if (this.dataType == "project")
+        return "My Projects" + this.dataCount;
       else return this.blockData.title + this.dataCount;
     },
     description() {
@@ -302,11 +303,11 @@ export default {
   }
 
   h1 {
-    font-size: 30px;
+    font-size: 32px;
     line-height: 36px;
     font-weight: 600;
-    letter-spacing: -0.3px;
-    color: #2d3137;
+    color: #0f0f0f;
+    letter-spacing: -0.0275em;
 
     & > span {
       display: inline-flex;
@@ -374,12 +375,12 @@ export default {
   .subtitle {
     font-style: normal;
     font-weight: bold;
-    font-size: 14px;
+    font-size: 12px;
     line-height: 17px;
-    letter-spacing: -0.3px;
-    color: #9f9f9f;
+    letter-spacing: -0.02em;
+    color: rgba(0, 0, 0, 0.5);
     text-transform: uppercase;
-    margin-bottom: 2px;
+    margin-bottom: 5px;
   }
 
   .description {
