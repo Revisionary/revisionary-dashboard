@@ -115,20 +115,20 @@
 	export default {
 		components: {
 			ProfilePic,
-			TimeIcon
+			TimeIcon,
 		},
 		data() {
 			return {
 				notifications: [],
 				page: 1,
 				totalNotifications: 0,
-				fetching: false
+				fetching: false,
 			};
 		},
 		computed: {
 			hasMore() {
 				return this.notifications.length < this.totalNotifications;
-			}
+			},
 		},
 		methods: {
 			async fetch(page = 1) {
@@ -153,7 +153,7 @@
 							else
 								this.notifications = [
 									...this.notifications,
-									...notifications
+									...notifications,
 								];
 
 							this.totalNotifications = total;
@@ -183,8 +183,8 @@
 
 							// Read Notifications
 							const unread_IDs = notifications
-								.filter(notification => !notification.isRead)
-								.map(function(value, index) {
+								.filter((notification) => !notification.isRead)
+								.map(function (value, index) {
 									return value["ID"];
 								});
 
@@ -194,7 +194,7 @@
 							}
 						}
 					})
-					.catch(function(error) {
+					.catch(function (error) {
 						console.log("ERROR: ", error);
 						this.fetching = false;
 					});
@@ -203,7 +203,7 @@
 			async read(IDs) {
 				await this.$axios
 					.post("readnotifications", {
-						IDs: IDs
+						IDs: IDs,
 					})
 					.then(({ status, data }) => {
 						if (status === 200) {
@@ -219,14 +219,15 @@
 							);
 						}
 					})
-					.catch(function(error) {
+					.catch(function (error) {
 						console.log("ERROR: ", error);
 					});
-			}
+			},
 		},
 		created() {
+			console.log("NOTIFICATIONS CREATED! ");
 			this.fetch();
-		}
+		},
 	};
 </script>
 

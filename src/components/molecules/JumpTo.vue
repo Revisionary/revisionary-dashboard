@@ -3,7 +3,7 @@
 		<summary class="selectbox" :class="{ light: $route.name == 'revise-id' }" @click="fetchProjects">
 			<span class="current" v-html="current"></span>
 			<ChevronDownIcon v-if="$route.name == 'revise-id'" />
-			<CaretDownIcon v-else />
+			<CaretRightIcon v-else />
 		</summary>
 		<div class="details-menu">
 			<ul class="menu boxed">
@@ -36,6 +36,9 @@
 								:completedCount="eachProject.complete_tasks"
 							/>
 							<span v-html="eachProject.title"></span>
+							<nuxt-link :to="`/project/${eachProject.ID}`" class="opener">
+								<ArrowRightIcon />
+							</nuxt-link>
 						</div>
 						<div class="right">
 							<ChevronDownIcon />
@@ -136,7 +139,9 @@
 
 <script>
 	import { mapGetters } from "vuex";
+	import ArrowRightIcon from "~/components/atoms/icon-arrow-right.vue";
 	import CaretDownIcon from "~/components/atoms/icon-caret-down.vue";
+	import CaretRightIcon from "~/components/atoms/icon-caret-right.vue";
 	import ChevronDownIcon from "~/components/atoms/icon-chevron-down.vue";
 	import ChevronRightIcon from "~/components/atoms/icon-chevron-right.vue";
 	import PlusIcon from "~/components/atoms/icon-plus.vue";
@@ -151,7 +156,9 @@
 
 	export default {
 		components: {
+			ArrowRightIcon,
 			CaretDownIcon,
+			CaretRightIcon,
 			ChevronDownIcon,
 			ChevronRightIcon,
 			PlusIcon,
@@ -297,7 +304,7 @@
 
 <style lang="scss">
 	details#jump-to {
-		margin-left: 120px;
+		//margin-left: 120px;
 
 		.current {
 			text-transform: capitalize;
@@ -306,6 +313,28 @@
 		ul.menu.boxed {
 			max-height: calc(90vh - 65px);
 			overflow: auto;
+
+			li {
+				.opener {
+					margin-left: 10px;
+					opacity: 0;
+					transition: 500ms;
+
+					&:hover {
+						svg {
+							path {
+								stroke: $color-primary !important;
+							}
+						}
+					}
+				}
+
+				&:hover {
+					.opener {
+						opacity: 1;
+					}
+				}
+			}
 		}
 
 		.projectactive {

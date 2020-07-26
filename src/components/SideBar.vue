@@ -2,23 +2,21 @@
 	<aside id="sidebar">
 		<div class="wrapper">
 			<div class="top-section">
-				<nuxt-link
-					to="/projects/"
+				<nuxt-link to="/projects/">
+					<Logo />
+				</nuxt-link>
+
+				<JumpTo />
+
+				<span
 					class="right-tooltip"
 					:class="{ active: $route.name === 'projects' }"
 					:data-tooltip="$store.state.isSideBarOpen ? null : 'Projects'"
+					@click="toggleTab('projects')"
+					v-if="false"
 				>
 					<DashboardIcon />
 					<span class="menu-label">Projects</span>
-				</nuxt-link>
-				<span
-					class="right-tooltip notifications"
-					:class="{ active: $store.state.openTab == 'notifications' }"
-					:data-tooltip="$store.state.isSideBarOpen ? null : 'Notifications'"
-					@click="toggleTab('notifications')"
-				>
-					<NotificationIcon :count="$store.state.newNotificationsCount" />
-					<span class="menu-label">Notifications</span>
 				</span>
 				<span
 					class="right-tooltip"
@@ -29,14 +27,70 @@
 					<TasksIcon />
 					<span class="menu-label">Tasks (24)</span>
 				</span>
+				<span
+					class="right-tooltip notifications"
+					:class="{ active: $store.state.openTab == 'notifications' }"
+					:data-tooltip="$store.state.isSideBarOpen ? null : 'Notifications'"
+					@click="toggleTab('notifications')"
+				>
+					<NotificationIcon :count="$store.state.newNotificationsCount" />
+					<span class="menu-label">Notifications</span>
+				</span>
+				<span>
+					<hr />
+				</span>
+				<span
+					class="right-tooltip"
+					:class="{ active: $store.state.openTab == 'usage' }"
+					:data-tooltip="$store.state.isSideBarOpen ? null : 'Usage'"
+					@click="toggleTab('usage')"
+				>
+					<TasksIcon />
+					<span class="menu-label">My Plan & Usage</span>
+				</span>
 			</div>
 			<div class="bottom-section">
 				<a href="#" class="right-tooltip" :data-tooltip="$store.state.isSideBarOpen ? null : 'Support'">
 					<SupportIcon />
 					<span class="menu-label">Support</span>
 				</a>
+
+				<details class="profile">
+					<summary class="rotate-icon">
+						<ProfilePic
+							class="profile-pic"
+							:firstName="currentUser.first_name"
+							:lastName="currentUser.last_name"
+							:email="currentUser.email"
+							:picture="currentUser.picture"
+						/>
+						<span>{{ currentUser.first_name }}</span>
+						<ChevronDownIcon />
+					</summary>
+					<div class="details-menu left top">
+						<ul class="menu boxed">
+							<li>
+								<a href="#">Account</a>
+							</li>
+							<li>
+								<a href="#">Help</a>
+							</li>
+							<li>
+								<a href="#">Feedback</a>
+							</li>
+							<li>
+								<a href="#" @click.prevent="logout">Logout</a>
+							</li>
+						</ul>
+					</div>
+				</details>
 			</div>
 		</div>
+
+		<aside class="panel" :class="{open: $store.state.openTab == 'projects'}">
+			<div class="panel-title">Projects</div>
+			<div class="panel-content">Jumper here</div>
+		</aside>
 
 		<aside class="panel notifications" :class="{open: $store.state.openTab == 'notifications'}">
 			<div class="panel-title">Notifications</div>
@@ -49,28 +103,88 @@
 			<div class="panel-title">Tasks</div>
 			<div class="panel-content">Tasks here...</div>
 		</aside>
+
+		<aside class="panel usage" :class="{open: $store.state.openTab == 'usage'}">
+			<div class="panel-title">Usage</div>
+			<div class="panel-content">
+				<Limitations v-if="$store.state.openTab == 'usage'" />
+			</div>
+		</aside>
 	</aside>
 </template>
 
 <script>
+	import Logo from "~/components/atoms/svg/logo-revisionary.svg";
+	import JumpTo from "~/components/molecules/JumpTo.vue";
+
 	import DashboardIcon from "~/components/atoms/icon-dashboard.vue";
 	import NotificationIcon from "~/components/atoms/icon-notification.vue";
 	import TasksIcon from "~/components/atoms/icon-tasks.vue";
 	import SupportIcon from "~/components/atoms/icon-support.vue";
+	import ProfilePic from "~/components/atoms/ProfilePic.vue";
+	import ChevronDownIcon from "~/components/atoms/icon-chevron-down.vue";
 
 	import Notifications from "~/components/organisms/Notifications.vue";
+	import Limitations from "~/components/organisms/Limitations.vue";
 
 	export default {
 		components: {
+			Logo,
+			JumpTo,
 			DashboardIcon,
 			NotificationIcon,
 			TasksIcon,
 			SupportIcon,
+			ProfilePic,
 			Notifications,
+			Limitations,
+			ChevronDownIcon,
+		},
+		computed: {
+			authenticated() {
+				return this.$auth.loggedIn;
+			},
+			currentUser() {
+				return this.$auth.user;
+			},
+			isSideBarOpen() {
+				return this.$store.state.isSideBarOpen;
+			},
 		},
 		methods: {
 			toggleTab(tabName) {
 				this.$store.commit("toggleTab", tabName);
+			},
+			logout() {
+				this.$nuxt.$loading.start();
+
+				this.$auth
+					.logout()
+					.then(() => {
+						console.log("Logged out");
+
+						// Close the sidebar
+						this.$store.commit("toggleSideBar", false);
+
+						// Reset Projects
+						this.$store.dispatch("projects/resetProjects");
+
+						// Reset Pages
+						this.$store.dispatch("pages/resetPages");
+
+						// Reset Users Pool
+						this.$store.dispatch("users/resetUsers");
+
+						// Redirect to login page
+						this.$router.push({ path: "/login/" });
+					})
+					.catch((error) => {
+						console.log("ERROR: ", error);
+						//if (process.browser) window.$nuxt.$root.$loading.fail();
+					});
+			},
+			changePinMode(mode = "browse") {
+				this.pinMode = mode;
 			},
 		},
 	};
@@ -81,6 +195,9 @@
 		height: inherit;
 		transition: 500ms;
 		position: relative;
+
+		hr {
+		}
 
 		& > .wrapper {
 			background-color: #ffffff;
@@ -95,7 +212,7 @@
 			align-items: center;
 
 			& > * {
-				padding: 28px 0;
+				padding: 10px 0;
 				width: 100%;
 				white-space: nowrap;
 
@@ -106,7 +223,7 @@
 					justify-content: left;
 					align-items: center;
 					gap: 14px;
-					padding: 14px 34px 14px 24px;
+					padding: 14px 24px 14px 24px;
 					text-decoration: none;
 					color: #9ea5ab;
 					font-size: 15px;

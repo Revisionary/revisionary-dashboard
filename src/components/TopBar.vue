@@ -236,7 +236,8 @@
 			</div>
 
 			<div class="limitations">
-				<Limitations label="27 Live Pins Left" />
+				<!-- <Limitations label="27 Live Pins Left" /> -->
+				<span>27 Live Pins Left</span>
 			</div>
 		</div>
 		<div class="right-side" v-if="$auth.loggedIn">
@@ -254,7 +255,7 @@
 			</div>
 
 			<div class="dashboard" v-else>
-				<Limitations v-if="type != 'revise'" />
+				<!-- <Limitations v-if="type != 'revise'" /> -->
 
 				<div class="upgrade-button" v-if="type != 'revise'">
 					<a
@@ -304,7 +305,7 @@
 <script>
 	import Logo from "~/components/atoms/Logo.vue";
 	import JumpTo from "~/components/molecules/JumpTo.vue";
-	import Limitations from "~/components/molecules/Limitations.vue";
+	import Limitations from "~/components/organisms/Limitations.vue";
 	import ProfilePic from "~/components/atoms/ProfilePic.vue";
 
 	import MenuIcon from "~/components/atoms/icon-menu.vue";
@@ -382,34 +383,6 @@
 			},
 		},
 		methods: {
-			logout() {
-				this.$nuxt.$loading.start();
-
-				this.$auth
-					.logout()
-					.then(() => {
-						console.log("Logged out");
-
-						// Close the sidebar
-						this.$store.commit("toggleSideBar", false);
-
-						// Reset Projects
-						this.$store.dispatch("projects/resetProjects");
-
-						// Reset Pages
-						this.$store.dispatch("pages/resetPages");
-
-						// Reset Users Pool
-						this.$store.dispatch("users/resetUsers");
-
-						// Redirect to login page
-						this.$router.push({ path: "/login/" });
-					})
-					.catch((error) => {
-						console.log("ERROR: ", error);
-						//if (process.browser) window.$nuxt.$root.$loading.fail();
-					});
-			},
 			changePinMode(mode = "browse") {
 				this.pinMode = mode;
 			},

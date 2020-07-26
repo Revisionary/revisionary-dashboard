@@ -3,7 +3,7 @@
 		sidebarClosed: !$store.state.isSideBarOpen,
 		revising: isRevising
 	}">
-		<TopBar :type="isRevising ? 'revise' : 'dashboard'" />
+		<TopBar :type="isRevising ? 'revise' : 'dashboard'" v-if="isRevising" />
 		<main>
 			<SideBar />
 			<nuxt />
@@ -43,13 +43,28 @@
 </script>
 
 <style lang="scss">
+	#page {
+		display: grid;
+		grid-template-rows: auto 1fr;
+	}
+
 	main {
-		display: flex;
+		display: grid;
+		grid-auto-flow: column;
+		grid-template-columns: auto 1fr;
 		width: 100%;
-		height: calc(100vh - 60px);
+		height: 100vh;
+
+		.revising > & {
+			display: flex;
+			height: calc(100vh - 60px);
+
+			& > .content {
+				flex: 1;
+			}
+		}
 
 		& > .content {
-			flex: 1;
 			vertical-align: top;
 			height: inherit;
 			overflow-y: auto;

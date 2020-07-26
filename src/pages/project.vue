@@ -40,8 +40,21 @@
 			this.$nextTick(() => {
 				this.$nuxt.$loading.start();
 			});
-
 			this.$store.dispatch("pages/fetch", this.$route.params.id);
+		},
+		watch: {
+			$route(to, from) {
+				// console.log("FROM: ", from);
+				// console.log("TO: ", to);
+
+				if (from.params.id != to.params.id) {
+					this.$nextTick(() => {
+						this.$nuxt.$loading.start();
+					});
+
+					this.$store.dispatch("pages/fetch", this.$route.params.id);
+				}
+			},
 		},
 	};
 </script>

@@ -10,15 +10,15 @@
 
 	export default {
 		components: {
-			BlocksView
+			BlocksView,
 		},
 		computed: {
 			...mapGetters({
 				categories: "pages/getCategories",
 				blocks: "pages/get",
-				blocksFetching: "pages/status"
-			})
-		}
+				blocksFetching: "pages/status",
+			}),
+		},
 	};
 </script>
 

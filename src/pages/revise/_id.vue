@@ -53,9 +53,9 @@
 		created() {
 			console.log("CREATED");
 
-			this.$nextTick(() => {
-				//this.$nuxt.$loading.start();
-			});
+			// this.$nextTick(() => {
+			// 	this.$nuxt.$loading.start();
+			// });
 			// FETCH PINS HERE !!!
 		},
 		computed: {
@@ -89,12 +89,15 @@
 			window.addEventListener("resize", this.resizeIframe);
 		},
 		watch: {
-			$route() {
-				console.log("ROUTE CHANGE");
+			$route(to, from) {
+				// console.log("FROM: ", from);
+				// console.log("TO: ", to);
 
-				this.$nextTick(() => {
-					this.resizeIframe();
-				});
+				if (from.params.id != to.params.id) {
+					this.$nextTick(() => {
+						this.resizeIframe();
+					});
+				}
 			},
 		},
 		methods: {

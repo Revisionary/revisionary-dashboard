@@ -174,12 +174,12 @@
 			PlusIcon,
 			ProfilePic,
 			ShareIcon,
-			InfoIcon
+			InfoIcon,
 		},
 		props: {
 			dataType: {
-				type: String
-			}
+				type: String,
+			},
 		},
 		computed: {
 			currentPath() {
@@ -202,16 +202,18 @@
 			},
 			dataCount() {
 				let availableCount = this.blocksData.filter(
-					block => !block.archived && !block.deleted
+					(block) => !block.archived && !block.deleted
 				).length;
 
 				if (this.$route.params.category == "archived")
-					availableCount = this.blocksData.filter(block => block.archived)
-						.length;
+					availableCount = this.blocksData.filter(
+						(block) => block.archived
+					).length;
 
 				if (this.$route.params.category == "deleted")
-					availableCount = this.blocksData.filter(block => block.deleted)
-						.length;
+					availableCount = this.blocksData.filter(
+						(block) => block.deleted
+					).length;
 
 				if (availableCount) return " (" + availableCount + ")";
 				return "";
@@ -233,7 +235,7 @@
 				if (this.$route.params.category == "favorites") return "Favorite";
 
 				const foundCat = this.blockCategories.find(
-					category => category.slug == this.$route.params.category
+					(category) => category.slug == this.$route.params.category
 				);
 				if (this.$route.params.category != null && foundCat)
 					return foundCat.title;
@@ -254,7 +256,7 @@
 				if (this.isLoading) return "Loading...";
 				else if (this.dataType == "project") return "";
 				else return this.blockData.description;
-			}
+			},
 		},
 		methods: {
 			toggleFavorite() {
@@ -264,7 +266,7 @@
 				this.$store.dispatch("projects/updateProject", {
 					ID: blockID,
 					name: "favorite",
-					value: !blockFavorite
+					value: !blockFavorite,
 				});
 			},
 			userInfo(ID) {
@@ -276,15 +278,15 @@
 				// }
 
 				return foundUser;
-			}
-		}
+			},
+		},
 	};
 </script>
 
 <style lang="scss">
 	#sub-header {
 		position: relative;
-		padding-bottom: 70px;
+		padding-bottom: 55px;
 		display: flex;
 		flex-direction: row;
 		justify-content: space-between;
