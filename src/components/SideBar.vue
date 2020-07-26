@@ -2,14 +2,14 @@
 	<aside id="sidebar">
 		<div class="wrapper">
 			<div class="top-section">
-				<nuxt-link to="/projects/">
+				<nuxt-link to="/projects/" class="menu-item">
 					<Logo />
 				</nuxt-link>
 
-				<JumpTo />
+				<JumpTo class="jumper" />
 
 				<span
-					class="right-tooltip"
+					class="right-tooltip menu-item projects"
 					:class="{ active: $route.name === 'projects' }"
 					:data-tooltip="$store.state.isSideBarOpen ? null : 'Projects'"
 					@click="toggleTab('projects')"
@@ -18,8 +18,9 @@
 					<DashboardIcon />
 					<span class="menu-label">Projects</span>
 				</span>
+
 				<span
-					class="right-tooltip"
+					class="right-tooltip menu-item tasks"
 					:class="{ active: $store.state.openTab == 'tasks' }"
 					:data-tooltip="$store.state.isSideBarOpen ? null : 'Tasks'"
 					@click="toggleTab('tasks')"
@@ -27,8 +28,9 @@
 					<TasksIcon />
 					<span class="menu-label">Tasks (24)</span>
 				</span>
+
 				<span
-					class="right-tooltip notifications"
+					class="right-tooltip menu-item notifications"
 					:class="{ active: $store.state.openTab == 'notifications' }"
 					:data-tooltip="$store.state.isSideBarOpen ? null : 'Notifications'"
 					@click="toggleTab('notifications')"
@@ -36,54 +38,60 @@
 					<NotificationIcon :count="$store.state.newNotificationsCount" />
 					<span class="menu-label">Notifications</span>
 				</span>
-				<span>
-					<hr />
-				</span>
+
+				<hr class="separator" />
+
 				<span
-					class="right-tooltip"
+					class="right-tooltip menu-item usage"
 					:class="{ active: $store.state.openTab == 'usage' }"
 					:data-tooltip="$store.state.isSideBarOpen ? null : 'Usage'"
 					@click="toggleTab('usage')"
 				>
-					<TasksIcon />
+					<DashboardIcon />
 					<span class="menu-label">My Plan & Usage</span>
 				</span>
 			</div>
+
 			<div class="bottom-section">
-				<a href="#" class="right-tooltip" :data-tooltip="$store.state.isSideBarOpen ? null : 'Support'">
+				<div class="profile menu-item">
+					<details>
+						<summary class="rotate-icon">
+							<ProfilePic
+								class="profile-pic"
+								:firstName="currentUser.first_name"
+								:lastName="currentUser.last_name"
+								:email="currentUser.email"
+								:picture="currentUser.picture"
+							/>
+							<span>{{ currentUser.first_name }}</span>
+							<ChevronDownIcon />
+						</summary>
+						<div class="details-menu left top">
+							<ul class="menu boxed">
+								<li>
+									<a href="#">Account</a>
+								</li>
+								<li>
+									<a href="#">Help</a>
+								</li>
+								<li>
+									<a href="#">Feedback</a>
+								</li>
+								<li>
+									<a href="#" @click.prevent="logout">Logout</a>
+								</li>
+							</ul>
+						</div>
+					</details>
+				</div>
+
+				<span
+					class="right-tooltip menu-item"
+					:data-tooltip="$store.state.isSideBarOpen ? null : 'Support'"
+				>
 					<SupportIcon />
 					<span class="menu-label">Support</span>
-				</a>
-
-				<details class="profile">
-					<summary class="rotate-icon">
-						<ProfilePic
-							class="profile-pic"
-							:firstName="currentUser.first_name"
-							:lastName="currentUser.last_name"
-							:email="currentUser.email"
-							:picture="currentUser.picture"
-						/>
-						<span>{{ currentUser.first_name }}</span>
-						<ChevronDownIcon />
-					</summary>
-					<div class="details-menu left top">
-						<ul class="menu boxed">
-							<li>
-								<a href="#">Account</a>
-							</li>
-							<li>
-								<a href="#">Help</a>
-							</li>
-							<li>
-								<a href="#">Feedback</a>
-							</li>
-							<li>
-								<a href="#" @click.prevent="logout">Logout</a>
-							</li>
-						</ul>
-					</div>
-				</details>
+				</span>
 			</div>
 		</div>
 
@@ -199,6 +207,7 @@
 			background-color: #ffffff;
 			border: 1px solid #eaedf3;
 			border-top: none;
+			border-bottom: none;
 			position: relative;
 			z-index: 8;
 			height: inherit;
@@ -211,8 +220,12 @@
 				padding: 10px 0;
 				width: 100%;
 				white-space: nowrap;
+				display: grid;
+				justify-content: left;
+				align-items: center;
+				grid-template-rows: 1fr;
 
-				& > * {
+				& > .menu-item {
 					display: grid;
 					grid-auto-flow: column;
 					grid-template-columns: 20px 1fr;
@@ -255,15 +268,40 @@
 						background-color: #f4f6fc;
 					}
 				}
+
+				& > .jumper {
+					padding: 5px 10px;
+
+					.selectbox {
+						height: 45px;
+					}
+				}
+
+				& > hr.separator {
+					border-color: #eaedf3;
+					border-style: solid;
+					border-bottom: none;
+					width: 90%;
+					margin: 10px auto;
+				}
 			}
 
 			.bottom-section {
-				width: 100%;
 				padding: 0;
 				border-top: 1px solid #eaedf3;
 
 				& > * {
 					justify-content: center;
+					width: 100%;
+				}
+
+				.profile {
+					summary {
+						display: grid;
+						grid-auto-flow: column;
+						justify-content: space-between;
+						align-items: center;
+					}
 				}
 			}
 		}
