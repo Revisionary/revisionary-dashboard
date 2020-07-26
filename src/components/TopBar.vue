@@ -148,32 +148,51 @@
 
 			<div class="screens">
 				<details>
-					<summary class="selectbox light">
-						<WindowIcon />
-						<span>Custom Screen</span>
-						<CaretDownIcon />
+					<summary>
+						<div class="selectbox light" @click="getDevices(deviceInfo.phase_ID)">
+							<WindowIcon v-if="deviceInfo.cat_ID == 5" />
+							<DesktopIcon v-if="deviceInfo.cat_ID == 1" />
+							<LaptopIcon v-if="deviceInfo.cat_ID == 2" />
+							<TabletIcon v-if="deviceInfo.cat_ID == 3" />
+							<MobileIcon v-if="deviceInfo.cat_ID == 4" />
+							<span>{{ deviceInfo.cat_name }}</span>
+							<CaretDownIcon />
+						</div>
 					</summary>
 					<div class="details-menu">
 						<ul class="menu boxed compact lines">
-							<li>
+							<li v-if="devicesFetching">
+								<span>Loading...</span>
+							</li>
+							<li v-else v-for="device in devices" :key="device.ID">
 								<span>
 									<div class="left">
-										<span>
-											<LaptopIcon />Laptop (1440x900)
-										</span>
+										<TasksStatus
+											:incompletedCount="device.incomplete_tasks"
+											:completedCount="device.complete_tasks"
+										/>
+										<nuxt-link :to="'/revise/' + device.ID">
+											<WindowIcon v-if="device.cat_ID == 5" />
+											<DesktopIcon v-if="device.cat_ID == 1" />
+											<LaptopIcon v-if="device.cat_ID == 2" />
+											<TabletIcon v-if="device.cat_ID == 3" />
+											<MobileIcon v-if="device.cat_ID == 4" />
+											<span>{{device.cat_name}} ({{ device.width ? device.width : device.screen_width }}x{{ device.height ? device.height: device.screen_height }})</span>
+										</nuxt-link>
 									</div>
 									<div class="right">
 										<a
 											href="#"
 											class="show-on-hover tooltip-not-contained"
-											data-tooltip="Delete this Screen"
+											data-tooltip="Delete this screen"
 										>&times;</a>
 									</div>
 								</span>
 							</li>
-							<li class="add-new">
+							<li class="add-new" v-if="!devicesFetching">
 								<span>
 									<div class="left">
+										<TasksStatus :incompletedCount="0" :completedCount="0" />
 										<span>
 											<PlusIcon />
 											<span>Add New Screen</span>
@@ -307,6 +326,8 @@
 	import ContentIcon from "~/components/atoms/pin-modes/icon-text.svg";
 	import StyleIcon from "~/components/atoms/pin-modes/icon-visual.svg";
 
+	import TasksStatus from "~/components/atoms/tasks-status.vue";
+
 	export default {
 		components: {
 			Logo,
@@ -331,6 +352,7 @@
 			CommentIcon,
 			ContentIcon,
 			StyleIcon,
+			TasksStatus,
 		},
 		props: {
 			type: {
@@ -342,6 +364,10 @@
 				pinMode: "browse",
 				incomplete_tasks: 42,
 				complete_tasks: 9,
+				devices: [],
+				devicesFetching: false,
+				phases: [],
+				phasesFetching: false,
 			};
 		},
 		created() {
@@ -357,10 +383,32 @@
 			isSideBarOpen() {
 				return this.$store.state.isSideBarOpen;
 			},
+			deviceInfo() {
+				return this.$store.getters["device/get"];
+			},
 		},
 		methods: {
 			changePinMode(mode = "browse") {
 				this.pinMode = mode;
+			},
+			async getDevices(phaseID) {
+				this.$nuxt.$loading.start();
+				this.devicesFetching = phaseID;
+				await this.$axios
+					.get("phase/" + phaseID + "/devices")
+					.then(({ status, data }) => {
+						if (status === 200) {
+							const devices = data.devices;
+							console.log("DEVICES: ", devices);
+
+							this.devices = devices;
+							this.devicesFetching = false;
+						}
+					})
+					.catch(function (error) {
+						console.log("ERROR: ", error);
+						this.devicesFetching = false;
+					});
 			},
 		},
 	};

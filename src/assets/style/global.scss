@@ -53,6 +53,7 @@ a {
 	}
 
 	[open] > &,
+	[open] > * > &,
 	&:hover {
 		background-color: $color-primary;
 		color: white;
