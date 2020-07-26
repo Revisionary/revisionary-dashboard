@@ -193,11 +193,7 @@
 <style lang="scss">
 	aside#sidebar {
 		height: inherit;
-		transition: 500ms;
 		position: relative;
-
-		hr {
-		}
 
 		& > .wrapper {
 			background-color: #ffffff;

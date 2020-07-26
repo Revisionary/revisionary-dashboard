@@ -1,5 +1,5 @@
 <template>
-	<ul class="menu boxed">
+	<ul class="usage">
 		<li class="title">
 			<span>{{ currentUser.level_name }} Plan Usage</span>
 		</li>
@@ -149,7 +149,7 @@
 </script>
 
 <style lang="scss">
-	ul.menu {
+	ul.usage {
 		& > li {
 			& > span {
 				.right {

@@ -114,7 +114,7 @@
 				if (width >= this.deviceWidth && height >= this.deviceHeight)
 					this.iframeScale = 1;
 
-				console.log("SCALE: ", this.iframeScale);
+				console.log("SCALE: ", this.iframeScale, width, height);
 			},
 		},
 	};
@@ -125,8 +125,6 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		width: 100%;
-		height: 100%;
 
 		.iframe-container {
 			width: 100%;
