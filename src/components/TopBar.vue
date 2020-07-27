@@ -96,9 +96,12 @@
 				@click="$store.commit('toggleTab', 'tasks')"
 				:class="{ active: $store.state.openTab == 'tasks' }"
 			>
-				<div class="tasks-count" v-if="incomplete_tasks > 0 || complete_tasks > 0">
-					<div class="left" v-if="incomplete_tasks > 0">{{ incomplete_tasks }}</div>
-					<div class="done" v-if="complete_tasks > 0">{{ complete_tasks }}</div>
+				<div
+					class="tasks-count"
+					v-if="deviceInfo.incomplete_tasks > 0 || deviceInfo.complete_tasks > 0"
+				>
+					<div class="left" v-if="deviceInfo.incomplete_tasks > 0">{{ deviceInfo.incomplete_tasks }}</div>
+					<div class="done" v-if="deviceInfo.complete_tasks > 0">{{ deviceInfo.complete_tasks }}</div>
 				</div>
 				<div v-else>
 					<small>No Tasks</small>
@@ -107,18 +110,33 @@
 
 			<div class="versions">
 				<details>
-					<summary class="selectbox light">
-						<VersionIcon />
-						<span>v1</span>
-						<CaretDownIcon />
+					<summary>
+						<div class="selectbox light" @click="getPhases(deviceInfo.page_ID)">
+							<VersionIcon />
+							<span>v{{ deviceInfo.versions.findIndex(version => version.ID == deviceInfo.phase_ID) + 1 }}</span>
+							<CaretDownIcon />
+						</div>
 					</summary>
 					<div class="details-menu">
 						<ul class="menu boxed compact lines">
-							<li>
+							<li v-if="phasesFetching">
+								<span>Loading...</span>
+							</li>
+							<li
+								v-else
+								v-for="(phase, index) in phases"
+								:key="phase.ID"
+								:class="{ active: phase.ID == deviceInfo.phase_ID }"
+							>
 								<span>
 									<div class="left">
+										<TasksStatus
+											:incompletedCount="phase.incomplete_tasks"
+											:completedCount="phase.complete_tasks"
+										/>
 										<span>
-											<VersionIcon />v2 (2 minutes ago)
+											<VersionIcon />
+											v{{ index + 1 }} (2 minutes ago)
 										</span>
 									</div>
 									<div class="right">
@@ -164,7 +182,12 @@
 							<li v-if="devicesFetching">
 								<span>Loading...</span>
 							</li>
-							<li v-else v-for="device in devices" :key="device.ID">
+							<li
+								v-else
+								v-for="device in devices"
+								:key="device.ID"
+								:class="{ active: device.ID == deviceInfo.ID }"
+							>
 								<span>
 									<div class="left">
 										<TasksStatus
@@ -406,6 +429,24 @@
 					.catch(function (error) {
 						console.log("ERROR: ", error);
 						this.devicesFetching = false;
+					});
+			},
+			async getPhases(pageID) {
+				this.$nuxt.$loading.start();
+				this.phasesFetching = pageID;
+				await this.$axios
+					.get("page/" + pageID + "/phases")
+					.then(({ status, data }) => {
+						if (status === 200) {
+							const phases = data.phases;
+							console.log("PHASES of Page #" + pageID, phases);
+							this.phases = phases;
+							this.phasesFetching = false;
+						}
+					})
+					.catch(function (error) {
+						console.log("ERROR: ", error);
+						this.phasesFetching = false;
 					});
 			},
 		},
