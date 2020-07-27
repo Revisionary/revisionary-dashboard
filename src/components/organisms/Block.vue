@@ -342,7 +342,7 @@
 		background-color: white;
 		width: 100%;
 		height: 100%;
-		min-height: 280px;
+		min-height: 250px;
 		border-radius: 6px;
 		border: 1px solid #eaedf3;
 		box-shadow: 0px 2px 14px #edf1fa;
@@ -433,7 +433,7 @@
 		}
 
 		& > .info {
-			padding: 20px;
+			padding: 20px 20px 10px;
 
 			.title {
 				color: #2d3137;
@@ -463,6 +463,7 @@
 
 					& > .count {
 						color: #b0b0b0;
+						font-size: 15px;
 					}
 				}
 			}
@@ -489,19 +490,21 @@
 		& > .bottom {
 			display: flex;
 			justify-content: space-between;
-			padding: 14px 20px;
-			border-top: 1px solid #ececec;
+			padding: 0px 20px 14px;
 			color: #a1a1a1;
 
 			.date {
-				font-size: 12px;
+				font-size: 10px;
 				line-height: normal;
 				font-weight: 500;
 				text-transform: uppercase;
 			}
 
 			.favorite {
+				margin-right: 3px;
 				cursor: pointer;
+				opacity: 0;
+				transition: 500ms;
 			}
 		}
 
@@ -515,6 +518,12 @@
 
 				& > .status {
 					opacity: 0;
+				}
+			}
+
+			& > .bottom {
+				& > .favorite {
+					opacity: 1;
 				}
 			}
 		}
