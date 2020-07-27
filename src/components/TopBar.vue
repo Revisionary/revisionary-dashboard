@@ -243,9 +243,7 @@
 				</span>
 			</div>
 
-			<div class="limitations">
-				<span>27 Live Pins Left</span>
-			</div>
+			<div class="limitations" @click="$store.commit('toggleTab', 'usage')">27 Live Pins Left</div>
 		</div>
 
 		<div class="right-side">
@@ -511,7 +509,7 @@
 		.limitations {
 			font-weight: 600;
 			font-size: 13px;
-			line-height: 16px;
+			line-height: normal;
 			color: white;
 			text-transform: none;
 			display: inherit;
@@ -519,6 +517,12 @@
 			gap: inherit;
 			justify-content: inherit;
 			align-items: inherit;
+			border-bottom: 1px dashed;
+			cursor: pointer;
+
+			&:hover {
+				border-color: $color-primary;
+			}
 		}
 
 		.profile {
