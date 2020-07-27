@@ -301,6 +301,13 @@
 						grid-auto-flow: column;
 						justify-content: space-between;
 						align-items: center;
+						gap: 5px;
+
+						svg.chevron-down {
+							path {
+								stroke: #9ea5ab;
+							}
+						}
 					}
 				}
 			}

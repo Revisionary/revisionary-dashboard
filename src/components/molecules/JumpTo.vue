@@ -5,7 +5,7 @@
 			<ChevronDownIcon v-if="$route.name == 'revise-id'" />
 			<CaretRightIcon v-else />
 		</summary>
-		<div class="details-menu">
+		<div class="details-menu next top">
 			<ul class="menu boxed">
 				<li
 					:class="{active : $route.name === 'projects'}"
@@ -308,6 +308,12 @@
 
 		.current {
 			text-transform: capitalize;
+		}
+
+		summary {
+			&:before {
+				background-color: rgba(0, 0, 0, 0.35);
+			}
 		}
 
 		ul.menu.boxed {

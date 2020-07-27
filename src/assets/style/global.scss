@@ -317,6 +317,19 @@ details {
 			bottom: 100%;
 		}
 
+		&.next {
+			left: 100%;
+
+			&.top {
+				top: 0;
+				bottom: auto;
+
+				ul.menu {
+					margin-top: 0 !important;
+				}
+			}
+		}
+
 		ul.menu {
 			padding: 8px 0;
 			list-style-type: none;
