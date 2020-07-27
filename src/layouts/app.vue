@@ -49,14 +49,8 @@
 			vertical-align: top;
 			overflow-y: auto;
 
-			& > header {
-				background-color: #fff;
-				padding: 40px 55px;
-				border-bottom: 1px solid #eaedf3;
-			}
-
 			& > .content-wrapper {
-				padding: 55px;
+				padding: 50px 36px;
 			}
 		}
 

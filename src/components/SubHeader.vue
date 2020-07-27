@@ -1,116 +1,100 @@
 <template>
 	<header id="sub-header" :class="{ loading: isLoading }">
-		<div class="left">
-			<figure
-				class="thumbnail"
-				v-if="dataType !== 'project'"
-				:style="'background-image: url(' + thumbnail + ');'"
-			>
-				<div class="tasks-count" v-if="blockData.incomplete_tasks > 0 || blockData.complete_tasks > 0">
-					<div
-						class="left tooltip-not-contained"
-						data-tooltip="Incomplete"
-						v-if="blockData.incomplete_tasks > 0"
-					>{{ blockData.incomplete_tasks }}</div>
-					<div
-						class="done tooltip-not-contained"
-						data-tooltip="Solved"
-						v-if="blockData.complete_tasks > 0"
-					>{{ blockData.complete_tasks }}</div>
-				</div>
-			</figure>
-			<div class="info">
-				<div class="subtitle">{{ isLoading ? 'Loading...' : subtitle }}</div>
-
-				<div class="title">
-					<details class="unselectable-when-loading">
-						<summary class="rotate-icon">
-							<h1>
-								<span>
+		<div class="top">
+			<div class="left">
+				<div class="info">
+					<div class="title">
+						<details class="unselectable-when-loading">
+							<summary class="rotate-icon">
+								<h1>
 									<span v-html="title"></span>
 									<ChevronDownIcon />
-								</span>
-							</h1>
-						</summary>
-						<div class="details-menu left">
-							<ul class="menu boxed">
-								<li :class="{ active: $route.params.category == null }">
-									<nuxt-link
-										:to="currentPath + '/'"
-									>All {{ $route.name == 'projects' || $route.name == 'projects-category' ? 'Projects' : 'Pages' }} ({{ blocksData.filter(block => !block.archived && !block.deleted).length }})</nuxt-link>
-								</li>
-								<li :class="{ active: $route.params.category == 'archived' }">
-									<nuxt-link
-										:to="currentPath + '/archived/'"
-									>Archived {{ $route.name == 'projects' || $route.name == 'projects-category' ? 'Projects' : 'Pages' }} ({{ blocksData.filter(block => block.archived).length }})</nuxt-link>
-								</li>
-								<li :class="{ active: $route.params.category == 'deleted' }">
-									<nuxt-link
-										:to="currentPath + '/deleted/'"
-									>Deleted {{ $route.name == 'projects' || $route.name == 'projects-category' ? 'Projects' : 'Pages' }} ({{ blocksData.filter(block => block.deleted).length }})</nuxt-link>
-								</li>
-							</ul>
-						</div>
-					</details>
-					<div
-						class="project-actions"
-						v-if="$route.name !== 'projects' && $route.name !== 'projects-category'"
-					>
-						<div class="edit-project" data-tooltip="Edit Project">
-							<InfoIcon />
-						</div>
+								</h1>
+							</summary>
+							<div class="details-menu left">
+								<ul class="menu boxed">
+									<li :class="{ active: $route.params.category == null }">
+										<nuxt-link
+											:to="currentPath + '/'"
+										>All {{ $route.name == 'projects' || $route.name == 'projects-category' ? 'Projects' : 'Pages' }} ({{ blocksData.filter(block => !block.archived && !block.deleted).length }})</nuxt-link>
+									</li>
+									<li :class="{ active: $route.params.category == 'archived' }">
+										<nuxt-link
+											:to="currentPath + '/archived/'"
+										>Archived {{ $route.name == 'projects' || $route.name == 'projects-category' ? 'Projects' : 'Pages' }} ({{ blocksData.filter(block => block.archived).length }})</nuxt-link>
+									</li>
+									<li :class="{ active: $route.params.category == 'deleted' }">
+										<nuxt-link
+											:to="currentPath + '/deleted/'"
+										>Deleted {{ $route.name == 'projects' || $route.name == 'projects-category' ? 'Projects' : 'Pages' }} ({{ blocksData.filter(block => block.deleted).length }})</nuxt-link>
+									</li>
+								</ul>
+							</div>
+						</details>
 						<div
-							class="favorite"
-							:data-tooltip="blockData.favorite ? 'Remove from Favorites' : 'Add to Favorites'"
-							@click="toggleFavorite"
+							class="project-actions"
+							v-if="$route.name !== 'projects' && $route.name !== 'projects-category'"
 						>
-							<StarIcon :active="blockData.favorite" />
+							<div class="edit-project" data-tooltip="Edit Project">
+								<InfoIcon />
+							</div>
+							<div
+								class="favorite"
+								:data-tooltip="blockData.favorite ? 'Remove from Favorites' : 'Add to Favorites'"
+								@click="toggleFavorite"
+							>
+								<StarIcon :active="blockData.favorite" />
+							</div>
 						</div>
 					</div>
 				</div>
-
-				<p class="description">
-					<span v-html="blockData.description"></span>
-				</p>
 			</div>
-		</div>
-		<div class="right" v-if="$route.name !== 'projects' && $route.name !== 'projects-category'">
-			<div class="subtitle" style="opacity: 0;">.</div>
-			<div class="shares">
-				<div class="multiple-profiles">
-					<span class="owner">
-						<ProfilePic
-							:firstName="ownerInfo.first_name"
-							:lastName="ownerInfo.last_name"
-							:picture="ownerInfo.picture"
-							:email="ownerInfo.email"
-						/>
-					</span>
-					<span class="shared" v-for="(user_ID, index) in blockData.users" :key="user_ID">
-						<ProfilePic
-							v-if="index < 2 || (index == 2 && blockData.users.length == 3)"
-							:firstName="userInfo(user_ID).first_name"
-							:lastName="userInfo(user_ID).last_name"
-							:picture="userInfo(user_ID).picture"
-							:email="userInfo(user_ID).email"
-						/>
-						<ProfilePic
-							v-if="index == 2 && blockData.users.length > 3"
-							:abbreviation="(blockData.users.length - 2).toString()"
-							:data-tooltip="(blockData.users.length - 2).toString() + ' more person'"
-						/>
-					</span>
+			<div class="right">
+				<div class="shares" v-if="$route.name !== 'projects' && $route.name !== 'projects-category'">
+					<div class="multiple-profiles">
+						<span class="owner">
+							<ProfilePic
+								:firstName="ownerInfo.first_name"
+								:lastName="ownerInfo.last_name"
+								:picture="ownerInfo.picture"
+								:email="ownerInfo.email"
+							/>
+						</span>
+						<span class="shared" v-for="(user_ID, index) in blockData.users" :key="user_ID">
+							<ProfilePic
+								v-if="index < 2 || (index == 2 && blockData.users.length == 3)"
+								:firstName="userInfo(user_ID).first_name"
+								:lastName="userInfo(user_ID).last_name"
+								:picture="userInfo(user_ID).picture"
+								:email="userInfo(user_ID).email"
+							/>
+							<ProfilePic
+								v-if="index == 2 && blockData.users.length > 3"
+								:abbreviation="(blockData.users.length - 2).toString()"
+								:data-tooltip="(blockData.users.length - 2).toString() + ' more person'"
+							/>
+						</span>
+					</div>
+					<button class="transparent with-icon share">
+						<ShareIcon />Share
+					</button>
 				</div>
-				<button class="transparent with-icon share">
-					<ShareIcon />Share
-				</button>
-			</div>
-			<div class="page-info">
-				<span>
-					Created
-					<strong>{{ $timeSince(blockData.date_created) }} ago</strong>, last modified
-					<strong>{{ $timeSince(blockData.date_modified) }} ago</strong>
-				</span>
+
+				<div class="actions">
+					<a
+						href="#"
+						class="tooltip-not-contained bottom-tooltip"
+						:data-tooltip="'Search in ' + ($route.name == 'projects' || $route.name == 'projects-category' ? 'Projects' : 'Pages')"
+					>
+						<SearchIcon />
+					</a>
+					<a href="#" class="tooltip-not-contained bottom-tooltip" data-tooltip="Settings">
+						<SortIcon />
+					</a>
+					<a href="#" class="dark tooltip-not-contained left-tooltip" data-tooltip="Add New Project">
+						<PlusIcon />
+					</a>
+				</div>
 			</div>
 		</div>
 
@@ -135,20 +119,12 @@
 				>+</a>
 			</div>
 
-			<div class="actions">
-				<a
-					href="#"
-					class="tooltip-not-contained"
-					:data-tooltip="'Search in ' + ($route.name == 'projects' || $route.name == 'projects-category' ? 'Projects' : 'Pages')"
-				>
-					<SearchIcon />
-				</a>
-				<a href="#" class="tooltip-not-contained" data-tooltip="Settings">
-					<SortIcon />
-				</a>
-				<a href="#" class="dark" data-tooltip="Add New Project">
-					<PlusIcon />
-				</a>
+			<div class="page-info" v-if="$route.name !== 'projects' && $route.name !== 'projects-category'">
+				<span>
+					Created
+					<strong>{{ $timeSince(blockData.date_created) }} ago</strong>, last modified
+					<strong>{{ $timeSince(blockData.date_modified) }} ago</strong>
+				</span>
 			</div>
 		</div>
 	</header>
@@ -249,7 +225,7 @@
 			title() {
 				if (this.isLoading) return "Loading...";
 				else if (this.dataType == "project")
-					return "Projects" + this.dataCount;
+					return "My Projects" + this.dataCount;
 				else return this.blockData.title + this.dataCount;
 			},
 			description() {
@@ -286,61 +262,52 @@
 <style lang="scss">
 	#sub-header {
 		position: relative;
-		padding-bottom: 55px;
+		height: 90px;
+		padding: 0 36px;
 		display: flex;
-		flex-direction: row;
+		flex-direction: column;
 		justify-content: space-between;
-		align-items: center;
+		background-color: #fff;
+		border-bottom: 1px solid #eaedf3;
 
-		& > .left {
+		& > .top {
+			width: 100%;
+			height: 60px;
 			display: flex;
-		}
+			align-items: center;
+			justify-content: space-between;
 
-		& > .right {
-			display: flex;
-			flex-direction: column;
-			justify-content: flex-end;
-			align-items: flex-end;
-		}
+			& > .left {
+				display: flex;
+			}
 
-		h1 {
-			font-size: 30px;
-			line-height: 36px;
-			font-weight: 600;
-			letter-spacing: -0.3px;
-			color: #2d3137;
-
-			& > span {
-				display: inline-flex;
-				align-items: center;
-
-				& > svg {
-					margin-left: 4px;
-					margin-top: 5px;
-				}
+			& > .right {
+				display: flex;
+				justify-content: flex-end;
+				align-items: flex-end;
 			}
 		}
 
-		.thumbnail {
-			width: 80px;
-			height: 80px;
-			background-color: #78808b;
-			margin-right: 20px;
-			border-radius: 20px;
-			border: 1px solid #eaedf3;
-			background-size: cover;
-			background-repeat: no-repeat;
-			background-position: 0 0;
-			position: relative;
+		& > .bottom {
+			width: 100%;
+			height: 30px;
+			display: flex;
+			justify-content: space-between;
+			align-items: flex-start;
+		}
 
-			.tasks-count {
-				position: absolute;
-				top: -10px;
-				right: 0;
+		h1 {
+			font-size: 18px;
+			line-height: 21px;
+			font-weight: 600;
+			letter-spacing: -0.3px;
+			color: #2d3137;
+			display: inline-flex;
+			align-items: center;
 
-				& > * {
-					border-color: white;
-				}
+			& > svg {
+				margin-left: 4px;
+				margin-top: 5px;
 			}
 		}
 
@@ -373,28 +340,11 @@
 			}
 		}
 
-		.subtitle {
-			font-style: normal;
-			font-weight: bold;
-			font-size: 14px;
-			line-height: 17px;
-			letter-spacing: -0.3px;
-			color: #9f9f9f;
-			text-transform: uppercase;
-			margin-bottom: 2px;
-		}
-
-		.description {
-			font-weight: normal;
-			font-size: 17px;
-			line-height: 23px;
-			color: #78808b;
-			margin-top: 0;
-			margin-bottom: 0;
-		}
-
 		.shares {
 			justify-content: flex-end;
+			padding-right: 20px;
+			border-right: 1px solid #e7e7e7;
+			margin-right: 20px;
 
 			.multiple-profiles > * + * > picture {
 				margin-left: -12px;
@@ -403,37 +353,33 @@
 			.owner,
 			.shared {
 				& > picture {
-					width: 34px;
-					height: 34px;
-					font-size: 14px;
+					width: 27px;
+					height: 27px;
+					font-size: 12px;
 					border-color: white;
 					border-width: 3px;
 				}
 			}
 
 			button {
-				border-color: #c3cad8;
-				color: #9199b1 !important;
+				background-color: $color-green;
+				color: white !important;
 				text-transform: uppercase;
-				border-radius: 10px;
+				border-radius: 30px;
 				height: 30px;
 				margin-left: 8px;
 				padding: 0 12px;
 				padding-left: 10px;
-				font-size: 12px;
-				line-height: 14px;
+				font-weight: 600;
+				font-size: 11px;
+				line-height: 13px;
 
 				& > svg > path {
-					stroke: #7884a7;
+					stroke: white;
 				}
 
 				&:hover {
-					color: black !important;
-					border-color: black !important;
-
-					& > svg > path {
-						stroke: black;
-					}
+					opacity: 0.6;
 				}
 			}
 		}
@@ -444,7 +390,6 @@
 			font-size: 12px;
 			letter-spacing: -0.5px;
 			line-height: 17px;
-			margin-top: 8px;
 			opacity: 0.7;
 
 			& > strong {
@@ -503,65 +448,57 @@
 			}
 		}
 
-		& > .bottom {
-			position: absolute;
-			left: 0;
-			right: 0;
-			bottom: -1px;
-			padding: 0 55px;
-			display: flex;
-			justify-content: space-between;
-			align-items: flex-end;
+		.actions {
+			display: grid;
+			grid-auto-flow: column;
+			gap: 10px;
 
-			.tabs {
-				& > a {
-					color: #9296a0;
-					font-size: 13px;
-					line-height: 16px;
-					font-weight: 400;
-					letter-spacing: 0.1px;
-					text-transform: uppercase;
-					display: inline-block;
-					padding-bottom: 14px;
-					margin-right: 20px;
-					border-bottom: 1px solid transparent;
+			& > a {
+				display: inline-flex;
+				justify-content: center;
+				align-items: center;
+				width: 30px;
+				height: 30px;
+				border-radius: 50%;
+				background-color: #f1f1f1;
+				transition: 500ms;
 
-					&.nuxt-link-exact-active {
-						color: #4d5058;
-						font-weight: 600;
-						border-color: $color-primary;
-					}
+				& > svg {
+					width: 10px;
+					display: block;
+				}
 
-					&:hover {
-						border-color: $color-primary;
-					}
+				&.dark {
+					background-color: $color-primary;
+				}
+
+				&:hover {
+					opacity: 0.6;
 				}
 			}
+		}
 
-			.actions {
-				transform: translateY(50%);
-				display: flex;
+		.tabs {
+			& > a {
+				color: #9296a0;
+				font-size: 13px;
+				line-height: 16px;
+				font-weight: 400;
+				letter-spacing: 0.1px;
+				text-transform: uppercase;
+				display: inline-block;
+				padding-bottom: 12px;
+				margin-right: 20px;
+				border-bottom: 1px solid transparent;
 
-				& > a {
-					display: inline-flex;
-					justify-content: center;
-					align-items: center;
-					width: 39px;
-					height: 39px;
-					border-radius: 50%;
-					border: 1px solid #e6e6e6;
-					background-color: #fff;
-					box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.06);
-					margin-left: 16px;
-					transition: 500ms;
+				&.nuxt-link-exact-active {
+					color: #4d5058;
+					font-weight: 600;
+					border-color: $color-primary;
+				}
 
-					&.dark {
-						background-color: $color-primary;
-					}
-
-					&:hover {
-						box-shadow: none;
-					}
+				&:hover {
+					border-color: $color-primary;
 				}
 			}
 		}
