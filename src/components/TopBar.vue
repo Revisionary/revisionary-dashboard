@@ -435,6 +435,10 @@
 			align-items: inherit;
 		}
 
+		svg {
+			display: block;
+		}
+
 		.button-circle {
 			width: 30px;
 			height: 30px;
@@ -538,63 +542,16 @@
 			height: 30px;
 		}
 
-		& > .center-side {
-			background-color: rgba(255, 255, 255, 0.1);
-			padding: 6px 27px;
-			border-radius: 12px;
-
-			& > * {
-				height: 30px;
-			}
-
-			.tasks {
-				display: inherit;
-				grid-auto-flow: inherit;
-				gap: inherit;
-				justify-content: inherit;
-				align-items: inherit;
-			}
-
-			.selectbox {
-				color: white;
-
-				& > svg.caret-down {
-					& > path {
-						fill: white;
-					}
-				}
-
-				& > svg:not(.caret-down) path {
-					stroke: white;
-				}
-			}
-		}
-
-		// & > .center-side {
-		// 	background-color: rgba(255, 255, 255, 0.1);
-		// 	padding: 6px 27px;
-		// 	border-radius: 12px;
-
-		// 	& > * {
-		// 		height: 30px;
-		// 		padding: 0;
-		// 	}
-
-		// 	.selectbox {
-		// 		color: white;
-
-		// 		& > svg.caret-down {
-		// 			& > path {
-		// 				fill: white;
-		// 			}
-		// 		}
-		// 	}
-
 		.tasks {
 			background-color: rgba(255, 255, 255, 0.1);
 			padding: 0 9px;
 			border-radius: 3px;
 			cursor: pointer;
+			display: inherit;
+			grid-auto-flow: inherit;
+			gap: inherit;
+			justify-content: inherit;
+			align-items: inherit;
 
 			.tasks-count {
 				& > * {
@@ -619,78 +576,6 @@
 			}
 		}
 
-		// & > .left-side,
-		// & > .right-side {
-		// 	display: grid;
-		// 	grid-auto-flow: column;
-		// 	align-items: center;
-		// 	justify-content: center;
-		// 	gap: 10px;
-		// 	margin-right: -10px;
-		// 	padding-right: 15px;
-
-		// & > * {
-		// 	width: 30px;
-		// 	height: 30px;
-		// 	background-color: rgba(255, 255, 255, 0.1);
-		// 	border-radius: 50%;
-		// 	display: flex;
-		// 	justify-content: center;
-		// 	align-items: center;
-		// 	cursor: pointer;
-
-		// 	& > svg,
-		// 	& > * > svg {
-		// 		width: 12px;
-
-		// 		& > path {
-		// 			stroke: white;
-		// 		}
-		// 	}
-
-		// 	&.transparent {
-		// 		background-color: transparent;
-		// 		border: 1px solid rgba(255, 255, 255, 0.26);
-		// 	}
-
-		// 	&.info {
-		// 		summary {
-		// 			width: 30px;
-		// 			height: 30px;
-		// 			display: flex;
-		// 			justify-content: center;
-		// 			align-items: center;
-
-		// 			svg {
-		// 				margin-top: -2px;
-		// 				margin-right: -1px;
-		// 			}
-		// 		}
-		// 	}
-
-		// 	&.share {
-		// 		background-color: #74b65c;
-
-		// 		& > svg {
-		// 			height: 13px;
-		// 		}
-		// 	}
-
-		// 	&.active,
-		// 	&:hover {
-		// 		background-color: $color-primary;
-		// 	}
-		// }
-
-		// 	&.right-side {
-		// 		border-right: 1px solid rgba(255, 255, 255, 0.15);
-		// 	}
-		// }
-
-		svg {
-			display: block;
-		}
-
 		.menu-icon {
 			cursor: pointer;
 			user-select: none;
@@ -698,6 +583,30 @@
 			&.active {
 				svg > rect:first-child {
 					fill: $color-primary;
+				}
+			}
+		}
+
+		& > .center-side {
+			background-color: rgba(255, 255, 255, 0.1);
+			padding: 6px 27px;
+			border-radius: 12px;
+
+			& > * {
+				height: 30px;
+			}
+
+			.selectbox {
+				color: white;
+
+				& > svg.caret-down {
+					& > path {
+						fill: white;
+					}
+				}
+
+				& > svg:not(.caret-down) path {
+					stroke: white;
 				}
 			}
 		}

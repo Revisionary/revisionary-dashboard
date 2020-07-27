@@ -370,6 +370,8 @@
 			position: fixed;
 			z-index: 1;
 			left: 100%;
+			bottom: 0;
+			height: calc(100vh - 60px);
 		}
 
 		aside.panel {
