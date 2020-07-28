@@ -2,51 +2,61 @@
 	<header id="sub-header" :class="{ loading: isLoading }">
 		<div class="top">
 			<div class="left">
-				<div class="info">
-					<div class="title">
-						<details class="unselectable-when-loading">
-							<summary class="rotate-icon">
-								<h1>
-									<span v-html="title"></span>
-									<ChevronDownIcon />
-								</h1>
-							</summary>
-							<div class="details-menu left">
-								<ul class="menu boxed">
-									<li :class="{ active: $route.params.category == null }">
-										<nuxt-link
-											:to="currentPath + '/'"
-										>All {{ $route.name == 'projects' || $route.name == 'projects-category' ? 'Projects' : 'Pages' }} ({{ blocksData.filter(block => !block.archived && !block.deleted).length }})</nuxt-link>
-									</li>
-									<li :class="{ active: $route.params.category == 'archived' }">
-										<nuxt-link
-											:to="currentPath + '/archived/'"
-										>Archived {{ $route.name == 'projects' || $route.name == 'projects-category' ? 'Projects' : 'Pages' }} ({{ blocksData.filter(block => block.archived).length }})</nuxt-link>
-									</li>
-									<li :class="{ active: $route.params.category == 'deleted' }">
-										<nuxt-link
-											:to="currentPath + '/deleted/'"
-										>Deleted {{ $route.name == 'projects' || $route.name == 'projects-category' ? 'Projects' : 'Pages' }} ({{ blocksData.filter(block => block.deleted).length }})</nuxt-link>
-									</li>
-								</ul>
-							</div>
-						</details>
-						<div
-							class="project-actions"
-							v-if="$route.name !== 'projects' && $route.name !== 'projects-category'"
-						>
-							<div class="edit-project" data-tooltip="Edit Project">
-								<InfoIcon />
-							</div>
-							<div
-								class="favorite"
-								:data-tooltip="blockData.favorite ? 'Remove from Favorites' : 'Add to Favorites'"
-								@click="toggleFavorite"
-							>
-								<StarIcon :active="blockData.favorite" />
-							</div>
-						</div>
+				<details class="unselectable-when-loading title">
+					<summary class="rotate-icon">
+						<h1>
+							<span v-html="title"></span>
+							<ChevronDownIcon />
+						</h1>
+					</summary>
+					<div class="details-menu left">
+						<ul class="menu boxed">
+							<li :class="{ active: $route.params.category == null }">
+								<nuxt-link
+									:to="currentPath + '/'"
+								>All {{ $route.name == 'projects' || $route.name == 'projects-category' ? 'Projects' : 'Pages' }} ({{ blocksData.filter(block => !block.archived && !block.deleted).length }})</nuxt-link>
+							</li>
+							<li :class="{ active: $route.params.category == 'archived' }">
+								<nuxt-link
+									:to="currentPath + '/archived/'"
+								>Archived {{ $route.name == 'projects' || $route.name == 'projects-category' ? 'Projects' : 'Pages' }} ({{ blocksData.filter(block => block.archived).length }})</nuxt-link>
+							</li>
+							<li :class="{ active: $route.params.category == 'deleted' }">
+								<nuxt-link
+									:to="currentPath + '/deleted/'"
+								>Deleted {{ $route.name == 'projects' || $route.name == 'projects-category' ? 'Projects' : 'Pages' }} ({{ blocksData.filter(block => block.deleted).length }})</nuxt-link>
+							</li>
+						</ul>
 					</div>
+				</details>
+
+				<div
+					class="project-actions"
+					v-if="$route.name !== 'projects' && $route.name !== 'projects-category'"
+				>
+					<div class="edit-project" data-tooltip="Edit Project">
+						<InfoIcon />
+					</div>
+					<div
+						class="favorite"
+						:data-tooltip="blockData.favorite ? 'Remove from Favorites' : 'Add to Favorites'"
+						@click="toggleFavorite"
+					>
+						<StarIcon :active="blockData.favorite" />
+					</div>
+				</div>
+
+				<div class="tasks-count" v-if="blockData.incomplete_tasks > 0 || blockData.complete_tasks > 0">
+					<div
+						class="left tooltip-not-contained"
+						data-tooltip="Incomplete"
+						v-if="blockData.incomplete_tasks > 0"
+					>{{ blockData.incomplete_tasks }}</div>
+					<div
+						class="done tooltip-not-contained"
+						data-tooltip="Solved"
+						v-if="blockData.complete_tasks > 0"
+					>{{ blockData.complete_tasks }}</div>
 				</div>
 			</div>
 			<div class="right">
@@ -262,35 +272,35 @@
 <style lang="scss">
 	#sub-header {
 		position: relative;
-		height: 90px;
+		height: 95px;
 		padding: 0 36px;
-		display: flex;
-		flex-direction: column;
+		display: grid;
+		grid-template-columns: 1fr;
+		grid-template-rows: 1fr 30px;
 		justify-content: space-between;
 		background-color: #fff;
 		border-bottom: 1px solid #eaedf3;
 
 		& > .top {
-			width: 100%;
-			height: 60px;
 			display: flex;
 			align-items: center;
 			justify-content: space-between;
 
 			& > .left {
-				display: flex;
+				display: grid;
+				grid-auto-flow: column;
+				align-items: center;
+				gap: 15px;
 			}
 
 			& > .right {
 				display: flex;
+				align-items: center;
 				justify-content: flex-end;
-				align-items: flex-end;
 			}
 		}
 
 		& > .bottom {
-			width: 100%;
-			height: 30px;
 			display: flex;
 			justify-content: space-between;
 			align-items: flex-start;
@@ -308,34 +318,38 @@
 			& > svg {
 				margin-left: 4px;
 				margin-top: 5px;
+
+				& > path {
+					stroke: #a4a6ac;
+				}
 			}
 		}
 
-		.title {
-			display: flex;
+		.project-actions {
+			display: grid;
+			grid-auto-flow: column;
 			align-items: center;
+			gap: 10px;
 
-			& > .project-actions {
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				margin-left: 15px;
-				margin-bottom: -4px;
+			& > * {
+				cursor: pointer;
 
 				& > * {
-					padding: 0 5px;
-					cursor: pointer;
-
-					& > * {
-						display: block;
-						width: 15px;
-					}
+					display: block;
+					width: 15px;
 				}
 			}
+		}
 
-			h1 {
-				svg > path {
-					stroke: #a4a6ac;
+		.tasks-count {
+			border-left: 1px solid #ededed;
+			padding-left: 15px;
+
+			& > * {
+				border-color: white;
+
+				&.done {
+					background-color: #78808b;
 				}
 			}
 		}
@@ -481,9 +495,9 @@
 		.tabs {
 			& > a {
 				color: #9296a0;
-				font-size: 13px;
-				line-height: 16px;
-				font-weight: 400;
+				font-weight: 600;
+				font-size: 12px;
+				line-height: 13px;
 				letter-spacing: 0.1px;
 				text-transform: uppercase;
 				display: inline-block;
