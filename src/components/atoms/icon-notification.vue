@@ -1,5 +1,5 @@
 <template>
-	<div class="notification-icon">
+	<span class="icon notification-icon">
 		<svg width="15" height="17" viewBox="0 0 15 17" fill="none" xmlns="http://www.w3.org/2000/svg">
 			<path
 				d="M12.125 5.28858C12.125 4.10838 11.6562 2.97652 10.8216 2.14199C9.98709 1.30746 8.85521 0.838623 7.675 0.838623C6.49479 0.838623 5.36291 1.30746 4.52838 2.14199C3.69384 2.97652 3.225 4.10838 3.225 5.28858C3.225 10.4802 1 11.9635 1 11.9635H14.35C14.35 11.9635 12.125 10.4802 12.125 5.28858Z"
@@ -17,7 +17,7 @@
 			/>
 		</svg>
 		<div class="badge" v-if="count > 0">{{ count }}</div>
-	</div>
+	</span>
 </template>
 <script>
 	export default {

@@ -303,7 +303,7 @@
 		& > .bottom {
 			display: flex;
 			justify-content: space-between;
-			align-items: flex-start;
+			align-items: flex-end;
 		}
 
 		h1 {
@@ -442,16 +442,19 @@
 		}
 
 		.tabs {
+			display: grid;
+			grid-auto-flow: column;
+			gap: 20px;
+			align-items: flex-end;
+			margin-bottom: -1px;
+
 			& > a {
 				color: #9296a0;
-				font-weight: 600;
 				font-size: 12px;
 				line-height: 13px;
-				letter-spacing: 0.1px;
+				font-weight: 600;
 				text-transform: uppercase;
-				display: inline-block;
 				padding-bottom: 12px;
-				margin-right: 20px;
 				border-bottom: 1px solid transparent;
 
 				&.nuxt-link-exact-active {

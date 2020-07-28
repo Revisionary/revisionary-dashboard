@@ -15,7 +15,9 @@
 					@click="toggleTab('projects')"
 					v-if="false"
 				>
-					<DashboardIcon />
+					<span class="icon">
+						<DashboardIcon />
+					</span>
 					<span class="menu-label">Projects</span>
 				</span>
 
@@ -25,7 +27,9 @@
 					:data-tooltip="$store.state.isSideBarOpen ? null : 'Tasks'"
 					@click="toggleTab('tasks')"
 				>
-					<TasksIcon />
+					<span class="icon">
+						<TasksIcon />
+					</span>
 					<span class="menu-label">Tasks (24)</span>
 				</span>
 
@@ -47,7 +51,9 @@
 					:data-tooltip="$store.state.isSideBarOpen ? null : 'Usage'"
 					@click="toggleTab('usage')"
 				>
-					<DashboardIcon />
+					<span class="icon">
+						<DashboardIcon />
+					</span>
 					<span class="menu-label">My Plan & Usage</span>
 				</span>
 			</div>
@@ -89,7 +95,9 @@
 					class="right-tooltip menu-item"
 					:data-tooltip="$store.state.isSideBarOpen ? null : 'Support'"
 				>
-					<SupportIcon />
+					<span class="icon">
+						<SupportIcon />
+					</span>
 					<span class="menu-label">Support</span>
 				</span>
 			</div>
@@ -223,12 +231,12 @@
 				display: grid;
 				justify-content: left;
 				align-items: center;
-				grid-template-rows: 1fr;
+				grid-template-columns: 1fr;
 
 				& > .menu-item {
 					display: grid;
 					grid-auto-flow: column;
-					grid-template-columns: 20px 1fr;
+					grid-template-columns: 26px 1fr;
 					justify-content: left;
 					align-items: center;
 					gap: 14px;
@@ -243,24 +251,13 @@
 
 					&.active {
 						color: #372d2d;
-						position: relative;
 
-						&::before {
-							content: "";
-							position: absolute;
-							bottom: 9px;
-							left: 24px;
-							width: 21px;
-							height: 1px;
+						.icon {
 							background-color: $color-primary;
-						}
 
-						svg > path {
-							stroke: $color-primary;
-						}
-
-						&.notifications::before {
-							width: 18px;
+							svg > path {
+								stroke: white;
+							}
 						}
 					}
 
@@ -269,11 +266,35 @@
 					}
 				}
 
+				.icon {
+					width: 26px;
+					height: 26px;
+					background-color: #f2f2f2;
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					border-radius: 50%;
+
+					& > svg {
+						max-width: 11px;
+					}
+				}
+
 				& > .jumper {
 					padding: 5px 10px;
 
 					.selectbox {
 						height: 45px;
+
+						.current {
+							color: #9da5ab;
+						}
+
+						&:hover {
+							.current {
+								color: white;
+							}
+						}
 					}
 				}
 
