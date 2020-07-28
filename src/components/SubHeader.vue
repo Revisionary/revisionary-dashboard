@@ -303,7 +303,7 @@
 		& > .bottom {
 			display: flex;
 			justify-content: space-between;
-			align-items: flex-end;
+			align-items: flex-start;
 		}
 
 		h1 {
@@ -447,6 +447,7 @@
 			gap: 20px;
 			align-items: flex-end;
 			margin-bottom: -1px;
+			height: 30px;
 
 			& > a {
 				color: #9296a0;
