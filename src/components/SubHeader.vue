@@ -398,70 +398,6 @@
 			}
 		}
 
-		.page-info {
-			color: #747781;
-			font-weight: 500;
-			font-size: 12px;
-			letter-spacing: -0.5px;
-			line-height: 17px;
-			opacity: 0.7;
-
-			& > strong {
-				color: #2d3037;
-			}
-		}
-
-		&.loading {
-			.project-actions {
-				display: none;
-			}
-
-			.thumbnail,
-			h1,
-			.description,
-			.shares,
-			.page-info {
-				text-indent: 9999px;
-				white-space: nowrap;
-				overflow: hidden;
-				background-image: linear-gradient(
-					90deg,
-					#9ea5ab,
-					rgb(230, 230, 230),
-					#9ea5ab
-				) !important;
-				background-size: 300% 100%;
-				animation: gradientBG 3s ease infinite;
-
-				border-radius: 3px;
-				width: 200px;
-				color: transparent;
-				opacity: 0.2;
-				pointer-events: none;
-
-				& > * {
-					opacity: 0;
-				}
-			}
-
-			.thumbnail {
-				width: 80px;
-				border-radius: 20px;
-			}
-
-			.description {
-				width: 500px;
-			}
-
-			.page-info {
-				width: 280px;
-			}
-
-			.unselectable-when-loading {
-				pointer-events: none;
-			}
-		}
-
 		.actions {
 			display: grid;
 			grid-auto-flow: column;
@@ -492,6 +428,19 @@
 			}
 		}
 
+		.page-info {
+			color: #747781;
+			font-weight: 500;
+			font-size: 12px;
+			letter-spacing: -0.5px;
+			line-height: 17px;
+			opacity: 0.7;
+
+			& > strong {
+				color: #2d3037;
+			}
+		}
+
 		.tabs {
 			& > a {
 				color: #9296a0;
@@ -514,6 +463,57 @@
 				&:hover {
 					border-color: $color-primary;
 				}
+			}
+		}
+
+		&.loading {
+			.project-actions {
+				display: none;
+			}
+
+			h1,
+			.page-info,
+			.tabs,
+			.tasks-count {
+				text-indent: 9999px;
+				white-space: nowrap;
+				overflow: hidden;
+				background-image: linear-gradient(
+					90deg,
+					#9ea5ab,
+					rgb(230, 230, 230),
+					#9ea5ab
+				) !important;
+				background-size: 300% 100%;
+				animation: gradientBG 3s ease infinite;
+
+				border-radius: 3px;
+				width: 200px;
+				color: transparent;
+				opacity: 0.2;
+				pointer-events: none;
+
+				& > * {
+					opacity: 0;
+				}
+			}
+
+			.tabs {
+				width: 300px;
+				transform: translateY(-5px);
+			}
+
+			.tasks-count {
+				width: 45px;
+				border-radius: 10px;
+			}
+
+			.page-info {
+				width: 280px;
+			}
+
+			.unselectable-when-loading {
+				pointer-events: none;
 			}
 		}
 	}
