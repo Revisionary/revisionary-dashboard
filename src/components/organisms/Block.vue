@@ -148,10 +148,10 @@
 									>
 										<span>
 											<div class="left">
-												<span>
+												<a :href="'/phase/' + version.ID">
 													<VersionIcon />
 													v{{index + 1}} ({{$timeSince(version.created)}} ago)
-												</span>
+												</a>
 											</div>
 											<div class="right">
 												<a
@@ -308,7 +308,10 @@
 					.then(({ status, data }) => {
 						if (status === 200) {
 							const devices = data.devices;
-							console.log("DEVICES: ", devices);
+							console.log(
+								"DEVICES on Phase #" + phaseID + ": ",
+								devices
+							);
 
 							this.devices = devices;
 							this.devicesFetching = false;
