@@ -83,10 +83,10 @@
 			console.log("MOUNTED");
 
 			this.$nextTick(() => {
-				this.resizeIframe();
+				this.calculateScale();
 			});
 
-			window.addEventListener("resize", this.resizeIframe);
+			window.addEventListener("resize", this.calculateScale);
 		},
 		watch: {
 			$route(to, from) {
@@ -95,13 +95,13 @@
 
 				if (from.params.id != to.params.id) {
 					this.$nextTick(() => {
-						this.resizeIframe();
+						this.calculateScale();
 					});
 				}
 			},
 		},
 		methods: {
-			resizeIframe() {
+			calculateScale() {
 				let page = this.$refs.site;
 				let width = page.clientWidth - 4; // -4 for the borders
 				let height = page.clientHeight - 4; // -4 for the borders

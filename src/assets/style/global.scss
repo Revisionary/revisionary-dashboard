@@ -421,7 +421,7 @@ details {
 					padding: 8px 14px;
 					cursor: pointer;
 
-					svg {
+					svg:not(.caret-right):not(.caret-down) {
 						width: 20px;
 						display: block;
 
@@ -432,6 +432,15 @@ details {
 
 					& > svg {
 						margin-right: 5px;
+					}
+
+					svg.caret-right,
+					svg.caret-down {
+						margin-left: 10px;
+
+						path {
+							stroke: initial !important;
+						}
 					}
 
 					& > a,
@@ -491,7 +500,7 @@ details {
 							color: black !important;
 						}
 
-						svg {
+						svg:not(.caret-right):not(.caret-down) {
 							path {
 								stroke: black !important;
 							}
@@ -506,7 +515,7 @@ details {
 						font-weight: 600;
 						color: $color-primary !important;
 
-						svg {
+						svg:not(.caret-right):not(.caret-down) {
 							path {
 								stroke: $color-primary !important;
 							}

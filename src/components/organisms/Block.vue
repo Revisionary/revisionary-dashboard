@@ -151,6 +151,7 @@
 												<a :href="'/phase/' + version.ID">
 													<VersionIcon />
 													v{{index + 1}} ({{$timeSince(version.created)}} ago)
+													<CaretRightIcon class="show-on-hover" />
 												</a>
 											</div>
 											<div class="right">
@@ -245,6 +246,7 @@
 	import StarIcon from "~/components/atoms/icon-star.vue";
 	import VersionIcon from "~/components/atoms/icon-version.vue";
 	import ShareIcon from "~/components/atoms/icon-share.vue";
+	import CaretRightIcon from "~/components/atoms/icon-caret-right.vue";
 	import ChevronDownIcon from "~/components/atoms/icon-chevron-down.vue";
 	import ChevronRightIcon from "~/components/atoms/icon-chevron-right.vue";
 
@@ -267,6 +269,7 @@
 			StarIcon,
 			VersionIcon,
 			ShareIcon,
+			CaretRightIcon,
 			ChevronDownIcon,
 			ChevronRightIcon,
 			ProfilePic,
@@ -420,7 +423,7 @@
 				}
 
 				.versions-list {
-					svg {
+					svg:not(.caret-right) {
 						path {
 							stroke: #78808b;
 						}

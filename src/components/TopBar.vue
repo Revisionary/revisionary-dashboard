@@ -43,7 +43,7 @@
 								<span>
 									<div class="left">
 										<span>
-											<PlusIcon />
+											<DownloadIcon style="height: 14px;" />
 											<span>Redownload This Phase</span>
 										</span>
 									</div>
@@ -54,7 +54,7 @@
 								<span>
 									<div class="left">
 										<span>
-											<PlusIcon />
+											<CircleArrowDownIcon style="height: 14px;" />
 											<span>Redownload For JS Site</span>
 										</span>
 									</div>
@@ -65,7 +65,7 @@
 								<span>
 									<div class="left">
 										<span>
-											<PlusIcon />
+											<CaptureIcon style="height: 14px;" />
 											<span>Site Capture Mode</span>
 										</span>
 									</div>
@@ -137,6 +137,7 @@
 										<span>
 											<VersionIcon />
 											v{{ index + 1 }} (2 minutes ago)
+											<CaretRightIcon class="show-on-hover" />
 										</span>
 									</div>
 									<div class="right">
@@ -328,10 +329,14 @@
 	import ShareIcon from "~/components/atoms/icon-share.vue";
 	import NotificationIcon from "~/components/atoms/icon-notification.vue";
 	import iIcon from "~/components/atoms/svg/icon-i.svg";
+	import DownloadIcon from "~/components/atoms/svg/icon-download.svg";
+	import CircleArrowDownIcon from "~/components/atoms/svg/icon-circle-arrow-down.svg";
+	import CaptureIcon from "~/components/atoms/svg/icon-capture.svg";
 
 	import ChevronDownIcon from "~/components/atoms/icon-chevron-down.vue";
 	import ChevronRightIcon from "~/components/atoms/icon-chevron-right.vue";
 	import CaretDownIcon from "~/components/atoms/icon-caret-down.vue";
+	import CaretRightIcon from "~/components/atoms/icon-caret-right.vue";
 
 	import PlusIcon from "~/components/atoms/icon-plus.vue";
 	import VersionIcon from "~/components/atoms/icon-version.vue";
@@ -358,10 +363,14 @@
 			ShareIcon,
 			NotificationIcon,
 			iIcon,
+			DownloadIcon,
+			CircleArrowDownIcon,
+			CaptureIcon,
 			ProfilePic,
 			ChevronDownIcon,
 			ChevronRightIcon,
 			CaretDownIcon,
+			CaretRightIcon,
 			PlusIcon,
 			VersionIcon,
 			WindowIcon,
