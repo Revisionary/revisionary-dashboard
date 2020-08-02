@@ -130,15 +130,15 @@
 								:class="{ active: phase.ID == deviceInfo.phase_ID }"
 							>
 								<span>
-									<div class="left">
+									<div class="left" @click="getDevices(phase.ID)">
 										<TasksStatus
 											:incompletedCount="phase.incomplete_tasks"
 											:completedCount="phase.complete_tasks"
 										/>
 										<span>
 											<VersionIcon />
-											v{{ index + 1 }} (2 minutes ago)
-											<CaretRightIcon class="show-on-hover" />
+											v{{ index + 1 }} ({{$timeSince(phase.created)}} ago)
+											<CaretDownIcon class="show-on-hover" />
 										</span>
 									</div>
 									<div class="right">
@@ -149,6 +149,36 @@
 										>&times;</a>
 									</div>
 								</span>
+								<ul
+									class="menu sub3"
+									v-if="devices.filter(device => device.phase_ID == phase.ID).length || devicesFetching == phase.ID"
+								>
+									<li v-if="devicesFetching == phase.ID">
+										<span>Loading...</span>
+									</li>
+									<li
+										v-for="device in devices.filter(device => device.phase_ID == phase.ID)"
+										:key="device.ID"
+									>
+										<span>
+											<div class="left">
+												<TasksStatus
+													:incompletedCount="device.incomplete_tasks"
+													:completedCount="device.complete_tasks"
+												/>
+												<nuxt-link :to="'/revise/' + device.ID">
+													<WindowIcon v-if="device.cat_ID == 5" />
+													<DesktopIcon v-if="device.cat_ID == 1" />
+													<LaptopIcon v-if="device.cat_ID == 2" />
+													<TabletIcon v-if="device.cat_ID == 3" />
+													<MobileIcon v-if="device.cat_ID == 4" />
+													<span>{{device.cat_name}} ({{ device.width ? device.screen_width : device.screen_width }}x{{ device.height ? device.height: device.screen_height }})</span>
+												</nuxt-link>
+											</div>
+											<div class="right"></div>
+										</span>
+									</li>
+								</ul>
 							</li>
 							<li class="add-new">
 								<span>

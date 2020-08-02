@@ -133,7 +133,7 @@
 					<div class="left" v-if="$route.name !== 'projects' && $route.name !== 'projects-category'">
 						<details>
 							<summary>
-								<div class="button radius">
+								<div class="button radius" @click="getPhases(blockData.ID)">
 									<VersionIcon />
 									v{{blockData.versions.length}}
 									<ChevronDownIcon />
@@ -141,18 +141,26 @@
 							</summary>
 							<div class="details-menu versions-list">
 								<ul class="menu boxed compact lines">
+									<li v-if="phasesFetching">
+										<span>Loading...</span>
+									</li>
 									<li
-										v-for="(version, index) in blockData.versions"
-										:key="index"
-										:class="{active : index == blockData.versions.length - 1}"
+										v-else
+										v-for="(phase, index) in phases"
+										:key="phase.ID"
+										:class="{ active: index == blockData.versions.length - 1 }"
 									>
 										<span>
-											<div class="left">
-												<a :href="'/phase/' + version.ID">
+											<div class="left" @click="getDevices(phase.ID)">
+												<TasksStatus
+													:incompletedCount="phase.incomplete_tasks"
+													:completedCount="phase.complete_tasks"
+												/>
+												<span>
 													<VersionIcon />
-													v{{index + 1}} ({{$timeSince(version.created)}} ago)
-													<CaretRightIcon class="show-on-hover" />
-												</a>
+													v{{ index + 1 }} ({{$timeSince(phase.created)}} ago)
+													<CaretDownIcon class="show-on-hover" />
+												</span>
 											</div>
 											<div class="right">
 												<a
@@ -162,8 +170,38 @@
 												>&times;</a>
 											</div>
 										</span>
+										<ul
+											class="menu sub3"
+											v-if="devices.filter(device => device.phase_ID == phase.ID).length || devicesFetching == phase.ID"
+										>
+											<li v-if="devicesFetching == phase.ID">
+												<span>Loading...</span>
+											</li>
+											<li
+												v-for="device in devices.filter(device => device.phase_ID == phase.ID)"
+												:key="device.ID"
+											>
+												<span>
+													<div class="left">
+														<TasksStatus
+															:incompletedCount="device.incomplete_tasks"
+															:completedCount="device.complete_tasks"
+														/>
+														<nuxt-link :to="'/revise/' + device.ID">
+															<WindowIcon v-if="device.cat_ID == 5" />
+															<DesktopIcon v-if="device.cat_ID == 1" />
+															<LaptopIcon v-if="device.cat_ID == 2" />
+															<TabletIcon v-if="device.cat_ID == 3" />
+															<MobileIcon v-if="device.cat_ID == 4" />
+															<span>{{device.cat_name}} ({{ device.width ? device.screen_width : device.screen_width }}x{{ device.height ? device.height: device.screen_height }})</span>
+														</nuxt-link>
+													</div>
+													<div class="right"></div>
+												</span>
+											</li>
+										</ul>
 									</li>
-									<li class="add-new" v-if="!devicesFetching">
+									<li class="add-new">
 										<span>
 											<div class="left">
 												<span>
@@ -246,7 +284,7 @@
 	import StarIcon from "~/components/atoms/icon-star.vue";
 	import VersionIcon from "~/components/atoms/icon-version.vue";
 	import ShareIcon from "~/components/atoms/icon-share.vue";
-	import CaretRightIcon from "~/components/atoms/icon-caret-right.vue";
+	import CaretDownIcon from "~/components/atoms/icon-caret-down.vue";
 	import ChevronDownIcon from "~/components/atoms/icon-chevron-down.vue";
 	import ChevronRightIcon from "~/components/atoms/icon-chevron-right.vue";
 
@@ -269,7 +307,7 @@
 			StarIcon,
 			VersionIcon,
 			ShareIcon,
-			CaretRightIcon,
+			CaretDownIcon,
 			ChevronDownIcon,
 			ChevronRightIcon,
 			ProfilePic,
@@ -283,8 +321,10 @@
 		},
 		data() {
 			return {
-				devicesFetching: false,
 				devices: [],
+				devicesFetching: false,
+				phases: [],
+				phasesFetching: false,
 			};
 		},
 		methods: {
@@ -323,6 +363,24 @@
 					.catch(function (error) {
 						console.log("ERROR: ", error);
 						this.devicesFetching = false;
+					});
+			},
+			async getPhases(pageID) {
+				this.$nuxt.$loading.start();
+				this.phasesFetching = pageID;
+				await this.$axios
+					.get("page/" + pageID + "/phases")
+					.then(({ status, data }) => {
+						if (status === 200) {
+							const phases = data.phases;
+							console.log("PHASES of Page #" + pageID, phases);
+							this.phases = phases;
+							this.phasesFetching = false;
+						}
+					})
+					.catch(function (error) {
+						console.log("ERROR: ", error);
+						this.phasesFetching = false;
 					});
 			},
 		},

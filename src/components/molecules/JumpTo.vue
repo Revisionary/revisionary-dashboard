@@ -122,7 +122,7 @@
 													</nuxt-link>
 												</div>
 												<div class="right">
-													<ChevronRightIcon />
+													<!-- <ChevronRightIcon /> -->
 												</div>
 											</span>
 										</li>
