@@ -1,6 +1,7 @@
 export const state = () => ({
 	device: {},
 	pins: [],
+	iframeScale: 1,
 	fetching: false
 });
 
@@ -127,6 +128,9 @@ export const mutations = {
 	},
 	setPins(state, pins) {
 		state.pins = pins;
+	},
+	setScale(state, scale) {
+		state.iframeScale = scale;
 	},
 	update(state, { ID, name, value }) {
 

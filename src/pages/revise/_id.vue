@@ -45,11 +45,6 @@
 					"",
 			};
 		},
-		data() {
-			return {
-				iframeScale: 1,
-			};
-		},
 		created() {
 			console.log("CREATED");
 
@@ -71,6 +66,9 @@
 				return this.device.height
 					? this.device.height
 					: this.device.screen_height;
+			},
+			iframeScale() {
+				return this.$store.state.device.iframeScale;
 			},
 			iframeWidth() {
 				return this.deviceWidth * this.iframeScale;
@@ -107,14 +105,15 @@
 				let height = page.clientHeight - 4; // -4 for the borders
 
 				// Early exit if smaller than the screen
-				this.iframeScale = Math.min(
+				let iframeScale = Math.min(
 					width / this.deviceWidth,
 					height / this.deviceHeight
 				);
 				if (width >= this.deviceWidth && height >= this.deviceHeight)
-					this.iframeScale = 1;
+					iframeScale = 1;
 
-				console.log("SCALE: ", this.iframeScale, width, height);
+				this.$store.commit("device/setScale", iframeScale);
+				console.log("SCALE: ", iframeScale, width, height);
 			},
 		},
 	};

@@ -35,7 +35,8 @@
 									</p>
 
 									<p>
-										<b>Current Frame Scale:</b> 1.0
+										<b>Current Frame Scale:</b>
+										{{ $store.state.device.iframeScale.toFixed(2) }}
 									</p>
 								</span>
 							</li>
