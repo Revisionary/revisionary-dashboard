@@ -21,6 +21,7 @@
 					v-for="(pin, index) in pins"
 					:key="pin.ID"
 					:style="'transform: translate('+pin.pin_x+'px, '+pin.pin_y+'px);'"
+					@mouseover="iframeElement(pin.pin_element_index).style.opacity = '0.2'"
 				>{{ index + 1 }}</span>
 			</div>
 		</div>
@@ -129,7 +130,8 @@
 			},
 			iframeElement(elementIndex) {
 				let iframe = document.getElementById("the-page").contentWindow;
-				return iframe.document.querySelector(
+				let doc = iframe.contentDocument || iframe.contentWindow.document;
+				return doc.querySelector(
 					"[data-revisionary-index='" + elementIndex + "']"
 				);
 			},
