@@ -15,6 +15,14 @@
 				:height="deviceHeight"
 				:style="'min-width: '+deviceWidth+'px; min-height: '+deviceHeight+'px; transform: scale(' + iframeScale + ');'"
 			></iframe>
+			<div id="pins">
+				<span
+					class="pin"
+					v-for="(pin, index) in pins"
+					:key="pin.ID"
+					:style="'transform: translate('+pin.pin_x+'px, '+pin.pin_y+'px);'"
+				>{{ index + 1 }}</span>
+			</div>
 		</div>
 	</div>
 </template>
@@ -48,10 +56,11 @@
 		created() {
 			console.log("CREATED");
 
-			// this.$nextTick(() => {
-			// 	this.$nuxt.$loading.start();
-			// });
-			// FETCH PINS HERE !!!
+			// Fetch pins
+			this.$nextTick(() => {
+				this.$nuxt.$loading.start();
+				this.$store.dispatch("device/fetchPins", this.$route.params.id);
+			});
 		},
 		computed: {
 			device() {
@@ -75,6 +84,9 @@
 			},
 			iframeHeight() {
 				return this.deviceHeight * this.iframeScale;
+			},
+			pins() {
+				return this.$store.getters["device/getPins"];
 			},
 		},
 		mounted() {
@@ -115,6 +127,13 @@
 				this.$store.commit("device/setScale", iframeScale);
 				console.log("SCALE: ", iframeScale, width, height);
 			},
+			iframeElement(elementIndex) {
+				let iframe = document.getElementById("the-page").contentWindow;
+				return iframe.document.querySelector(
+					"[data-revisionary-index='" + elementIndex + "']"
+				);
+			},
+			pinLocation(ID) {},
 		},
 	};
 </script>
@@ -130,6 +149,7 @@
 			height: 100%;
 			outline: 2px solid red;
 			background-color: white;
+			position: relative;
 
 			iframe {
 				border: none;
@@ -137,6 +157,28 @@
 
 				&.dragging {
 					pointer-events: none;
+				}
+			}
+
+			/* PINS */
+			#pins {
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				pointer-events: none;
+
+				& > .pin {
+					position: absolute;
+					pointer-events: auto;
+					cursor: pointer;
+					left: 0;
+					top: 0;
+
+					&:hover {
+						opacity: 0.5;
+					}
 				}
 			}
 		}

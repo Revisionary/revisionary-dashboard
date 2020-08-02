@@ -2,7 +2,8 @@ export const state = () => ({
 	device: {},
 	pins: [],
 	iframeScale: 1,
-	fetching: false
+	fetching: false,
+	pinsFetching: false
 });
 
 export const getters = {
@@ -20,22 +21,21 @@ export const getters = {
 export const actions = {
 
 	// Fetch Categories
-	async fetchPins({ commit }) {
+	async fetchPins({ commit }, deviceID) {
 
-		commit("setFetching", true);
-
-		await this.$axios.get('projectcategories').then(({ status, data }) => {
+		commit("setPinsFetching", true);
+		await this.$axios.get('device/' + deviceID + '/pins').then(({ status, data }) => {
 			if (status === 200) {
 
-				console.log('PROJECT CATS: ', data.categories);
-				commit('setCategories', data.categories);
-				commit("setFetching", false);
+				console.log('PINS: ', data.pins);
+				commit('setPins', data.pins);
+				commit("setPinsFetching", false);
 
 			}
 		}).catch(function (error) {
 
 			console.log('ERROR: ', error);
-			commit("setFetching", false);
+			commit("setPinsFetching", false);
 
 		});
 
@@ -169,5 +169,8 @@ export const mutations = {
 	},
 	setFetching(state, status) {
 		state.fetching = status;
+	},
+	setPinsFetching(state, status) {
+		state.pinsFetching = status;
 	}
 };
