@@ -82,13 +82,14 @@ export default {
 		// https: true,
 		// host: "dapi.revisionary.co",
 		// baseURL: "http://backend/v1/",
-		// browserBaseURL: "http://dapi.revisionary.co/v1/",
-		// port: 80,
-		prefix: "/v1/",
-		retry: { retries: 3 },
-		credentials: false,
-		proxy: true,
-		// proxyHeaders: false
+		baseURL: process.env.API_ENDPOINT || 'https://new.revisionaryapp.com/v1/',
+		//baseURL: "/v1/",
+		// browserBaseURL: "https://new.revisionaryapp.com/v1/",
+		port: 80,
+		//prefix: "/v1/",
+		//retry: { retries: 3 },
+		//proxy: true,
+		//proxyHeaders: false
 	},
 	auth: {
 		redirect: {
@@ -110,12 +111,14 @@ export default {
 			}
 		}
 	},
-	proxy: {
-		'/v1/': {
-			//target: 'http://dapi.revisionary.co/' // Local
-			target: 'https://new.revisionaryapp.com/' // Live
-		}
-	},
+	// proxy: {
+	// 	'/v1/': {
+	// 		//ws: false,
+	// 		//target: process.env.API_ENDPOINT || 'https://new.revisionaryapp.com/'
+	// 		target: 'https://dapi.revisionary.co/v1/' // Local
+	// 		//target: 'https://new.revisionaryapp.com/' // Live
+	// 	}
+	// },
 	// proxy: {
 	// 	'/v1/': 'https://dapi.revisionary.co'
 	// },
