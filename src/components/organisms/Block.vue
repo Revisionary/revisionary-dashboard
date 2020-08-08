@@ -367,6 +367,7 @@
 			},
 			async getPhases(pageID) {
 				this.$nuxt.$loading.start();
+				this.devices = [];
 				this.phasesFetching = pageID;
 				await this.$axios
 					.get("page/" + pageID + "/phases")
