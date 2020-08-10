@@ -56,7 +56,11 @@ a {
 	[open] > * > &,
 	&:hover {
 		background-color: $color-primary;
-		color: white;
+		color: white !important;
+
+		& > span {
+			color: white !important;
+		}
 
 		& > svg.caret-down path,
 		& > svg.caret-right path {
