@@ -20,8 +20,8 @@
 					class="pin"
 					v-for="(pin, index) in pins"
 					:key="pin.ID"
-					:style="'transform: translate('+pin.pin_x+'px, '+pin.pin_y+'px);'"
-					@mouseover="iframeElement(pin.pin_element_index).style.opacity = '0.2'"
+					:style="'transform: translate('+locationsByElement(pin.pin_element_index, pin.pin_x, pin.pin_y).x+'px, '+locationsByElement(pin.pin_element_index, pin.pin_x, pin.pin_y).y+'px);'"
+					@mouseover="testing(pin.pin_element_index, pin.pin_x, pin.pin_y)"
 				>{{ index + 1 }}</span>
 			</div>
 		</div>
@@ -112,6 +112,12 @@
 			},
 		},
 		methods: {
+			testing(index, x, y) {
+				console.log(
+					"locationsByElement: ",
+					this.locationsByElement(index, x, y)
+				);
+			},
 			calculateScale() {
 				let page = this.$refs.site;
 				let width = page.clientWidth - 4; // -4 for the borders
@@ -128,14 +134,127 @@
 				this.$store.commit("device/setScale", iframeScale);
 				console.log("SCALE: ", iframeScale, width, height);
 			},
-			iframeElement(elementIndex) {
+			iframeElement(element_index) {
 				let iframe = document.getElementById("the-page");
 				let doc = iframe.contentDocument || iframe.contentWindow.document;
 				return doc.querySelector(
-					"[data-revisionary-index='" + elementIndex + "']"
+					"[data-revisionary-index='" + element_index + "']"
 				);
 			},
-			pinLocation(ID) {},
+			getElementOffset(element_index, noScroll = false) {
+				var selectedElement = this.iframeElement(element_index);
+				if (selectedElement === null) return false;
+
+				//console.log('ELEMENT OFFSET: ', selectedElement.offset() );
+				//console.log('VISIBILITY: ', selectedElement.is(':visible') );
+
+				// // Check if hidden
+				// if (selectedElement.style.display == "none") {
+				// 	var pin = getPin(element_index, true);
+				// 	if (!pin) return false;
+				// 	var pin_ID = pin.pin_ID;
+
+				// 	// Check the cache first
+				// 	if (hiddenElementOffsets[element_index] === undefined) {
+				// 		// Disabled temporarily
+				// 		disableCSS(pin_ID);
+				// 		selectedElement.addClass("revisionary-show");
+
+				// 		hiddenElementOffsets[
+				// 			element_index
+				// 		] = selectedElement.offset();
+
+				// 		selectedElement.removeClass("revisionary-show");
+				// 		activateCSS(pin_ID);
+				// 	}
+
+				// 	var elementLeft =
+				// 		hiddenElementOffsets[element_index].left -
+				// 		scrollX / iframeScale;
+				// 	var elementTop =
+				// 		hiddenElementOffsets[element_index].top -
+				// 		scrollY / iframeScale;
+
+				// 	console.log(
+				// 		"Hidden element #" + element_index,
+				// 		hiddenElementOffsets[element_index]
+				// 	);
+				// 	return {
+				// 		top: elementTop,
+				// 		left: elementLeft,
+				// 	};
+				// }
+
+				// // If not on the screen
+				// else if (selectedElement.is(":hidden")) {
+				// 	// Temporary location
+				// 	var parentElement = selectedElement.parents(":visible");
+				// 	var parentOffset = noScroll
+				// 		? parentElement.offset()
+				// 		: parentElement[0].getBoundingClientRect();
+				// 	parentOffset.top =
+				// 		parentOffset.top + parentElement.height() - 25;
+				// 	parentOffset.left = parentOffset.left + 25;
+
+				// 	console.log("Invisible Element #", element_index);
+				// 	return parentOffset;
+				// }
+
+				//console.log('2. Element Offset for element #' + element_index, selectedElement.offset());
+				return noScroll
+					? selectedElement.offset()
+					: selectedElement.getBoundingClientRect();
+			},
+			locationsByElement(element_index, pin_x, pin_y, noScroll = false) {
+				// Update the location and size values
+				//updateLocationValues();
+
+				var elementOffset = this.getElementOffset(element_index, noScroll);
+				if (!elementOffset) return false;
+
+				var elementTop = elementOffset.top;
+				var elementLeft = elementOffset.left;
+				var elementWidth = elementOffset.width;
+				var elementHeight = elementOffset.height;
+
+				var page = this.$refs.site;
+				var width = page.clientWidth - 4; // -4 for the borders
+				var height = page.clientHeight - 4; // -4 for the borders
+				var iframeScale = this.$store.state.device.iframeScale;
+				var pinSize = 30; // !!!!!!
+
+				// Detect the X positive exceed
+				if (elementLeft + parseFloat(pin_x) > width / iframeScale)
+					pin_x = elementWidth;
+
+				// Detect the X negative exceed
+				if (elementLeft + parseFloat(pin_x) < 0) pin_x = 0;
+
+				// The coordinates by the element
+				var elementPinX = elementLeft + parseFloat(pin_x);
+				var elementPinY = elementTop + parseFloat(pin_y);
+
+				// With the iframe scale
+				elementPinX = parseFloat(elementPinX) * iframeScale;
+				elementPinY = parseFloat(elementPinY) * iframeScale;
+
+				// Middle of the pin
+				elementPinX = elementPinX - pinSize / 2;
+				elementPinY = elementPinY - pinSize / 2;
+
+				// // Scroll
+				// if (!noScroll) {
+
+				// 	elementPinX = elementPinX - scrollX;
+				// 	elementPinY = elementPinY - scrollY;
+
+				// }
+
+				return {
+					x: elementPinX,
+					y: elementPinY,
+				};
+			},
 		},
 	};
 </script>
