@@ -86,7 +86,7 @@ export const actions = {
 
 				// Take users to batch fetch
 				let usersToFetch = [];
-				pages.forEach(function (page) {
+				pages.forEach(page => {
 					usersToFetch.push(page.user_ID);
 
 					page.users.forEach(user => {

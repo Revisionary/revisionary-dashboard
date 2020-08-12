@@ -30,7 +30,10 @@
 					<span class="icon">
 						<TasksIcon />
 					</span>
-					<span class="menu-label">Tasks (24)</span>
+					<span class="menu-label">
+						Tasks
+						<span v-if="tasksCount > 0">({{ tasksCount }})</span>
+					</span>
 				</span>
 
 				<span
@@ -166,6 +169,22 @@
 			isSideBarOpen() {
 				return this.$store.state.isSideBarOpen;
 			},
+			tasksCount() {
+				let count = 0;
+
+				let data = this.$store.state.projects.projects;
+				if (
+					this.$route.name !== "projects" &&
+					this.$route.name !== "projects-category"
+				)
+					data = this.$store.state.pages.pages;
+
+				data.forEach((item) => {
+					count = count + item.incomplete_tasks;
+				});
+
+				return count;
+			},
 		},
 		methods: {
 			toggleTab(tabName) {
@@ -198,9 +217,6 @@
 						console.log("ERROR: ", error);
 						//if (process.browser) window.$nuxt.$root.$loading.fail();
 					});
-			},
-			changePinMode(mode = "browse") {
-				this.pinMode = mode;
 			},
 		},
 	};
