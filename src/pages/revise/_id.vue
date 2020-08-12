@@ -129,7 +129,7 @@
 				console.log("SCALE: ", iframeScale, width, height);
 			},
 			iframeElement(elementIndex) {
-				let iframe = document.getElementById("the-page").contentWindow;
+				let iframe = document.getElementById("the-page");
 				let doc = iframe.contentDocument || iframe.contentWindow.document;
 				return doc.querySelector(
 					"[data-revisionary-index='" + elementIndex + "']"
