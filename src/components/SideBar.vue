@@ -338,7 +338,7 @@
 						grid-auto-flow: column;
 						justify-content: space-between;
 						align-items: center;
-						gap: 5px;
+						gap: 12px;
 
 						svg.chevron-down {
 							path {
