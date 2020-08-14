@@ -1,8 +1,5 @@
 <template>
 	<ul class="usage">
-		<li class="title">
-			<span>{{ currentUser.level_name }} Plan Usage</span>
-		</li>
 		<li>
 			<span>
 				<span class="left">Projects</span>

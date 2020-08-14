@@ -124,7 +124,7 @@
 		</aside>
 
 		<aside class="panel usage" :class="{open: $store.state.openTab == 'usage'}">
-			<div class="panel-title">Usage</div>
+			<div class="panel-title">{{ this.$auth.user.level_name }} Plan Usage</div>
 			<div class="panel-content">
 				<Limitations v-if="$store.state.openTab == 'usage'" />
 			</div>
