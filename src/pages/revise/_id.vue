@@ -6,6 +6,7 @@
 			:style="'width: ' + iframeWidth + 'px; height: '+ iframeHeight + 'px;'"
 		>
 			<iframe
+				:class="{ loaded: loaded }"
 				:src="device.phase_url"
 				sandbox="allow-same-origin allow-scripts"
 				id="the-page"
@@ -20,8 +21,7 @@
 					class="pin"
 					v-for="(pin, index) in pins"
 					:key="pin.ID"
-					:style="'transform: translate('+locationsByElement(pin.pin_element_index, pin.pin_x, pin.pin_y).x+'px, '+locationsByElement(pin.pin_element_index, pin.pin_x, pin.pin_y).y+'px);'"
-					@mouseover="testing(pin.pin_element_index, pin.pin_x, pin.pin_y)"
+					:style="pinLocation(pin.element_index, pin.x, pin.y)"
 				>{{ index + 1 }}</span>
 			</div>
 		</div>
@@ -54,14 +54,17 @@
 					"",
 			};
 		},
+		data() {
+			return {
+				loaded: false,
+				mode: "browse",
+				pins: [],
+				pinsFetching: false,
+				pinLocations: {},
+			};
+		},
 		created() {
 			console.log("CREATED");
-
-			// Fetch pins
-			this.$nextTick(() => {
-				this.$nuxt.$loading.start();
-				this.$store.dispatch("device/fetchPins", this.$route.params.id);
-			});
 		},
 		computed: {
 			device() {
@@ -86,37 +89,46 @@
 			iframeHeight() {
 				return this.deviceHeight * this.iframeScale;
 			},
-			pins() {
-				return this.$store.getters["device/getPins"];
-			},
 		},
-		mounted() {
+		async mounted() {
 			console.log("MOUNTED");
 
-			this.$nextTick(() => {
+			await this.$nextTick(async () => {
+				// Check frame scale
 				this.calculateScale();
+
+				// Fetch pins
+				this.$nuxt.$loading.start();
+				await this.fetchPins(this.$route.params.id);
+				await console.log("Fetching done");
 			});
 
-			window.addEventListener("resize", this.calculateScale);
-		},
-		watch: {
-			$route(to, from) {
-				// console.log("FROM: ", from);
-				// console.log("TO: ", to);
+			// Check iframe page load
+			document.getElementById("the-page").onload = () => {
+				console.log("IFRAME LOADED");
+				this.loaded = true;
+				this.runInspector();
+			};
 
-				if (from.params.id != to.params.id) {
-					this.$nextTick(() => {
-						this.calculateScale();
-					});
-				}
-			},
+			// Resize check
+			await window.addEventListener("resize", this.calculateScale);
 		},
 		methods: {
-			testing(index, x, y) {
-				console.log(
-					"locationsByElement: ",
-					this.locationsByElement(index, x, y)
-				);
+			async fetchPins(deviceID) {
+				this.pinsFetching = true;
+				await this.$axios
+					.get("device/" + deviceID + "/pins")
+					.then(({ status, data }) => {
+						if (status === 200) {
+							console.log("PINS: ", data.pins);
+							this.pins = data.pins;
+							this.pinsFetching = false;
+						}
+					})
+					.catch(function (error) {
+						console.log("ERROR: ", error);
+						this.pinsFetching = false;
+					});
 			},
 			calculateScale() {
 				let page = this.$refs.site;
@@ -136,80 +148,29 @@
 			},
 			iframeElement(element_index) {
 				let iframe = document.getElementById("the-page");
+				if (!iframe) return false;
 				let doc = iframe.contentDocument || iframe.contentWindow.document;
-				return doc.querySelector(
+				let elements = doc.querySelectorAll(
 					"[data-revisionary-index='" + element_index + "']"
 				);
+				if (elements.length === 0 || elements.length > 1) {
+					return false; // !!! Go parent element...
+				}
+				return elements[0];
 			},
-			getElementOffset(element_index, noScroll = false) {
+			getElementOffset(element_index) {
 				var selectedElement = this.iframeElement(element_index);
-				if (selectedElement === null) return false;
+				if (!selectedElement) return false;
 
-				//console.log('ELEMENT OFFSET: ', selectedElement.offset() );
-				//console.log('VISIBILITY: ', selectedElement.is(':visible') );
-
-				// // Check if hidden
-				// if (selectedElement.style.display == "none") {
-				// 	var pin = getPin(element_index, true);
-				// 	if (!pin) return false;
-				// 	var pin_ID = pin.pin_ID;
-
-				// 	// Check the cache first
-				// 	if (hiddenElementOffsets[element_index] === undefined) {
-				// 		// Disabled temporarily
-				// 		disableCSS(pin_ID);
-				// 		selectedElement.addClass("revisionary-show");
-
-				// 		hiddenElementOffsets[
-				// 			element_index
-				// 		] = selectedElement.offset();
-
-				// 		selectedElement.removeClass("revisionary-show");
-				// 		activateCSS(pin_ID);
-				// 	}
-
-				// 	var elementLeft =
-				// 		hiddenElementOffsets[element_index].left -
-				// 		scrollX / iframeScale;
-				// 	var elementTop =
-				// 		hiddenElementOffsets[element_index].top -
-				// 		scrollY / iframeScale;
-
-				// 	console.log(
-				// 		"Hidden element #" + element_index,
-				// 		hiddenElementOffsets[element_index]
-				// 	);
-				// 	return {
-				// 		top: elementTop,
-				// 		left: elementLeft,
-				// 	};
-				// }
-
-				// // If not on the screen
-				// else if (selectedElement.is(":hidden")) {
-				// 	// Temporary location
-				// 	var parentElement = selectedElement.parents(":visible");
-				// 	var parentOffset = noScroll
-				// 		? parentElement.offset()
-				// 		: parentElement[0].getBoundingClientRect();
-				// 	parentOffset.top =
-				// 		parentOffset.top + parentElement.height() - 25;
-				// 	parentOffset.left = parentOffset.left + 25;
-
-				// 	console.log("Invisible Element #", element_index);
-				// 	return parentOffset;
-				// }
-
-				//console.log('2. Element Offset for element #' + element_index, selectedElement.offset());
-				return noScroll
-					? selectedElement.offset()
-					: selectedElement.getBoundingClientRect();
+				return selectedElement.getBoundingClientRect();
 			},
-			locationsByElement(element_index, pin_x, pin_y, noScroll = false) {
-				// Update the location and size values
-				//updateLocationValues();
-
-				var elementOffset = this.getElementOffset(element_index, noScroll);
+			pinLocation(element_index, pin_x, pin_y) {
+				// Check the cache first
+				var elementOffset = this.pinLocations[element_index];
+				if (typeof elementOffset === "undefined") {
+					elementOffset = this.getElementOffset(element_index);
+					console.log("NOT FOUND: ", elementOffset);
+				}
 				if (!elementOffset) return false;
 
 				var elementTop = elementOffset.top;
@@ -242,18 +203,52 @@
 				elementPinX = elementPinX - pinSize / 2;
 				elementPinY = elementPinY - pinSize / 2;
 
-				// // Scroll
-				// if (!noScroll) {
+				return (
+					"transform: translate(" +
+					elementPinX +
+					"px, " +
+					elementPinY +
+					"px);"
+				);
+			},
+			updatePinsLocations() {
+				//console.log("Locations updating...");
+				this.pins.forEach((pin) => {
+					var index = pin.element_index;
+					var elementOffsetData = this.getElementOffset(index);
+					if (!elementOffsetData) return true;
 
-				// 	elementPinX = elementPinX - scrollX;
-				// 	elementPinY = elementPinY - scrollY;
+					const elementOffset = {
+						left: elementOffsetData.left,
+						top: elementOffsetData.top,
+						width: elementOffsetData.width,
+						height: elementOffsetData.height,
+					};
 
-				// }
+					this.$set(this.pinLocations, index, elementOffset);
+				});
+				//console.log("Locations Updated: ", this.pinLocations);
+			},
+			watchElementsPositions() {
+				this.updatePinsLocations();
+				requestAnimationFrame(this.watchElementsPositions);
+			},
+			runInspector() {
+				console.log("INSPECTOR RUNNING");
 
-				return {
-					x: elementPinX,
-					y: elementPinY,
-				};
+				this.watchElementsPositions();
+			},
+		},
+		watch: {
+			$route(to, from) {
+				// console.log("FROM: ", from);
+				// console.log("TO: ", to);
+
+				if (from.params.id != to.params.id) {
+					this.$nextTick(() => {
+						this.calculateScale();
+					});
+				}
 			},
 		},
 	};
@@ -264,6 +259,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		overflow: hidden;
 
 		.iframe-container {
 			width: 100%;
@@ -275,6 +271,11 @@
 			iframe {
 				border: none;
 				transform-origin: top left;
+				opacity: 0.2;
+
+				&.loaded {
+					opacity: 1;
+				}
 
 				&.dragging {
 					pointer-events: none;
