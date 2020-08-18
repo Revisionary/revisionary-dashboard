@@ -1,11 +1,12 @@
 <template>
 	<span
-		class="status"
+		class="status right-tooltip"
 		:class="{
 			compact: compact,
 			done: incompletedCount == 0,
 			notask: incompletedCount == 0 && completedCount == 0
 		}"
+		:data-tooltip="tooltip"
 	></span>
 </template>
 
@@ -13,15 +14,25 @@
 	export default {
 		props: {
 			completedCount: {
-				required: true
+				required: true,
 			},
 			incompletedCount: {
-				required: true
+				required: true,
 			},
 			compact: {
-				default: true
-			}
-		}
+				default: true,
+			},
+		},
+		computed: {
+			tooltip() {
+				return (
+					"Incompleted: " +
+					this.incompletedCount +
+					" Completed: " +
+					this.completedCount
+				);
+			},
+		},
 	};
 </script>
 
