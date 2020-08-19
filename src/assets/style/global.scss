@@ -307,6 +307,10 @@ details {
 		left: auto;
 		padding: 0;
 
+		* {
+			user-select: none;
+		}
+
 		&.right {
 			right: 0;
 		}

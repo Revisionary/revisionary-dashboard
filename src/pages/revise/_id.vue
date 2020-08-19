@@ -35,10 +35,10 @@
 			console.log("VALIDATE");
 
 			// Fetch the device data
-			await store.dispatch("device/fetch", params.id);
+			await store.dispatch("revise/fetch", params.id);
 
 			// If device found
-			if (store.getters["device/get"].ID == params.id) return true;
+			if (store.getters["revise/get"].ID == params.id) return true;
 
 			// If device not found
 			return false;
@@ -68,7 +68,7 @@
 		},
 		computed: {
 			device() {
-				return this.$store.getters["device/get"];
+				return this.$store.getters["revise/get"];
 			},
 			deviceWidth() {
 				return this.device.width
@@ -81,7 +81,7 @@
 					: this.device.screen_height;
 			},
 			iframeScale() {
-				return this.$store.state.device.iframeScale;
+				return this.$store.state.revise.iframeScale;
 			},
 			iframeWidth() {
 				return this.deviceWidth * this.iframeScale;
@@ -142,7 +142,7 @@
 				if (width >= this.deviceWidth && height >= this.deviceHeight)
 					iframeScale = 1;
 
-				this.$store.commit("device/setScale", iframeScale);
+				this.$store.commit("revise/setScale", iframeScale);
 				console.log("SCALE: ", iframeScale, width, height);
 			},
 			iframeElement(element_index) {
@@ -180,7 +180,7 @@
 				var page = this.$refs.site;
 				var width = page.clientWidth - 4; // -4 for the borders
 				var height = page.clientHeight - 4; // -4 for the borders
-				var iframeScale = this.$store.state.device.iframeScale;
+				var iframeScale = this.$store.state.revise.iframeScale;
 				var pinSize = 30; // !!!!!!
 
 				// Detect the X positive exceed

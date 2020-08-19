@@ -194,7 +194,7 @@
 					return this.project.title;
 
 				if (this.$route.name == "revise-id") {
-					const deviceInfo = this.$store.getters["device/get"];
+					const deviceInfo = this.$store.getters["revise/get"];
 					const pageName = deviceInfo.page_name;
 					const projectName = deviceInfo.project_name;
 

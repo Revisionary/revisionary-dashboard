@@ -21,22 +21,22 @@
 									<p>
 										<b>Page URL:</b>
 										<br />
-										{{ $store.getters["device/get"].page_url }}
+										{{ deviceInfo.page_url }}
 									</p>
 
 									<p>
 										<b>Date Created:</b>
-										{{ $timeSince($store.getters["device/get"].page_created) }}
+										{{ $timeSince(deviceInfo.page_created) }}
 									</p>
 
 									<p>
 										<b>Last Updated:</b>
-										{{ $timeSince($store.getters["device/get"].page_modified) }}
+										{{ $timeSince(deviceInfo.page_modified) }}
 									</p>
 
 									<p>
 										<b>Current Frame Scale:</b>
-										{{ $store.state.device.iframeScale.toFixed(2) }}
+										{{ $store.state.revise.iframeScale.toFixed(2) }}
 									</p>
 								</span>
 							</li>
@@ -422,9 +422,6 @@
 		},
 		data() {
 			return {
-				pinMode: "browse",
-				incomplete_tasks: 0,
-				complete_tasks: 0,
 				devices: [],
 				devicesFetching: false,
 				phases: [],
@@ -445,11 +442,15 @@
 				return this.$store.state.isSideBarOpen;
 			},
 			deviceInfo() {
-				return this.$store.getters["device/get"];
+				return this.$store.state.revise.device;
+			},
+			pinMode() {
+				return this.$store.state.revise.pinMode;
 			},
 		},
 		methods: {
 			changePinMode(mode = "browse") {
+				this.$store.commit("revise/");
 				this.pinMode = mode;
 			},
 			async getDevices(phaseID) {
