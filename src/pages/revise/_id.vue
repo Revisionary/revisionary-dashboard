@@ -1,8 +1,7 @@
 <template>
-	<div id="site" ref="site">
+	<div id="site" ref="site" :class="{ loaded: loaded }">
 		<div
 			class="iframe-container"
-			:class="{ loaded: loaded }"
 			ref="iframeContainer"
 			:style="'width: ' + iframeWidth + 'px; height: '+ iframeHeight + 'px;'"
 		>
@@ -28,10 +27,19 @@
 				>{{ index + 1 }}</span>
 			</div>
 		</div>
+
+		<div class="loading" v-if="!loaded">
+			<div>
+				<WaitingIcon />
+				<p>Please wait a few seconds while we process this.</p>
+			</div>
+		</div>
 	</div>
 </template>
 
 <script>
+	import WaitingIcon from "~/components/atoms/svg/icon-waiting.svg";
+
 	export default {
 		async validate({ params, store }) {
 			console.log("VALIDATE");
@@ -44,6 +52,9 @@
 
 			// If device not found
 			return false;
+		},
+		components: {
+			WaitingIcon,
 		},
 		head() {
 			return {
@@ -271,6 +282,7 @@
 		justify-content: center;
 		align-items: center;
 		overflow: hidden;
+		position: relative;
 
 		.iframe-container {
 			width: 100%;
@@ -278,11 +290,6 @@
 			outline: 2px solid red;
 			background-color: white;
 			position: relative;
-			opacity: 0.2;
-
-			&.loaded {
-				opacity: 1;
-			}
 
 			iframe {
 				border: none;
@@ -312,6 +319,31 @@
 					&:hover {
 						opacity: 0.5;
 					}
+				}
+			}
+		}
+
+		&:not(.loaded) .iframe-container {
+			outline: none;
+		}
+
+		.loading {
+			position: absolute;
+			z-index: 5;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background-color: white;
+			display: grid;
+			place-items: center;
+			color: $color-raven;
+
+			& > div {
+				text-align: center;
+
+				& > svg {
+					margin-bottom: 30px;
 				}
 			}
 		}
