@@ -22,6 +22,7 @@
 					class="pin"
 					:type="pin.type"
 					:private="pin.private"
+					:complete="pin.complete"
 					:key="pin.ID"
 					:style="pinLocation(pin.element_index, pin.x, pin.y)"
 				>{{ index + 1 }}</span>

@@ -849,4 +849,32 @@ details {
 		background-color: $color-red;
 		border-color: transparentize($color-red, 0.4);
 	}
+
+    &[complete="1"] {
+		position: relative;
+
+    	&:before {
+	    	content: "";
+	    	position: absolute;
+			width: inherit;
+			height: inherit;
+			display: inherit;
+			justify-content: inherit;
+			align-items: inherit;
+    	    border-radius: inherit;
+    	    box-sizing: inherit;
+			transition: inherit;
+			background-color: inherit;
+			background-image: url("~assets/images/icon-complete.png");
+			background-repeat: no-repeat;
+			background-position: 50% 50%;
+			background-size: 12px;
+    	}
+
+	    &:hover:before,
+	    &.show-number:before {
+	    	opacity: 0;
+		}
+
+    }
 }
