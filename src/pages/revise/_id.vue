@@ -2,11 +2,11 @@
 	<div id="site" ref="site">
 		<div
 			class="iframe-container"
+			:class="{ loaded: loaded }"
 			ref="iframeContainer"
 			:style="'width: ' + iframeWidth + 'px; height: '+ iframeHeight + 'px;'"
 		>
 			<iframe
-				:class="{ loaded: loaded }"
 				:src="device.phase_url"
 				sandbox="allow-same-origin allow-scripts"
 				id="the-page"
@@ -100,7 +100,6 @@
 				// Fetch pins
 				this.$nuxt.$loading.start();
 				await this.fetchPins(this.$route.params.id);
-				await console.log("Fetching done");
 			});
 
 			// Check iframe page load
@@ -246,8 +245,20 @@
 
 				if (from.params.id != to.params.id) {
 					this.$nextTick(() => {
+						// Check frame scale
 						this.calculateScale();
+
+						// Fetch pins
+						this.$nuxt.$loading.start();
+						this.fetchPins(this.$route.params.id);
 					});
+
+					// Check iframe page load
+					document.getElementById("the-page").onload = () => {
+						console.log("IFRAME LOADED AGAIN");
+						this.loaded = true;
+						this.runInspector();
+					};
 				}
 			},
 		},
@@ -267,15 +278,15 @@
 			outline: 2px solid red;
 			background-color: white;
 			position: relative;
+			opacity: 0.2;
+
+			&.loaded {
+				opacity: 1;
+			}
 
 			iframe {
 				border: none;
 				transform-origin: top left;
-				opacity: 0.2;
-
-				&.loaded {
-					opacity: 1;
-				}
 
 				&.dragging {
 					pointer-events: none;
