@@ -55,7 +55,7 @@
 					@click="toggleTab('usage')"
 				>
 					<span class="icon">
-						<DashboardIcon />
+						<PlanIcon />
 					</span>
 					<span class="menu-label">My Plan & Usage</span>
 				</span>
@@ -137,6 +137,7 @@
 	import JumpTo from "~/components/molecules/JumpTo.vue";
 
 	import DashboardIcon from "~/components/atoms/icon-dashboard.vue";
+	import PlanIcon from "~/components/atoms/svg/icon-plan.svg";
 	import NotificationIcon from "~/components/atoms/icon-notification.vue";
 	import TasksIcon from "~/components/atoms/icon-tasks.vue";
 	import SupportIcon from "~/components/atoms/icon-support.vue";
@@ -151,6 +152,7 @@
 			Logo,
 			JumpTo,
 			DashboardIcon,
+			PlanIcon,
 			NotificationIcon,
 			TasksIcon,
 			SupportIcon,
