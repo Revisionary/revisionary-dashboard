@@ -450,8 +450,7 @@
 		},
 		methods: {
 			changePinMode(mode = "browse") {
-				this.$store.commit("revise/");
-				this.pinMode = mode;
+				this.$store.commit("revise/setPinMode", mode);
 			},
 			async getDevices(phaseID) {
 				this.$nuxt.$loading.start();

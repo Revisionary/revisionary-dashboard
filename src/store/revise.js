@@ -47,6 +47,9 @@ export const mutations = {
 	setScale(state, scale) {
 		state.iframeScale = scale;
 	},
+	setPinMode(state, mode) {
+		state.pinMode = mode;
+	},
 	setFetching(state, status) {
 		state.fetching = status;
 	},

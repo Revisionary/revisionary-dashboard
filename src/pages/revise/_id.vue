@@ -30,7 +30,6 @@
 
 <script>
 	export default {
-		layout: "app",
 		async validate({ params, store }) {
 			console.log("VALIDATE");
 
@@ -57,7 +56,6 @@
 		data() {
 			return {
 				loaded: false,
-				mode: "browse",
 				pins: [],
 				pinsFetching: false,
 				pinLocations: {},
