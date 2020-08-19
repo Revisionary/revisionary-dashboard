@@ -423,8 +423,8 @@
 		data() {
 			return {
 				pinMode: "browse",
-				incomplete_tasks: 42,
-				complete_tasks: 9,
+				incomplete_tasks: 0,
+				complete_tasks: 0,
 				devices: [],
 				devicesFetching: false,
 				phases: [],

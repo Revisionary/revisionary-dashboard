@@ -168,7 +168,7 @@
 				var elementOffset = this.pinLocations[element_index];
 				if (typeof elementOffset === "undefined") {
 					elementOffset = this.getElementOffset(element_index);
-					console.log("NOT FOUND: ", elementOffset);
+					//console.log("NOT FOUND: ", elementOffset);
 				}
 				if (!elementOffset) return false;
 
