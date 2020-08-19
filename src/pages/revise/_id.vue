@@ -229,7 +229,7 @@
 				//console.log("Locations Updated: ", this.pinLocations);
 			},
 			watchElementsPositions() {
-				this.updatePinsLocations();
+				if (this.loaded) this.updatePinsLocations();
 				requestAnimationFrame(this.watchElementsPositions);
 			},
 			runInspector() {
@@ -239,26 +239,22 @@
 			},
 		},
 		watch: {
-			$route(to, from) {
+			async $route(to, from) {
 				// console.log("FROM: ", from);
 				// console.log("TO: ", to);
 
 				if (from.params.id != to.params.id) {
-					this.$nextTick(() => {
+					await this.$nextTick(async () => {
 						// Check frame scale
 						this.calculateScale();
 
 						// Fetch pins
 						this.$nuxt.$loading.start();
-						this.fetchPins(this.$route.params.id);
-					});
+						await this.fetchPins(this.$route.params.id);
 
-					// Check iframe page load
-					document.getElementById("the-page").onload = () => {
-						console.log("IFRAME LOADED AGAIN");
+						// Set the loaded true
 						this.loaded = true;
-						this.runInspector();
-					};
+					});
 				}
 			},
 		},
