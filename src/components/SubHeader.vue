@@ -90,7 +90,10 @@
 					</button>
 				</div>
 
-				<div class="actions">
+				<div
+					class="actions"
+					:style="$route.name == 'projects' || $route.name == 'projects-category' ? 'margin-top: 30px;' : ''"
+				>
 					<a
 						href="#"
 						class="tooltip-not-contained bottom-tooltip"
