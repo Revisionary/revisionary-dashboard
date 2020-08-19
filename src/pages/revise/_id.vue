@@ -18,8 +18,10 @@
 			></iframe>
 			<div id="pins">
 				<span
-					class="pin"
 					v-for="(pin, index) in pins"
+					class="pin"
+					:type="pin.type"
+					:private="pin.private"
 					:key="pin.ID"
 					:style="pinLocation(pin.element_index, pin.x, pin.y)"
 				>{{ index + 1 }}</span>

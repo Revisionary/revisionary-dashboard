@@ -834,4 +834,19 @@ details {
 	background-clip: padding-box;
 	box-sizing: content-box;
 	transition: width 500ms, height 500ms, font-size 500ms, line-height 500ms, opacity 1000ms;
+
+	&[type="style"] {
+		background-color: $color-orange;
+		border-color: transparentize($color-orange, 0.4);
+	}
+
+	&[type="comment"] {
+		background-color: $color-dark-blue;
+		border-color: transparentize($color-dark-blue, 0.4);
+	}
+
+	&[private="1"] {
+		background-color: $color-red;
+		border-color: transparentize($color-red, 0.4);
+	}
 }
