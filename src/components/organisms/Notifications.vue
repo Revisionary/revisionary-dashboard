@@ -36,28 +36,28 @@
 					<span v-if="notification.type == 'new'">
 						Task #{{ notification.notification }} on
 						<span>
-							<a href="#" v-if="notification.page_name">
+							<nuxt-link :to="'/revise/' + notification.device_ID" v-if="notification.page_name">
 								<span>{{ notification.page_name }}</span>
 								<span v-if="notification.project_name">[{{ notification.project_name }}]</span>
-							</a>
+							</nuxt-link>
 						</span>
 					</span>
 					<span v-else-if="notification.type == 'complete'">
 						Task #{{ notification.notification }} on
 						<span>
-							<a href="#" v-if="notification.page_name">
+							<nuxt-link :to="'/revise/' + notification.device_ID" v-if="notification.page_name">
 								<span>{{ notification.page_name }}</span>
 								<span v-if="notification.project_name">[{{ notification.project_name }}]</span>
-							</a>
+							</nuxt-link>
 						</span>
 					</span>
 					<span v-else-if="notification.type == 'incomplete'">
 						Task #{{ notification.notification }} on
 						<span>
-							<a href="#" v-if="notification.page_name">
+							<nuxt-link :to="'/revise/' + notification.device_ID" v-if="notification.page_name">
 								<span>{{ notification.page_name }}</span>
 								<span v-if="notification.project_name">[{{ notification.project_name }}]</span>
-							</a>
+							</nuxt-link>
 						</span>
 					</span>
 					<span v-else-if="notification.type == 'comment'">
@@ -65,24 +65,24 @@
 						<div>
 							on
 							<span>
-								<a href="#" v-if="notification.page_name">
+								<nuxt-link :to="'/revise/' + notification.device_ID" v-if="notification.page_name">
 									<span>{{ notification.page_name }}</span>
 									<span v-if="notification.project_name">[{{ notification.project_name }}]</span>
-								</a>
+								</nuxt-link>
 							</span>
 						</div>
 					</span>
 					<span v-else-if="notification.type == 'share'">
 						<span v-if="notification.project_name && !notification.page_name">
-							<a href="#">{{ notification.project_name }}</a> Project
+							<nuxt-link :to="'/project/' + notification.project_ID">{{ notification.project_name }}</nuxt-link>Project
 						</span>
 						<span v-if="notification.page_name">
-							<a href="#">
+							<nuxt-link :to="'/project/' + notification.project_ID">
 								{{ notification.page_name }}
 								<span
 									v-if="notification.project_name"
 								>[{{ notification.project_name }}]</span>
-							</a> Page
+							</nuxt-link>Page
 						</span>
 					</span>
 					<span v-else-if="notification.type == 'unshare'">
