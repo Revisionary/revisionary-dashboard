@@ -287,56 +287,78 @@
 					}
 					var tag = element.tagName.toUpperCase();
 
-					// If the type is HTML content change
-					if (pin.modification_type == "html") {
-						var newHTML = html_entity_decode(pin.modification);
+					var isShowingOriginalContent =
+						element.getAttribute(
+							"revisionary-showing-content-changes"
+						) === "0";
 
-						// If edited element is a submit or reset input button
-						if (
-							tag == "INPUT" &&
-							(element.getAttribute("type") == "text" ||
-								element.getAttribute("type") == "email" ||
-								element.getAttribute("type") == "url" ||
-								element.getAttribute("type") == "tel" ||
-								element.getAttribute("type") == "submit" ||
-								element.getAttribute("type") == "reset")
-						) {
-							element.setAttribute("value", newHTML);
-							console.log(
-								"Value change for element #",
-								index,
-								tag,
-								newHTML
-							);
-						} else {
-							element.innerHTML = newHTML;
-							element.setAttribute("contenteditable", "true");
-							console.log(
-								"Content change for element #",
-								index,
-								tag,
-								newHTML
-							);
-						}
-					} else if (pin.modification_type == "image") {
-						var newSrc = pin.modification;
+					// Apply the change, if it was showing changes
+					if (!isShowingOriginalContent) {
+						// If the type is HTML content change
+						if (pin.modification_type == "html") {
+							var newHTML = html_entity_decode(pin.modification);
 
-						if (tag == "IMAGE")
-							element.setAttribute("xlink:href", newSrc);
-						else {
-							element.setAttribute("src", newSrc);
-							setTimeout(() => {
+							// If edited element is a submit or reset input button
+							if (
+								tag == "INPUT" &&
+								(element.getAttribute("type") == "text" ||
+									element.getAttribute("type") == "email" ||
+									element.getAttribute("type") == "url" ||
+									element.getAttribute("type") == "tel" ||
+									element.getAttribute("type") == "submit" ||
+									element.getAttribute("type") == "reset")
+							) {
+								element.setAttribute("value", newHTML);
+								console.log(
+									"Value change for element #",
+									index,
+									tag,
+									newHTML
+								);
+							} else {
+								element.innerHTML = newHTML;
+								console.log(
+									"Content change for element #",
+									index,
+									tag,
+									newHTML
+								);
+							}
+						} else if (pin.modification_type == "image") {
+							var newSrc = pin.modification;
+
+							if (tag == "IMAGE")
+								element.setAttribute("xlink:href", newSrc);
+							else {
+								element.setAttribute("src", newSrc);
 								element.removeAttribute("srcset");
-							}, 1000);
-						}
+								setTimeout(() => {
+									element.removeAttribute("srcset");
+								}, 1500);
+							}
 
-						console.log(
-							"Image Update for element #",
-							index,
-							tag,
-							newSrc
-						);
+							console.log(
+								"Image Update for element #",
+								index,
+								tag,
+								newSrc
+							);
+						}
 					}
+
+					// Add the contenteditable attribute to the live elements
+					if (pin.modification_type == "html")
+						element.setAttribute(
+							"contenteditable",
+							isShowingOriginalContent ? "false" : "true"
+						);
+
+					// Update info
+					element.setAttribute("revisionary-content-edited", "1");
+					element.setAttribute(
+						"revisionary-showing-content-changes",
+						isShowingOriginalContent ? "0" : "1"
+					);
 				});
 				//console.log("CONTENTS APPLIED: ");
 			},
