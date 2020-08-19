@@ -87,6 +87,9 @@
 			iframeHeight() {
 				return this.deviceHeight * this.iframeScale;
 			},
+			pinMode() {
+				return this.$store.state.revise.pinMode;
+			},
 		},
 		async mounted() {
 			console.log("MOUNTED");

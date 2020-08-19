@@ -17,12 +17,12 @@
 				<li v-if="fetching">
 					<span>Loading...</span>
 				</li>
-				<li v-else-if="!projects.filter(project => !project.archived && !project.deleted).length">
+				<li v-else-if="!listProjects.length">
 					<span>No projects added yet.</span>
 				</li>
 				<li
 					v-else
-					v-for="eachProject in projects.filter(project => !project.archived && !project.deleted)"
+					v-for="eachProject in listProjects"
 					:key="eachProject.ID"
 					:class="{
 						active : pages.filter(page => page.project_ID == eachProject.ID).length || pagesFetching == eachProject.ID,
@@ -203,10 +203,36 @@
 
 				return "Jump to...";
 			},
+			currentDevice() {
+				return this.$store.state.revise.device;
+			},
+			listProjects() {
+				let projects = this.projects.filter(
+					(project) => !project.archived && !project.deleted
+				);
+
+				if (this.$route.name === "revise-id" && projects.length) {
+					let currentProject = projects.find((project) => {
+						return project.ID == this.currentDevice.project_ID;
+					});
+
+					projects = projects.filter((project) => {
+						return project.ID !== this.currentDevice.project_ID;
+					});
+
+					projects.unshift(currentProject);
+				}
+
+				return projects;
+			},
 		},
 		methods: {
-			fetchProjects() {
-				if (!this.projects.length) this.$store.dispatch("projects/fetch");
+			async fetchProjects() {
+				if (!this.projects.length)
+					await this.$store.dispatch("projects/fetch");
+
+				if (this.$route.name === "revise-id" && this.projects.length)
+					this.bringPages(this.currentDevice.project_ID);
 			},
 			resetPages() {
 				this.pages = [];
@@ -344,7 +370,9 @@
 		}
 
 		.projectactive {
-			& > a {
+			& > a,
+			& > span,
+			& > div {
 				color: black;
 			}
 		}
