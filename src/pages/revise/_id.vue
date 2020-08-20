@@ -836,7 +836,7 @@
 		.iframe-container {
 			width: 100%;
 			height: 100%;
-			outline: 2px solid red;
+			outline: 2px solid $color-primary;
 			background-color: white;
 			position: relative;
 

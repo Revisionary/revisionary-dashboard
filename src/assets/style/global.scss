@@ -835,19 +835,24 @@ details {
 	box-sizing: content-box;
 	transition: width 500ms, height 500ms, font-size 500ms, line-height 500ms, opacity 1000ms;
 
+	&[type="live"] {
+		background-color: $color-content;
+		border-color: transparentize($color-content, 0.4);
+	}
+
 	&[type="style"] {
-		background-color: $color-orange;
-		border-color: transparentize($color-orange, 0.4);
+		background-color: $color-style;
+		border-color: transparentize($color-style, 0.4);
 	}
 
 	&[type="comment"] {
-		background-color: $color-dark-blue;
-		border-color: transparentize($color-dark-blue, 0.4);
+		background-color: $color-comment;
+		border-color: transparentize($color-comment, 0.4);
 	}
 
 	&[private="1"] {
-		background-color: $color-red;
-		border-color: transparentize($color-red, 0.4);
+		background-color: $color-private;
+		border-color: transparentize($color-private, 0.4);
 	}
 
     &[complete="1"] {

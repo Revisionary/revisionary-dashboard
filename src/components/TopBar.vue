@@ -265,7 +265,7 @@
 
 			<div class="switch pin-modes">
 				<span
-					class="bottom-tooltip tooltip-not-contained"
+					class="bottom-tooltip tooltip-not-contained browse"
 					:class="{ active: pinMode == 'browse' }"
 					data-tooltip="Browse Mode"
 					@click="changePinMode('browse')"
@@ -273,7 +273,7 @@
 					<BrowseIcon />
 				</span>
 				<span
-					class="bottom-tooltip tooltip-not-contained"
+					class="bottom-tooltip tooltip-not-contained comment"
 					:class="{ active: pinMode == 'comment' }"
 					data-tooltip="Comment Mode"
 					@click="changePinMode('comment')"
@@ -281,7 +281,7 @@
 					<CommentIcon />
 				</span>
 				<span
-					class="bottom-tooltip tooltip-not-contained"
+					class="bottom-tooltip tooltip-not-contained content"
 					:class="{ active: pinMode == 'content' }"
 					data-tooltip="Content Mode"
 					@click="changePinMode('content')"
@@ -289,7 +289,7 @@
 					<ContentIcon />
 				</span>
 				<span
-					class="bottom-tooltip tooltip-not-contained"
+					class="bottom-tooltip tooltip-not-contained style"
 					:class="{ active: pinMode == 'style' }"
 					data-tooltip="Style Mode"
 					@click="changePinMode('style')"
@@ -626,6 +626,15 @@
 		.selectbox,
 		.switch {
 			height: 30px;
+		}
+
+		.pin-modes {
+			& > .comment.active {
+				background-color: $color-green;
+			}
+			& > .style.active {
+				background-color: $color-orange;
+			}
 		}
 
 		.tasks {
