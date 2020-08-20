@@ -76,7 +76,6 @@
 		},
 		data() {
 			return {
-				loaded: false,
 				pins: [],
 				pinsFetching: false,
 				pinLocations: {},
@@ -94,6 +93,9 @@
 					this.iframe.contentDocument ||
 					this.iframe.contentWindow.document
 				);
+			},
+			loaded() {
+				return this.$store.state.revise.iframeLoaded;
 			},
 			device() {
 				return this.$store.getters["revise/get"];
@@ -140,7 +142,7 @@
 			// Check iframe page load
 			document.getElementById("the-page").onload = () => {
 				console.log("IFRAME LOADED");
-				this.loaded = true;
+				this.$store.commit("revise/setLoaded", true);
 				this.runInspector();
 			};
 
@@ -419,7 +421,7 @@
 						await this.fetchPins(this.$route.params.id);
 
 						// Set the loaded true
-						this.loaded = true;
+						this.$store.commit("revise/setLoaded", true);
 					});
 				}
 			},

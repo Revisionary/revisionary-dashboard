@@ -2,6 +2,7 @@ export const state = () => ({
 	device: {},
 	fetching: false,
 	iframeScale: 1,
+	iframeLoaded: false,
 	pinMode: "browse",
 });
 
@@ -46,6 +47,9 @@ export const mutations = {
 	},
 	setScale(state, scale) {
 		state.iframeScale = scale;
+	},
+	setLoaded(state, status) {
+		state.iframeLoaded = status;
 	},
 	setPinMode(state, mode) {
 		state.pinMode = mode;
