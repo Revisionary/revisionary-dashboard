@@ -115,6 +115,10 @@
 				// Fetch pins
 				this.$nuxt.$loading.start();
 				await this.fetchPins(this.$route.params.id);
+				setInterval(() => {
+					// !!! ONLY CHECK THE MODIFICATION OF PHASE !!!
+					this.fetchPins(this.$route.params.id);
+				}, 5000);
 			});
 
 			// Check iframe page load
