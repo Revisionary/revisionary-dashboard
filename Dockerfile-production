@@ -14,7 +14,7 @@ COPY README.md ${APP_ROOT}
 RUN npm ci
 
 # Source Files
-ADD ./src/ ${APP_ROOT}
+ADD ./src ${APP_ROOT}/src
 RUN npm run build
 
 # Environment Variables
