@@ -50,10 +50,10 @@ export default {
 	/*
 	 ** Global CSS
 	 */
-	css: ["~/assets/style/global"],
 	styleResources: {
 		scss: ['~/assets/style/variables.scss']
 	},
+	css: ["~/assets/style/global"],
 	/*
 	 ** Plugins to load before mounting the App
 	 */
@@ -71,7 +71,6 @@ export default {
 		"@nuxtjs/proxy",
 		'@nuxtjs/auth',
 		"@nuxtjs/pwa",
-		"@nuxtjs/dotenv", // Doc: https://github.com/nuxt-community/dotenv-module
 		"nuxt-svg-loader"
 	],
 	/*
