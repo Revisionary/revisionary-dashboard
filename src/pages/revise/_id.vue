@@ -30,7 +30,14 @@
 
 		<div class="loading" v-if="!loaded">
 			<div>
-				<WaitingIcon />
+				<figure>
+					<WaitingIcon />
+					<div class="wave">
+						<span class="dot"></span>
+						<span class="dot"></span>
+						<span class="dot"></span>
+					</div>
+				</figure>
 				<p>Please wait a few seconds while we process this.</p>
 			</div>
 		</div>
@@ -124,7 +131,7 @@
 			// Check iframe page load
 			document.getElementById("the-page").onload = () => {
 				console.log("IFRAME LOADED");
-				this.loaded = true;
+				//this.loaded = true;
 				this.runInspector();
 			};
 
@@ -150,6 +157,8 @@
 			},
 			calculateScale() {
 				let page = this.$refs.site;
+				if (!page) return 1;
+
 				let width = page.clientWidth - 4; // -4 for the borders
 				let height = page.clientHeight - 4; // -4 for the borders
 
@@ -896,8 +905,54 @@
 			& > div {
 				text-align: center;
 
-				& > svg {
-					margin-bottom: 30px;
+				& > figure {
+					width: 90px;
+					height: 90px;
+					position: relative;
+					margin: 0 auto 30px;
+
+					& > svg {
+						display: block;
+					}
+
+					.wave {
+						display: block;
+						width: 100%;
+						position: absolute;
+						top: 50%;
+						left: 50%;
+						transform: translate(-50%, -50%);
+
+						.dot {
+							display: inline-block;
+							width: 10px;
+							height: 10px;
+							border-radius: 50%;
+							margin-right: 3px;
+							background: white;
+							animation: wave 1.2s linear infinite;
+
+							&:nth-child(2) {
+								animation-delay: -1.1s;
+							}
+
+							&:nth-child(3) {
+								animation-delay: -0.9s;
+							}
+						}
+					}
+
+					@keyframes wave {
+						0%,
+						60%,
+						100% {
+							transform: initial;
+						}
+
+						30% {
+							transform: translateY(-15px);
+						}
+					}
 				}
 			}
 		}
