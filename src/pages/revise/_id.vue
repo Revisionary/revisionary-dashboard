@@ -263,8 +263,8 @@
 
 				stylePins.forEach((pin) => {
 					var index = pin.element_index;
-					var element = this.iframeElement(index);
-					if (!element) {
+					var changedElement = this.iframeElement(index);
+					if (!changedElement) {
 						console.log("Skipped because of no element");
 						return true;
 					}
@@ -280,15 +280,15 @@
 
 				contentPins.forEach((pin) => {
 					var index = pin.element_index;
-					var element = this.iframeElement(index);
-					if (!element) {
+					var changedElement = this.iframeElement(index);
+					if (!changedElement) {
 						console.log("Skipped because of no element");
 						return true;
 					}
-					var tag = element.tagName.toUpperCase();
+					var tag = changedElement.tagName.toUpperCase();
 
 					var isShowingOriginalContent =
-						element.getAttribute(
+						changedElement.getAttribute(
 							"revisionary-showing-content-changes"
 						) === "0";
 
@@ -301,14 +301,16 @@
 							// If edited element is a submit or reset input button
 							if (
 								tag == "INPUT" &&
-								(element.getAttribute("type") == "text" ||
-									element.getAttribute("type") == "email" ||
-									element.getAttribute("type") == "url" ||
-									element.getAttribute("type") == "tel" ||
-									element.getAttribute("type") == "submit" ||
-									element.getAttribute("type") == "reset")
+								(changedElement.getAttribute("type") == "text" ||
+									changedElement.getAttribute("type") ==
+										"email" ||
+									changedElement.getAttribute("type") == "url" ||
+									changedElement.getAttribute("type") == "tel" ||
+									changedElement.getAttribute("type") ==
+										"submit" ||
+									changedElement.getAttribute("type") == "reset")
 							) {
-								element.setAttribute("value", newHTML);
+								changedElement.setAttribute("value", newHTML);
 								console.log(
 									"Value change for element #",
 									index,
@@ -316,7 +318,7 @@
 									newHTML
 								);
 							} else {
-								element.innerHTML = newHTML;
+								changedElement.innerHTML = newHTML;
 								console.log(
 									"Content change for element #",
 									index,
@@ -328,12 +330,12 @@
 							var newSrc = pin.modification;
 
 							if (tag == "IMAGE")
-								element.setAttribute("xlink:href", newSrc);
+								changedElement.setAttribute("xlink:href", newSrc);
 							else {
-								element.setAttribute("src", newSrc);
-								element.removeAttribute("srcset");
+								changedElement.setAttribute("src", newSrc);
+								changedElement.removeAttribute("srcset");
 								setTimeout(() => {
-									element.removeAttribute("srcset");
+									changedElement.removeAttribute("srcset");
 								}, 1500);
 							}
 
@@ -348,14 +350,14 @@
 
 					// Add the contenteditable attribute to the live elements
 					if (pin.modification_type == "html")
-						element.setAttribute(
+						changedElement.setAttribute(
 							"contenteditable",
 							isShowingOriginalContent ? "false" : "true"
 						);
 
 					// Update info
-					element.setAttribute("revisionary-content-edited", "1");
-					element.setAttribute(
+					changedElement.setAttribute("revisionary-content-edited", "1");
+					changedElement.setAttribute(
 						"revisionary-showing-content-changes",
 						isShowingOriginalContent ? "0" : "1"
 					);
@@ -366,9 +368,6 @@
 				console.log("INSPECTOR RUNNING");
 
 				this.watchElementsPositions();
-
-				this.applyPinCSS();
-				this.applyPinContent();
 			},
 		},
 		watch: {
