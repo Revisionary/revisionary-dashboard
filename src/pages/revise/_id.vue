@@ -131,7 +131,7 @@
 			// Check iframe page load
 			document.getElementById("the-page").onload = () => {
 				console.log("IFRAME LOADED");
-				//this.loaded = true;
+				this.loaded = true;
 				this.runInspector();
 			};
 
