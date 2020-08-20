@@ -86,6 +86,15 @@
 			console.log("CREATED");
 		},
 		computed: {
+			iframe() {
+				return document.getElementById("the-page");
+			},
+			iframeDocument() {
+				return (
+					this.iframe.contentDocument ||
+					this.iframe.contentWindow.document
+				);
+			},
 			device() {
 				return this.$store.getters["revise/get"];
 			},
@@ -124,7 +133,7 @@
 				await this.fetchPins(this.$route.params.id);
 				setInterval(() => {
 					// !!! ONLY CHECK THE MODIFICATION OF PHASE !!!
-					this.fetchPins(this.$route.params.id);
+					//this.fetchPins(this.$route.params.id);
 				}, 5000);
 			});
 
@@ -174,30 +183,21 @@
 				console.log("SCALE: ", iframeScale, width, height);
 			},
 			iframeElement(element_index) {
-				let iframe = document.getElementById("the-page");
-				if (!iframe) return false;
-				let doc = iframe.contentDocument || iframe.contentWindow.document;
-				let elements = doc.querySelectorAll(
-					"[data-revisionary-index='" + element_index + "']"
-				);
-				if (elements.length === 0 || elements.length > 1) {
+				if (!this.iframe || !this.iframeDocument) return false;
+				let selector = Number.isInteger(element_index)
+					? "[data-revisionary-index='" + element_index + "']"
+					: element_index;
+				let elements = this.iframeDocument.querySelectorAll(selector);
+				if (elements.length === 0) {
 					return false; // !!! Go parent element...
 				}
-				return elements[0];
-			},
-			iframeElementSelector(selector) {
-				let iframe = document.getElementById("the-page");
-				if (!iframe) return false;
-				let doc = iframe.contentDocument || iframe.contentWindow.document;
-				let elements = doc.querySelectorAll(selector);
-				if (!elements) return false;
 				return elements;
 			},
 			getElementOffset(element_index) {
 				var selectedElement = this.iframeElement(element_index);
 				if (!selectedElement) return false;
 
-				return selectedElement.getBoundingClientRect();
+				return selectedElement[0].getBoundingClientRect();
 			},
 			pinLocation(element_index, pin_x, pin_y) {
 				// Check the cache first
@@ -276,7 +276,7 @@
 
 				stylePins.forEach((pin) => {
 					var index = pin.element_index;
-					var changedElement = this.iframeElement(index);
+					var changedElement = this.iframeElement(index)[0];
 					if (!changedElement) {
 						console.log("Skipped because of no element");
 						return true;
@@ -293,7 +293,7 @@
 
 				contentPins.forEach((pin) => {
 					var index = pin.element_index;
-					var changedElement = this.iframeElement(index);
+					var changedElement = this.iframeElement(index)[0];
 					if (!changedElement) {
 						console.log("Skipped because of no element");
 						return true;
@@ -381,6 +381,27 @@
 				console.log("INSPECTOR RUNNING");
 
 				this.watchElementsPositions();
+
+				// Prevent clicking somewhere
+				this.iframeDocument.addEventListener(
+					"click",
+					function (e) {
+						if (this.pinMode != "browse") {
+							console.log("MOUSE CLICKED");
+
+							e.stopPropagation();
+							e.stopImmediatePropagation();
+							e.preventDefault();
+							return false;
+						}
+					},
+					true
+				);
+
+				// Add default CSS inside of iframe
+				let style = document.createElement("style");
+				style.innerHTML = `/* Auto-height edited images */ img[data-revisionary-showing-content-changes="1"] { height: auto !important; } iframe { pointer-events: none !important; } * { -webkit-user-select: none !important; -moz-user-select: none !important; user-select: none !important; } .revisionary-show { position: absolute !important; width: 0 !important; height: 0 !important; display: inline-block !important; }`;
+				this.iframeElement("body")[0].appendChild(style);
 			},
 		},
 		watch: {
