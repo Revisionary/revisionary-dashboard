@@ -843,6 +843,7 @@
 			outline: 2px solid $color-primary;
 			background-color: white;
 			position: relative;
+			overflow: hidden;
 
 			iframe {
 				border: none;
