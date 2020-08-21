@@ -279,15 +279,61 @@
 				});
 
 				stylePins.forEach((pin) => {
-					var index = pin.element_index;
-					var changedElement = this.iframeElement(index)[0];
+					var element_index = pin.element_index;
+					var changedElement = this.iframeElement(element_index)[0];
 					if (!changedElement) {
 						console.log("Skipped because of no element");
 						return true;
 					}
-					console.log("Style change for element ", index);
+
+					var isShowingOriginalStyles =
+						changedElement.getAttribute(
+							"revisionary-showing-style-changes"
+						) === "0";
+
+					// Check if already exists for this pin
+					var styleElement = this.iframeElement(
+						"style[revisionary-pin-id='" + pin.ID + "']"
+					);
+					var style = styleElement;
+
+					// Update the CSS
+					if (!styleElement.length) {
+						style = document.createElement("style");
+						style.setAttribute("revisionary-index", element_index);
+						style.setAttribute("revisionary-pin-id", pin.ID);
+					}
+
+					style.innerHTML =
+						'[data-revisionary-index="' +
+						element_index +
+						'"]{' +
+						pin.css +
+						"}";
+
+					if (!styleElement.length)
+						this.iframeElement("body")[0].appendChild(style);
+
+					// Disable CSS if showing original style
+					if (isShowingOriginalStyles) this.disableCSS(pin.ID);
 				});
 				//console.log("CSS APPLIED: ");
+			},
+			disableCSS(pin_ID) {
+				var element = this.iframeElement(
+					'style[revisionary-pin-id="' + pin_ID + '"]'
+				);
+				if (!element.length) return false;
+
+				return element[0].setAttribute("media", "max-width: 1px;");
+			},
+			activateCSS(pin_ID) {
+				var element = this.iframeElement(
+					'style[revisionary-pin-id="' + pin_ID + '"]'
+				);
+				if (!element.length) return false;
+
+				return element[0].removeAttribute("media");
 			},
 			applyPinContent() {
 				//console.log("Applying pins contents...");
