@@ -24,6 +24,8 @@
 					:complete="pin.complete"
 					:key="pin.ID"
 					:style="pinLocation(pin.element_index, pin.x, pin.y)"
+					@mouseover="outline(pin.element_index)"
+					@mouseout="removeOutline(pin.element_index)"
 				>{{ index + 1 }}</span>
 			</div>
 		</div>
@@ -379,6 +381,14 @@
 				});
 				//console.log("CONTENTS APPLIED: ");
 			},
+			outline(element_index) {
+				let element = this.iframeElement(element_index)[0];
+				element.setAttribute("revisionary-focused", "");
+			},
+			removeOutline(element_index) {
+				let element = this.iframeElement(element_index)[0];
+				element.removeAttribute("revisionary-focused");
+			},
 			runInspector() {
 				console.log("INSPECTOR RUNNING");
 
@@ -402,7 +412,7 @@
 
 				// Add default CSS inside of iframe
 				let style = document.createElement("style");
-				style.innerHTML = `/* Auto-height edited images */ img[data-revisionary-showing-content-changes="1"] { height: auto !important; } iframe { pointer-events: none !important; } * { -webkit-user-select: none !important; -moz-user-select: none !important; user-select: none !important; } .revisionary-show { position: absolute !important; width: 0 !important; height: 0 !important; display: inline-block !important; }`;
+				style.innerHTML = `/* Auto-height edited images */ img[data-revisionary-showing-content-changes="1"] { height: auto !important; } iframe { pointer-events: none !important; } * { -webkit-user-select: none !important; -moz-user-select: none !important; user-select: none !important; } .revisionary-show { position: absolute !important; width: 0 !important; height: 0 !important; display: inline-block !important; } [revisionary-focused] { outline: 2px dashed red; }`;
 				this.iframeElement("body")[0].appendChild(style);
 			},
 		},
