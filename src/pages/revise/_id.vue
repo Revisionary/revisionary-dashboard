@@ -91,6 +91,8 @@
 				cursorActive: false,
 				currentAllowed: 27,
 				pinWindowOpen: false,
+				focused_element: null,
+				hoveringPin: false,
 			};
 		},
 		created() {
@@ -142,6 +144,12 @@
 					this.containerY +
 					"px);"
 				);
+			},
+			focused_element_index() {
+				return this.focused_element.getAttribute("data-revisionary-index");
+			},
+			focused_element_has_index() {
+				return this.focused_element_index != null;
 			},
 		},
 		async mounted() {
@@ -455,17 +463,22 @@
 				//console.log("CONTENTS APPLIED: ");
 			},
 			outline(element_index) {
+				this.hoveringPin = true;
 				let element = this.iframeElement(element_index)[0];
 				element.setAttribute("revisionary-focused", "");
 			},
 			removeOutline(element_index) {
+				this.hoveringPin = false;
 				let element = this.iframeElement(element_index)[0];
 				element.removeAttribute("revisionary-focused");
 			},
 			activateCursor() {
 				if (!this.iframeLoaded) return false;
 
-				if (!this.currentAllowed) this.cursorActive = false;
+				if (!this.currentAllowed) {
+					this.deactivateCursor();
+					return false;
+				}
 
 				console.log("Activate Cursor");
 
@@ -477,6 +490,7 @@
 					this.iframeElement("body")[0].appendChild(style);
 				}
 
+				// Activate
 				this.cursorActive = true;
 			},
 			deactivateCursor() {
@@ -484,7 +498,7 @@
 
 				console.log("Deactivate Cursor");
 
-				// Hide the original cursor
+				// Show the original cursor
 				let cursorUpdater = this.iframeElement("#revisionary-cursor");
 				if (cursorUpdater.length) {
 					Array.prototype.forEach.call(cursorUpdater, (el, i) => {
@@ -492,6 +506,7 @@
 					});
 				}
 
+				// Deactivate
 				this.cursorActive = false;
 			},
 			runInspector() {
@@ -522,39 +537,35 @@
 						// Mouse coordinates according to the iframe container
 						this.containerX = e.clientX * this.iframeScale;
 						this.containerY = e.clientY * this.iframeScale;
-						// console.log(
-						// 	"Container: ",
-						// 	this.containerX,
-						// 	this.containerY
-						// );
+						// console.log("Container: ", this.containerX, this.containerY);
 
 						return;
 
-						// Better unshift detection
-						if (
-							shifted &&
-							shiftToggle &&
-							!pinWindowOpen &&
-							currentPinType == "browse" &&
-							!e.shiftKey
-						) {
-							shiftToggle = false;
-							console.log("UNSHIFTED");
+						// // Better unshift detection
+						// if (
+						// 	shifted &&
+						// 	shiftToggle &&
+						// 	!pinWindowOpen &&
+						// 	currentPinType == "browse" &&
+						// 	!e.shiftKey
+						// ) {
+						// 	shiftToggle = false;
+						// 	console.log("UNSHIFTED");
 
-							currentPinType = currentPinTypeWas;
-							toggleCursorActive(false, true); // Force Open
+						// 	currentPinType = currentPinTypeWas;
+						// 	toggleCursorActive(false, true); // Force Open
 
-							shifted = false;
-						}
+						// 	shifted = false;
+						// }
 
 						// FOCUSING:
 						// Focused Element is the mouse pointed element as default
-						focused_element = $(e.target);
-						reFocus();
+						this.focused_element = e.target;
+						//reFocus();
 
 						// Work only if cursor is active
-						if (cursorActive && !hoveringPin) {
-							if (currentPinType == "live") {
+						if (this.cursorActive && !this.hoveringPin) {
+							if (this.pinMode == "content") {
 								// Live Pin
 
 								// REFOCUS WORKS:
