@@ -24,7 +24,7 @@ export const actions = {
 				commit("setNotificationsCount", count);
 
 			}
-		}).catch(function (error) {
+		}).catch((error) => {
 
 			console.log('ERROR: ', error);
 

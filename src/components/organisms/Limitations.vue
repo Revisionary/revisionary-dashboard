@@ -102,7 +102,7 @@
 							this.fetching = false;
 						}
 					})
-					.catch(function (error) {
+					.catch((error) => {
 						console.log("ERROR: ", error);
 						this.fetching = false;
 					});

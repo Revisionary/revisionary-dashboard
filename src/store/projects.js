@@ -35,7 +35,7 @@ export const actions = {
 				commit("setFetching", false);
 
 			}
-		}).catch(function (error) {
+		}).catch((error) => {
 
 			console.log('ERROR: ', error);
 			commit("setFetching", false);
@@ -108,7 +108,7 @@ export const actions = {
 				dispatch("users/fetch", usersToFetch, { root: true });
 
 			}
-		}).catch(function (error) {
+		}).catch((error) => {
 
 			console.log('ERROR: ', error);
 			commit("setFetching", false);
@@ -159,7 +159,7 @@ export const actions = {
 				dispatch("users/fetch", usersToFetch, { root: true });
 
 			}
-		}).catch(function (error) {
+		}).catch((error) => {
 
 			console.log('ERROR: ', error);
 			commit("setFetching", false);
@@ -183,7 +183,7 @@ export const actions = {
 				commit("setFetching", false);
 
 			}
-		}).catch(function (error) {
+		}).catch((error) => {
 
 			console.log('ERROR: ', error);
 			commit("setFetching", false);

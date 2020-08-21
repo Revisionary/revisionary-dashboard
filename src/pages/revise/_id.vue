@@ -134,7 +134,7 @@
 
 				// Fetch pins
 				this.$nuxt.$loading.start();
-				await this.fetchPins(this.$route.params.id);
+				await this.fetchPins(this.device.phase_ID, this.$route.params.id);
 				setInterval(() => {
 					// !!! ONLY CHECK THE MODIFICATION OF PHASE !!!
 					//this.fetchPins(this.$route.params.id);
@@ -152,10 +152,10 @@
 			await window.addEventListener("resize", this.calculateScale);
 		},
 		methods: {
-			async fetchPins(deviceID) {
+			async fetchPins(phaseID, deviceID) {
 				this.pinsFetching = true;
 				await this.$axios
-					.get("device/" + deviceID + "/pins")
+					.get("phase/" + phaseID + "/pins/" + deviceID)
 					.then(({ status, data }) => {
 						if (status === 200) {
 							console.log("PINS: ", data.pins);
@@ -163,7 +163,7 @@
 							this.pinsFetching = false;
 						}
 					})
-					.catch(function (error) {
+					.catch((error) => {
 						console.log("ERROR: ", error);
 						this.pinsFetching = false;
 					});
@@ -319,6 +319,14 @@
 				});
 				//console.log("CSS APPLIED: ");
 			},
+			deleteAllCSS() {
+				var elements = this.iframeElement("style[revisionary-pin-id]");
+				if (!elements.length) return false;
+
+				Array.prototype.forEach.call(elements, (el, i) => {
+					el.parentNode.removeChild(el);
+				});
+			},
 			disableCSS(pin_ID) {
 				var element = this.iframeElement(
 					'style[revisionary-pin-id="' + pin_ID + '"]'
@@ -443,7 +451,7 @@
 				// Prevent clicking somewhere
 				this.iframeDocument.addEventListener(
 					"click",
-					function (e) {
+					(e) => {
 						if (this.pinMode != "browse") {
 							console.log("MOUSE CLICKED");
 
@@ -472,9 +480,15 @@
 						// Check frame scale
 						this.calculateScale();
 
+						// Reset current device CSS
+						await this.deleteAllCSS();
+
 						// Fetch pins
 						this.$nuxt.$loading.start();
-						await this.fetchPins(this.$route.params.id);
+						await this.fetchPins(
+							this.device.phase_ID,
+							this.$route.params.id
+						);
 
 						// Set the loaded true
 						this.$store.commit("revise/setLoaded", true);

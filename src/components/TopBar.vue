@@ -466,7 +466,7 @@
 							this.devicesFetching = false;
 						}
 					})
-					.catch(function (error) {
+					.catch((error) => {
 						console.log("ERROR: ", error);
 						this.devicesFetching = false;
 					});
@@ -485,7 +485,7 @@
 							this.phasesFetching = false;
 						}
 					})
-					.catch(function (error) {
+					.catch((error) => {
 						console.log("ERROR: ", error);
 						this.phasesFetching = false;
 					});

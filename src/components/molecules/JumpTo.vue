@@ -264,7 +264,7 @@
 							this.pagesFetching = false;
 						}
 					})
-					.catch(function (error) {
+					.catch((error) => {
 						console.log("ERROR: ", error);
 						this.pagesFetching = false;
 					});
@@ -291,7 +291,7 @@
 							this.phasesFetching = false;
 						}
 					})
-					.catch(function (error) {
+					.catch((error) => {
 						console.log("ERROR: ", error);
 						this.phasesFetching = false;
 					});
@@ -319,7 +319,7 @@
 							this.devicesFetching = false;
 						}
 					})
-					.catch(function (error) {
+					.catch((error) => {
 						console.log("ERROR: ", error);
 						this.devicesFetching = false;
 					});
