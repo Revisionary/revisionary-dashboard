@@ -1,5 +1,4 @@
-// import path from 'path'
-// import fs from 'fs'
+const webpack = require("webpack");
 
 export default {
 	srcDir: "src/",
@@ -125,6 +124,12 @@ export default {
 	 ** Build configuration
 	 */
 	build: {
+		vendor: ["jQuery"],
+		plugins: [
+			new webpack.ProvidePlugin({
+				$: "jquery"
+			})
+		],
 		/*
 		 ** You can extend webpack config here
 		 */

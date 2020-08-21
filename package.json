@@ -15,6 +15,7 @@
     "@nuxtjs/axios": "^5.12.1",
     "@nuxtjs/proxy": "^2.0.1",
     "@nuxtjs/pwa": "^3.0.1",
+    "jquery": "^3.5.1",
     "nuxt": "^2.14.3",
     "nuxt-svg-loader": "^1.2.0",
     "vuedraggable": "^2.24.1"
