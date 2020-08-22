@@ -26,8 +26,8 @@
 					:id="pin.ID"
 					:index="pin.element_index"
 					:style="pinLocation(pin.element_index, pin.x, pin.y)"
-					@mouseover="outline(pin.element_index)"
-					@mouseout="removeOutline(pin.element_index)"
+					@mouseover="pinHover(pin)"
+					@mouseout="pinUnHover(pin)"
 				>{{ index + 1 }}</span>
 			</div>
 			<span
@@ -36,7 +36,7 @@
 				:private="currentPinPrivate"
 				:class="{ active: cursorActive, existing: cursorExisting }"
 				:style="cursorLocation"
-			>{{ Pins.length + 1 }}</span>
+			>{{ pinNumber }}</span>
 		</div>
 
 		<div class="loading" v-if="!iframeLoaded">
@@ -166,6 +166,7 @@
 				currentPinPrivate: 0,
 				currentPinTypeWas: 0,
 				currentPinPrivateWas: 0,
+				currentPinNumber: 1,
 				shifted: false,
 				shiftToggle: false,
 
@@ -309,6 +310,19 @@
 			pinMode() {
 				return this.$store.state.revise.currentPinType;
 			},
+
+			// currentPinNumber() {
+			// 	return this.Pins.length + 1;
+			// },
+
+			pinNumber: {
+				get: function () {
+					return this.currentPinNumber;
+				},
+				set: function (newValue) {
+					this.currentPinNumber = newValue;
+				},
+			},
 		},
 		async mounted() {
 			console.log("MOUNTED");
@@ -334,6 +348,7 @@
 							console.log("PINS: ", data.pins);
 							this.Pins = data.pins;
 							this.pinsFetching = false;
+							this.currentPinNumber = this.Pins.length + 1;
 						}
 					})
 					.catch((error) => {
@@ -420,14 +435,24 @@
 
 							// From last option
 							if (clientPinType != null && clientPinPrivate != null) {
-								this.currentPinType = clientPinType;
-								this.currentPinPrivate = clientPinPrivate;
+								//this.currentPinType = clientPinType;
+								this.$store.commit(
+									"revise/setCurrentPinType",
+									clientPinType
+								);
+								this.$store.commit(
+									"revise/setCurrentPinPrivate",
+									clientPinPrivate
+								);
 
 								if (
 									this.page_type == "url" &&
 									clientPinType == "comment"
 								)
-									this.currentPinType = "live";
+									this.$store.commit(
+										"revise/setCurrentPinType",
+										"live"
+									);
 							}
 
 							// From URL
@@ -447,8 +472,12 @@
 							}
 
 							// Update the pin type
-							this.switchPinType(
-								this.currentPinType,
+							this.$store.commit(
+								"revise/setCurrentPinType",
+								this.currentPinType
+							);
+							this.$store.commit(
+								"revise/setCurrentPinPrivate",
 								this.currentPinPrivate
 							);
 
@@ -556,7 +585,6 @@
 										) {
 											// Re-focus to the parent edited element
 											this.focused_element = this.focused_element_edited_parents.first();
-											reFocus();
 
 											//console.log('REFOCUS - Already edited closest parent: ' + focused_element_tagname + '.' + focused_element.attr('class'));
 										}
@@ -770,60 +798,69 @@
 									if (this.focused_element_has_live_pin) {
 										// Point to the pin
 										$(
-											'#pins > .pin[data-revisionary-index="' +
+											'#pins > .pin[index="' +
 												this.focused_element_index +
 												'"]'
 										).css("opacity", "1");
 										$(
-											'#pins > .pin:not([data-revisionary-index="' +
+											'#pins > .pin:not([index="' +
 												this.focused_element_index +
 												'"])'
 										).css("opacity", "0.2");
 
+										// Update the cursor
+										this.currentPinNumber = this.focused_element_live_pin.text();
+
+										// Update cursor type
 										this.switchCursorType(
 											this.focused_element_live_pin.attr(
-												"data-pin-type"
+												"type"
 											),
 											this.focused_element_live_pin.attr(
-												"data-pin-private"
+												"private"
 											),
 											true
 										);
 										this.outline(
 											this.focused_element,
 											this.focused_element_live_pin.attr(
-												"data-pin-private"
+												"type"
 											),
 											this.focused_element_live_pin.attr(
-												"data-pin-type"
+												"private"
 											)
 										);
 										//console.log('This element already has a live pin.');
 									} else {
 										// UPDATE CURSOR ACCORDING TO PIN MODES (currentPinType: live | style | browse)
 
+										// Re-update the cursor number
+										this.currentPinNumber =
+											this.Pins.length + 1;
+
 										// Editable check
 										if (this.currentPinType == "live") {
 											this.switchCursorType(
-												this.focused_element_editable
-													? "live"
-													: "style"
+												"live",
+												0,
+												!this.focused_element_editable
 											);
-											if (this.focused_element_has_index)
+											if (
+												this.focused_element_has_index &&
+												this.focused_element_editable
+											)
 												this.outline(
 													this.focused_element,
-													this.currentPinPrivate,
-													this.focused_element_editable
-														? "live"
-														: "style"
+													"live",
+													this.currentPinPrivate
 												);
 										} else if (this.currentPinType == "style") {
 											this.switchCursorType("style");
 											if (this.focused_element_has_index)
 												this.outline(
 													this.focused_element,
-													this.currentPinPrivate,
-													"style"
+													"style",
+													this.currentPinPrivate
 												);
 										} else if (
 											this.currentPinType == "comment"
@@ -1038,14 +1075,14 @@
 					// SITE STYLES
 					this.iframeElement("body").append(
 						' \
-																								<style> \
-																									/* Auto-height edited images */ \
-																									img[data-revisionary-showing-content-changes="1"] { height: auto !important; } \
-																									iframe { pointer-events: none !important; } \
-																									* { -webkit-user-select: none !important; -moz-user-select: none !important; user-select: none !important; } \
-																									.revisionary-show { position: absolute !important; width: 0 !important; height: 0 !important; display: inline-block !important; } \
-																								</style> \
-																								'
+																							<style> \
+																								/* Auto-height edited images */ \
+																								img[data-revisionary-showing-content-changes="1"] { height: auto !important; } \
+																								iframe { pointer-events: none !important; } \
+																								* { -webkit-user-select: none !important; -moz-user-select: none !important; user-select: none !important; } \
+																								.revisionary-show { position: absolute !important; width: 0 !important; height: 0 !important; display: inline-block !important; } \
+																							</style> \
+																							'
 					);
 
 					// If new downloaded site, ask whether or not it's showing correctly
@@ -1385,20 +1422,19 @@
 
 			// OUTLINES:
 			// Color the element
-			outline(element, private_pin, pin_type = "live") {
+			outline(element, pin_type = "live", private_pin = 0) {
 				if (!this.iframeLoaded) return false;
+				if ($.isNumeric(element)) element = this.iframeElement(element);
+				if (!element.length) return false;
 
-				var block = pin_type == "live" ? false : true;
+				// Default
+				var elementColor = "red";
+				if (pin_type == "live") elementColor = "#74B65C";
+				if (pin_type == "style") elementColor = "#F39754";
+				if (pin_type == "comment") elementColor = "#0363F3";
+				if (private_pin == 1) elementColor = "#D16262";
 
-				var elementColor = private_pin == 1 ? "#FC0FB3" : "#7ED321";
-				if (block) elementColor = private_pin == 1 ? "#6b95f3" : "#1DBCC9";
-
-				if (element != null)
-					element.css(
-						"outline",
-						"2px dashed " + elementColor,
-						"important"
-					);
+				element.css("outline", "2px dashed " + elementColor, "important");
 			},
 
 			// Color the element
@@ -1410,8 +1446,6 @@
 					"outline",
 					""
 				);
-
-				return true;
 			},
 
 			// CURSOR:
@@ -1438,8 +1472,9 @@
 
 				// Change the cursor color
 				this.switchCursorType(
-					pinType == "live" ? "style" : pinType,
-					this.currentPinPrivate
+					pinType,
+					this.currentPinPrivate,
+					pinType == "live"
 				);
 
 				// URL update
@@ -1601,7 +1636,8 @@
 				// If not on the screen
 				else if (selectedElement.is(":hidden")) {
 					// Temporary location
-					var parentElement = selectedElement.parents(":visible");
+					var parentElement = selectedElement.parents(":visible").first();
+					if (!parentElement.length) return false;
 					var parentOffset = noScroll
 						? parentElement.offset()
 						: parentElement[0].getBoundingClientRect();
@@ -1892,6 +1928,34 @@
 				} else {
 					return $("#pins").children(selector);
 				}
+			},
+
+			// PIN ACTIONS
+			pinHover(pin) {
+				this.hoveringPin = true;
+
+				// Reset the pin opacity
+				if (!this.pinWindowOpen) $("#pins > .pin").css("opacity", "");
+
+				// Hide the cursor
+				this.cursorActive = false;
+
+				// Clear all outlines
+				this.removeOutline();
+
+				// Outline the element
+				if (pin.type == "live" || pin.type == "style")
+					this.outline(pin.element_index, pin.type, pin.private);
+			},
+			pinUnHover() {
+				this.hoveringPin = false;
+				this.scrollOnPin = false;
+
+				// Clear all outlines
+				this.removeOutline();
+
+				// Show the cursor
+				if (!this.pinDragging) this.cursorActive = true;
 			},
 		},
 		watch: {

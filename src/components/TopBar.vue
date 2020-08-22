@@ -281,7 +281,7 @@
 					<CommentIcon />
 				</span>
 				<span
-					class="bottom-tooltip tooltip-not-contained content"
+					class="bottom-tooltip tooltip-not-contained live"
 					:class="{ active: currentPinType == 'live' }"
 					data-tooltip="Content Mode"
 					@click="changePinMode('live')"
@@ -630,10 +630,13 @@
 
 		.pin-modes {
 			& > .comment.active {
-				background-color: $color-green;
+				background-color: $color-comment;
+			}
+			& > .live.active {
+				background-color: $color-content;
 			}
 			& > .style.active {
-				background-color: $color-orange;
+				background-color: $color-style;
 			}
 		}
 
