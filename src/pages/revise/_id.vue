@@ -19,12 +19,12 @@
 				<span
 					v-for="(pin, index) in Pins"
 					class="pin"
-					:data-pin-type="pin.type"
-					:data-pin-private="pin.private"
-					:data-pin-complete="pin.complete"
+					:type="pin.type"
+					:private="pin.private"
+					:complete="pin.complete"
 					:key="pin.ID"
-					:data-pin-id="pin.ID"
-					:data-revisionary-index="pin.element_index"
+					:id="pin.ID"
+					:index="pin.element_index"
 					:style="pinLocation(pin.element_index, pin.x, pin.y)"
 					@mouseover="outline(pin.element_index)"
 					@mouseout="removeOutline(pin.element_index)"
@@ -32,7 +32,9 @@
 			</div>
 			<span
 				class="pin cursor"
-				:class="{ active: cursorActive }"
+				:type="currentCursorType"
+				:private="currentPinPrivate"
+				:class="{ active: cursorActive, existing: cursorExisting }"
 				:style="cursorLocation"
 			>{{ Pins.length + 1 }}</span>
 		</div>
@@ -120,6 +122,7 @@
 				],
 
 				// Focused Element
+				iframe: null,
 				focused_element: null,
 
 				// Pins
@@ -157,6 +160,7 @@
 				currentCursorType: "style",
 				cursorActive: false,
 				cursorWasActive: false,
+				cursorExisting: false,
 				currentPinType: "live",
 				currentPinPrivate: 0,
 				currentPinTypeWas: 0,
@@ -197,9 +201,6 @@
 			iframeSelector() {
 				return $("#the-page");
 			},
-			iframe() {
-				return this.iframeSelector.contents();
-			},
 			childWindow() {
 				return this.iframeSelector.prop("contentWindow");
 			},
@@ -208,6 +209,9 @@
 			},
 			iframeLoaded() {
 				return this.$store.state.revise.iframeLoaded;
+			},
+			user_ID() {
+				return this.$auth.user.ID;
 			},
 
 			// DEVICE SIZES
@@ -283,7 +287,7 @@
 			},
 			focused_element_live_pin() {
 				return $(
-					'#pins > .pin[data-pin-type="live"][data-revisionary-index="' +
+					'#pins > .pin[type="live"][index="' +
 						this.focused_element_index +
 						'"]'
 				);
@@ -362,10 +366,10 @@
 
 				this.watchElementsPositions();
 
-				// WHEN IFRAME DOCUMENT READY !!! ?
-				this.iframe.ready(function () {
-					console.log("IFRAME DOCUMENT READY!");
-				});
+				// // WHEN IFRAME DOCUMENT READY !!! ?
+				// this.iframe.ready(function () {
+				// 	console.log("IFRAME DOCUMENT READY!");
+				// });
 
 				// WHEN IFRAME HAS LOADED
 				this.iframeSelector.on("load", () => {
@@ -377,6 +381,7 @@
 					// If we have access on this iframe (CORS Check)
 					if (canAccessIFrame(this.iframeSelector)) {
 						// Iframe element
+						this.iframe = this.iframeSelector.contents();
 						this.$store.commit("revise/setLoaded", true);
 
 						// After coming back to the real page
@@ -406,12 +411,11 @@
 							// UPDATE INITIAL CURSOR TYPE
 
 							// Check for the client settings
-							var user_ID = this.$auth.user.ID;
 							var clientPinType = get_client_cache(
-								user_ID + "_currentPinType"
+								this.user_ID + "_currentPinType"
 							);
 							var clientPinPrivate = get_client_cache(
-								user_ID + "_currentPinPrivate"
+								this.user_ID + "_currentPinPrivate"
 							);
 
 							// From last option
@@ -455,12 +459,8 @@
 								this.device.phase_ID,
 								this.$route.params.id
 							);
-							openPin = null;
+							this.openPin = null;
 						}
-
-						// Iframe Document and Window
-						childWindow = $(this).prop("contentWindow");
-						iframeDocument = childWindow.document;
 
 						// IFRAME EVENTS:
 						var doChangeOnPage = {};
@@ -498,13 +498,13 @@
 									shifted &&
 									shiftToggle &&
 									!pinWindowOpen &&
-									currentPinType == "browse" &&
+									this.currentPinType == "browse" &&
 									!e.shiftKey
 								) {
 									shiftToggle = false;
 									console.log("UNSHIFTED");
 
-									currentPinType = currentPinTypeWas;
+									this.currentPinType = this.currentPinTypeWas;
 									toggleCursorActive(false, true); // Force Open
 
 									shifted = false;
@@ -517,7 +517,7 @@
 
 								// Work only if cursor is active
 								if (cursorActive && !hoveringPin) {
-									if (currentPinType == "live") {
+									if (this.currentPinType == "live") {
 										// Live Pin
 
 										// REFOCUS WORKS:
@@ -724,21 +724,21 @@
 										}
 
 										// Clean Other Outlines
-										removeOutline();
+										this.removeOutline();
 
 										// Reset the pin opacity
 										$("#pins > pin").css("opacity", "");
 									} // Live Pin
-									else if (currentPinType == "style") {
+									else if (this.currentPinType == "style") {
 										// Style Pin
 
 										// Clean Other Outlines
-										removeOutline();
+										this.removeOutline();
 
 										// Reset the pin opacity
 										$("#pins > pin").css("opacity", "");
 									} // Style Pin
-									else if (currentPinType == "comment") {
+									else if (this.currentPinType == "comment") {
 										// Comment Pin
 										// Nothing to do...
 									} // Comment Pin
@@ -798,35 +798,32 @@
 									} else {
 										// UPDATE CURSOR ACCORDING TO PIN MODES (currentPinType: live | style | browse)
 
-										// Re-update the cursor number
-										currentPinNumber =
-											$("#pins > pin").length + 1;
-										changePinNumber(currentPinNumber);
-
 										// Editable check
-										if (currentPinType == "live") {
+										if (this.currentPinType == "live") {
 											switchCursorType(
-												focused_element_editable
+												this.focused_element_editable
 													? "live"
 													: "style"
 											);
-											if (focused_element_has_index)
+											if (this.focused_element_has_index)
 												outline(
-													focused_element,
-													currentPinPrivate,
-													focused_element_editable
+													this.focused_element,
+													this.currentPinPrivate,
+													this.focused_element_editable
 														? "live"
 														: "style"
 												);
-										} else if (currentPinType == "style") {
+										} else if (this.currentPinType == "style") {
 											switchCursorType("style");
-											if (focused_element_has_index)
+											if (this.focused_element_has_index)
 												outline(
-													focused_element,
-													currentPinPrivate,
+													this.focused_element,
+													this.currentPinPrivate,
 													"style"
 												);
-										} else if (currentPinType == "comment") {
+										} else if (
+											this.currentPinType == "comment"
+										) {
 											switchCursorType("comment");
 										}
 									}
@@ -882,22 +879,22 @@
 										// Add a pin and open a pin window
 										if (!mouseDownOnContentEdit)
 											putPin(
-												focused_element_index,
+												this.focused_element_index,
 												e.pageX,
 												e.pageY,
-												currentCursorType,
-												currentPinPrivate
+												this.currentCursorType,
+												this.currentPinPrivate
 											);
 									}
 								} else {
 									// Close the pin window if open and not cursor active and not content editable
 									if (
-										pinWindowOpen &&
-										!iframeElement(focused_element_index).is(
-											"[contenteditable]"
-										) &&
-										!shifted &&
-										!selectionFromContentEditor
+										this.pinWindowOpen &&
+										!this.iframeElement(
+											this.focused_element_index
+										).is("[contenteditable]") &&
+										!this.shifted &&
+										!this.selectionFromContentEditor
 									)
 										closePinWindow(true);
 								}
@@ -943,19 +940,19 @@
 						this.iframeDocument.addEventListener(
 							"keydown",
 							function (e) {
-								if (e.shiftKey) shifted = true;
+								if (e.shiftKey) this.shifted = true;
 
 								if (
-									shifted &&
-									!pinWindowOpen &&
-									currentPinType != "browse"
+									this.shifted &&
+									!this.pinWindowOpen &&
+									this.currentPinType != "browse"
 								) {
-									shiftToggle = true;
+									this.shiftToggle = true;
 									console.log("SHIFTED");
 
-									currentPinTypeWas = currentPinType;
+									this.currentPinTypeWas = this.currentPinType;
 									toggleCursorActive(true); // Force close
-									currentPinType = "browse";
+									this.currentPinType = "browse";
 								}
 							},
 							true
@@ -966,42 +963,42 @@
 							"keyup",
 							function (e) {
 								if (
-									shifted &&
-									shiftToggle &&
-									!pinWindowOpen &&
-									currentPinType == "browse"
+									this.shifted &&
+									this.shiftToggle &&
+									!this.pinWindowOpen &&
+									this.currentPinType == "browse"
 								) {
-									shiftToggle = false;
+									this.shiftToggle = false;
 									console.log("UNSHIFTED");
 
-									currentPinType = currentPinTypeWas;
+									this.currentPinType = this.currentPinTypeWas;
 									toggleCursorActive(false, true); // Force Open
 								}
 
-								shifted = false;
+								this.shifted = false;
 							},
 							true
 						);
 
 						// REDIRECT DETECTION
 						$(this.iframeDocument).ready(function () {
-							$(childWindow).on("beforeunload", function () {
+							$(this.childWindow).on("beforeunload", function () {
 								// Prevent leaving the page
 								if (processExists) return true;
 
 								console.log("REDIRECTING DETECTED...");
-								iframeLoaded = false;
+								this.$store.commit("revise/setLoaded", false);
 
 								// If pin window open
-								if (pinWindowOpen) {
+								if (this.pinWindowOpen) {
 									// Register the open pin
-									openPin = pinWindow().attr("data-pin-id");
+									this.openPin = pinWindow().attr("data-pin-id");
 									console.log(
 										"AFTER REDIRECT, OPEN PIN ID #" + openPin
 									);
 
 									// Close pin window
-									closePinWindow(false);
+									this.closePinWindow(false);
 								}
 
 								// Stop Autorefresh
@@ -1026,7 +1023,7 @@
 						//window.frames["the-page"].location = page_URL;
 						$("#the-page").attr("src", page_URL);
 						this.page_redirected = true;
-						iframeLoaded = false;
+						this.$store.commit("revise/setLoaded", false);
 
 						return;
 					}
@@ -1034,16 +1031,16 @@
 					console.log("Load Complete", canAccessIFrame($(this)));
 
 					// SITE STYLES
-					iframeElement("body").append(
+					this.iframeElement("body").append(
 						' \
-																																																																																																		<style> \
-																																																																																																			/* Auto-height edited images */ \
-																																																																																																			img[data-revisionary-showing-content-changes="1"] { height: auto !important; } \
-																																																																																																			iframe { pointer-events: none !important; } \
-																																																																																																			* { -webkit-user-select: none !important; -moz-user-select: none !important; user-select: none !important; } \
-																																																																																																			.revisionary-show { position: absolute !important; width: 0 !important; height: 0 !important; display: inline-block !important; } \
-																																																																																																		</style> \
-																																																																																																		'
+																<style> \
+																	/* Auto-height edited images */ \
+																	img[data-revisionary-showing-content-changes="1"] { height: auto !important; } \
+																	iframe { pointer-events: none !important; } \
+																	* { -webkit-user-select: none !important; -moz-user-select: none !important; user-select: none !important; } \
+																	.revisionary-show { position: absolute !important; width: 0 !important; height: 0 !important; display: inline-block !important; } \
+																</style> \
+																'
 					);
 
 					// If new downloaded site, ask whether or not it's showing correctly
@@ -1152,14 +1149,14 @@
 						.on(
 							"focus",
 							'[contenteditable="true"][data-revisionary-index]',
-							function (e) {
+							(e) => {
 								// When clicked an editable text
 
 								// Remove all the other focus outlines
-								iframeElement(".revisionary-focused").removeClass(
-									"revisionary-focused"
-								);
-								removeOutline();
+								this.iframeElement(
+									".revisionary-focused"
+								).removeClass("revisionary-focused");
+								this.removeOutline();
 
 								// Outline this focused element
 								outline(
@@ -1189,10 +1186,10 @@
 							function (e) {
 								// When clicked an editable text
 
-								iframeElement(".revisionary-focused").removeClass(
-									"revisionary-focused"
-								);
-								removeOutline();
+								this.iframeElement(
+									".revisionary-focused"
+								).removeClass("revisionary-focused");
+								this.removeOutline();
 							}
 						)
 						.on("paste", "[contenteditable]", function (e) {
@@ -1223,7 +1220,7 @@
 
 							// Record the clicked link
 							if (
-								currentPinType == "browse" &&
+								this.currentPinType == "browse" &&
 								!link.startsWith("#") &&
 								!link.startsWith("javascript:") // jshint ignore:line
 							) {
@@ -1283,7 +1280,7 @@
 								}
 
 								// Prevent adding a new page if no allowed page
-								if (currentAllowed == "0" && !pageFound) {
+								if (this.currentAllowed == "0" && !pageFound) {
 									// Open the limit modal
 									openModal("limit-warning");
 
@@ -1344,7 +1341,7 @@
 			detectColors() {
 				//console.log('Colors are being detected in the page...');
 
-				iframeElement("body *").each(function () {
+				this.iframeElement("body *").each(function () {
 					var color = $(this).css("color");
 					if (color.indexOf("a") == -1)
 						color = color.replace(")", ", 1)").replace("rgb", "rgba");
@@ -1397,10 +1394,13 @@
 
 			// Color the element
 			removeOutline() {
-				if (!iframeLoaded) return false;
+				if (!this.iframeLoaded) return false;
 
 				// Remove outlines from iframe
-				iframeElement("*:not(.revisionary-focused)").css("outline", "");
+				this.iframeElement("*:not(.revisionary-focused)").css(
+					"outline",
+					""
+				);
 
 				return true;
 			},
@@ -1438,32 +1438,38 @@
 					var newurl = queryParameter(
 						currentUrl(),
 						"pinmode",
-						currentPinType == "live" ? "" : currentPinType
+						this.currentPinType == "live" ? "" : this.currentPinType
 					);
 					newurl = queryParameter(
 						newurl,
 						"privatepin",
-						currentPinPrivate == 1 ? "1" : ""
+						this.currentPinPrivate == 1 ? "1" : ""
 					);
 					window.history.pushState({ path: newurl }, "", newurl);
 				}
 
 				// Client settings
-				set_client_cache(user_ID + "_currentPinType", currentPinType);
-				set_client_cache(user_ID + "_currentPinPrivate", currentPinPrivate);
+				set_client_cache(
+					this.user_ID + "_currentPinType",
+					this.currentPinType
+				);
+				set_client_cache(
+					this.user_ID + "_currentPinPrivate",
+					this.currentPinPrivate
+				);
 
 				// Deactivate the cursor
-				if (pinType == "browse") deactivateCursor();
+				if (pinType == "browse") this.deactivateCursor();
 				// Activate the cursor
-				else activateCursor();
+				else this.activateCursor();
 
 				// Close the pin window
-				if (pinWindowOpen && iframeLoaded) closePinWindow();
+				if (this.pinWindowOpen && this.iframeLoaded) this.closePinWindow();
 
 				// Pin limitation popup
-				if (currentAllowed == "0") {
+				if (this.currentAllowed == "0") {
 					// Open the modal
-					openModal("limit-warning");
+					//this.openModal("limit-warning");
 				}
 			},
 
@@ -1476,75 +1482,54 @@
 				//console.log("New Cursor Type: ", cursorType, "Private: " + pinPrivate);
 
 				// Update cursor
-				cursor
-					.attr("data-pin-type", cursorType)
-					.attr("data-pin-private", pinPrivate);
-				currentCursorType = cursorType;
-
-				// Showing an existing pin on cursor?
-				if (existing) cursor.addClass("existing");
-				else cursor.removeClass("existing");
+				this.currentCursorType = cursorType;
+				this.cursorExisting = existing;
 
 				// Remove outlines from iframe
-				removeOutline();
+				this.removeOutline();
 			},
 
 			// Toggle Inspect Mode
-			toggleCursorActive(forceClose, forceOpen) {
-				forceClose = assignDefault(forceClose, false);
-				forceOpen = assignDefault(forceOpen, false);
-
+			toggleCursorActive(forceClose = false, forceOpen = false) {
 				// Remove outlines from iframe
-				removeOutline();
+				this.removeOutline();
 
-				if ((cursorActive || forceClose) && !forceOpen) deactivateCursor();
+				if ((this.cursorActive || forceClose) && !forceOpen)
+					deactivateCursor();
 				else activateCursor();
 
 				// Close the open pin window
-				if (pinWindowOpen && iframeLoaded) closePinWindow();
+				if (this.pinWindowOpen && this.iframeLoaded) closePinWindow();
 			},
 
 			// Activate Cursor
 			activateCursor() {
-				if (!iframeLoaded) return false;
+				if (!this.iframeLoaded) return false;
 
 				// If hit the limitations
-				if (currentAllowed == "0") {
+				if (this.currentAllowed == "0") {
 					deactivateCursor();
 					return false;
 				}
 
 				console.log("Activate Cursor");
 
-				// Activate
-				activator
-					.attr("data-pin-type", currentPinType)
-					.attr("data-pin-private", currentPinPrivate);
-
-				// Update the label
-				$(".current-mode .mode-label").text(currentPinLabel);
-
 				// Show the cursor
-				if (!cursor.hasClass("active") && !pinWindowOpen)
-					cursor.addClass("active");
+				if (!this.cursorActive && !this.pinWindowOpen)
+					this.cursorActive = true;
 
 				// Hide the original cursor
-				if (!iframeElement("#revisionary-cursor").length)
-					iframeElement("body").append(
+				if (!this.iframeElement("#revisionary-cursor").length)
+					this.iframeElement("body").append(
 						'<style id="revisionary-cursor"> * { cursor: crosshair !important; } </style>'
 					);
-
-				// Disable all the links
-				// ...
-
-				cursorActive = true;
 
 				return true;
 			},
 
 			// Deactivate Cursor
 			deactivateCursor() {
-				if (!iframeLoaded) return false;
+				if (!this.iframeLoaded) return false;
 
 				console.log("Deactivate Cursor");
 
@@ -1560,8 +1545,8 @@
 				if (cursor.hasClass("active")) cursor.removeClass("active");
 
 				// Show the original cursor
-				if (iframeElement("#revisionary-cursor").length)
-					iframeElement("#revisionary-cursor").remove();
+				if (this.iframeElement("#revisionary-cursor").length)
+					this.iframeElement("#revisionary-cursor").remove();
 
 				// Enable all the links
 				// ...
@@ -1572,12 +1557,81 @@
 				return true;
 			},
 
-			getElementOffset(element_index) {
+			// Get element offset
+			getElementOffset(element_index, noScroll = false) {
 				var selectedElement = this.iframeElement(element_index);
-				if (!selectedElement) return false;
+				if (!selectedElement.length) {
+					//console.log("Iframe element not found.", element_index);
+					return false;
+				}
 
-				return selectedElement[0].getBoundingClientRect();
+				//console.log("ELEMENT OFFSET: ", selectedElement.offset());
+				//console.log('VISIBILITY: ', selectedElement.is(':visible') );
+
+				// Check if hidden
+				if (selectedElement.css("display") == "none") {
+					var pin = this.getPin(element_index, true);
+					if (!pin) return false;
+					var pin_ID = pin.pin_ID;
+
+					// Check the cache first
+					if (this.hiddenElementOffsets[element_index] === undefined) {
+						// Disabled temporarily
+						this.disableCSS(pin_ID);
+						selectedElement.addClass("revisionary-show");
+
+						this.hiddenElementOffsets[
+							element_index
+						] = selectedElement.offset();
+
+						selectedElement.removeClass("revisionary-show");
+						this.activateCSS(pin_ID);
+					}
+
+					var elementLeft =
+						hiddenElementOffsets[element_index].left -
+						scrollX / iframeScale;
+					var elementTop =
+						hiddenElementOffsets[element_index].top -
+						scrollY / iframeScale;
+
+					console.log(
+						"Hidden element #" + element_index,
+						hiddenElementOffsets[element_index]
+					);
+					return {
+						top: elementTop,
+						left: elementLeft,
+					};
+				}
+
+				// If not on the screen
+				else if (selectedElement.is(":hidden")) {
+					// Temporary location
+					var parentElement = selectedElement.parents(":visible");
+					var parentOffset = noScroll
+						? parentElement.offset()
+						: parentElement[0].getBoundingClientRect();
+					parentOffset.top =
+						parentOffset.top + parentElement.height() - 25;
+					parentOffset.left = parentOffset.left + 25;
+
+					console.log("Invisible Element #", element_index);
+					return parentOffset;
+				}
+
+				//console.log('2. Element Offset for element #' + element_index, selectedElement.offset());
+				return noScroll
+					? selectedElement.offset()
+					: selectedElement[0].getBoundingClientRect();
 			},
+
+			// getElementOffset(element_index) {
+			// 	var selectedElement = this.iframeElement(element_index);
+			// 	if (!selectedElement) return false;
+
+			// 	return selectedElement[0].getBoundingClientRect();
+			// },
 			pinLocation(element_index, pin_x, pin_y) {
 				// Check the cache first
 				var elementOffset = this.pinLocations[element_index];
@@ -1810,16 +1864,7 @@
 				});
 				//console.log("CONTENTS APPLIED: ");
 			},
-			outline(element_index) {
-				this.hoveringPin = true;
-				let element = this.iframeElement(element_index)[0];
-				element.setAttribute("revisionary-focused", "");
-			},
-			removeOutline(element_index) {
-				this.hoveringPin = false;
-				let element = this.iframeElement(element_index)[0];
-				element.removeAttribute("revisionary-focused");
-			},
+
 			activateCursor() {
 				if (!this.iframeLoaded) return false;
 
@@ -1861,12 +1906,15 @@
 			// SELECTORS:
 			// Find iframe element
 			iframeElement(selector) {
-				if (!this.iframeLoaded) return false;
+				if (!this.iframeLoaded) {
+					//console.log("Iframe not loaded yet");
+					return false;
+				}
 
 				var element = false;
 
 				if ($.isNumeric(selector)) {
-					element = this.iframeElement(
+					element = this.iframe.find(
 						'[data-revisionary-index="' + selector + '"]'
 					);
 
@@ -1880,6 +1928,7 @@
 					element = this.iframe.find(selector);
 				}
 
+				//console.log("Iframe element: ", selector, element);
 				return element;
 			},
 
@@ -2428,6 +2477,11 @@
 		var new_url = urlParsed.toString();
 
 		return new_url;
+	}
+
+	function currentUrl() {
+		//return window.location.protocol + "//" + window.location.host + window.location.pathname + window.location.search;
+		return window.location.href;
 	}
 </script>
 
