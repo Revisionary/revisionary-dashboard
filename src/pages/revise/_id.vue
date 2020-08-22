@@ -1068,14 +1068,14 @@
 					// SITE STYLES
 					this.iframeElement("body").append(
 						' \
-																										<style> \
-																											/* Auto-height edited images */ \
-																											img[data-revisionary-showing-content-changes="1"] { height: auto !important; } \
-																											iframe { pointer-events: none !important; } \
-																											* { -webkit-user-select: none !important; -moz-user-select: none !important; user-select: none !important; } \
-																											.revisionary-show { position: absolute !important; width: 0 !important; height: 0 !important; display: inline-block !important; } \
-																										</style> \
-																										'
+																																<style> \
+																																	/* Auto-height edited images */ \
+																																	img[data-revisionary-showing-content-changes="1"] { height: auto !important; } \
+																																	iframe { pointer-events: none !important; } \
+																																	* { -webkit-user-select: none !important; -moz-user-select: none !important; user-select: none !important; } \
+																																	.revisionary-show { position: absolute !important; width: 0 !important; height: 0 !important; display: inline-block !important; } \
+																																</style> \
+																																'
 					);
 
 					// If new downloaded site, ask whether or not it's showing correctly
@@ -1856,54 +1856,17 @@
 					);
 				}
 			},
-
-			applyPinCSS() {
-				//console.log("Applying pins CSS...");
-				const stylePins = this.Pins.filter((pin) => {
-					return pin.css !== null;
-				});
-
-				stylePins.forEach((pin) => {
-					var element_index = pin.element_index;
-					var changedElement = this.iframeElement(element_index);
-					if (!changedElement) {
-						console.log("Skipped because of no element");
-						return true;
-					}
-
-					var isShowingOriginalStyles =
-						changedElement.getAttribute(
-							"revisionary-showing-style-changes"
-						) === "0";
-
-					// Check if already exists for this pin
-					var styleElement = this.iframeElement(
-						"style[revisionary-pin-id='" + pin.ID + "']"
-					);
-					var style = styleElement;
-
-					// Update the CSS
-					if (!styleElement.length) {
-						style = document.createElement("style");
-						style.setAttribute("data-revisionary-index", element_index);
-						style.setAttribute("data-revisionary-pin-id", pin.ID);
-					}
-
-					style.innerHTML =
-						'[data-revisionary-index="' +
-						element_index +
-						'"]{' +
-						pin.css +
-						"}";
-
-					if (!styleElement.length)
-						this.iframeElement("body")[0].appendChild(style);
-
-					// Disable CSS if showing original style
-					if (isShowingOriginalStyles) this.disableCSS(pin.ID);
-				});
-				//console.log("CSS APPLIED: ");
+			disableCSS(pin_ID) {
+				return this.iframeElement(
+					'style[data-pin-id="' + pin.pin_ID + '"]'
+				).attr("media", "max-width: 1px;");
 			},
+			activateCSS(pin_ID) {
+				return iframeElement(
+					'style[data-pin-id="' + pin.pin_ID + '"]'
+				).removeAttr("media");
+			},
+
 			deleteAllCSS() {
 				var elements = this.iframeElement("style[revisionary-pin-id]");
 				if (!elements.length) return false;
@@ -1911,114 +1874,6 @@
 				Array.prototype.forEach.call(elements, (el, i) => {
 					el.parentNode.removeChild(el);
 				});
-			},
-			disableCSS(pin_ID) {
-				var element = this.iframeElement(
-					'style[revisionary-pin-id="' + pin_ID + '"]'
-				);
-				if (!element.length) return false;
-
-				return element[0].setAttribute("media", "max-width: 1px;");
-			},
-			activateCSS(pin_ID) {
-				var element = this.iframeElement(
-					'style[revisionary-pin-id="' + pin_ID + '"]'
-				);
-				if (!element.length) return false;
-
-				return element[0].removeAttribute("media");
-			},
-			applyPinContent() {
-				//console.log("Applying pins contents...");
-				const contentPins = this.Pins.filter((pin) => {
-					return pin.modification !== null;
-				});
-
-				contentPins.forEach((pin) => {
-					var index = pin.element_index;
-					var changedElement = this.iframeElement(index)[0];
-					if (!changedElement) {
-						console.log("Skipped because of no element");
-						return true;
-					}
-					var tag = changedElement.tagName.toUpperCase();
-
-					var isShowingOriginalContent =
-						changedElement.getAttribute(
-							"revisionary-showing-content-changes"
-						) === "0";
-
-					// Apply the change, if it was showing changes
-					if (!isShowingOriginalContent) {
-						// If the type is HTML content change
-						if (pin.modification_type == "html") {
-							var newHTML = html_entity_decode(pin.modification);
-
-							// If edited element is a submit or reset input button
-							if (
-								tag == "INPUT" &&
-								(changedElement.getAttribute("type") == "text" ||
-									changedElement.getAttribute("type") ==
-										"email" ||
-									changedElement.getAttribute("type") == "url" ||
-									changedElement.getAttribute("type") == "tel" ||
-									changedElement.getAttribute("type") ==
-										"submit" ||
-									changedElement.getAttribute("type") == "reset")
-							) {
-								changedElement.setAttribute("value", newHTML);
-								console.log(
-									"Value change for element #",
-									index,
-									tag,
-									newHTML
-								);
-							} else {
-								changedElement.innerHTML = newHTML;
-								console.log(
-									"Content change for element #",
-									index,
-									tag,
-									newHTML
-								);
-							}
-						} else if (pin.modification_type == "image") {
-							var newSrc = pin.modification;
-
-							if (tag == "IMAGE")
-								changedElement.setAttribute("xlink:href", newSrc);
-							else {
-								changedElement.setAttribute("src", newSrc);
-								changedElement.removeAttribute("srcset");
-								setTimeout(() => {
-									changedElement.removeAttribute("srcset");
-								}, 1500);
-							}
-
-							console.log(
-								"Image Update for element #",
-								index,
-								tag,
-								newSrc
-							);
-						}
-					}
-
-					// Add the contenteditable attribute to the live elements
-					if (pin.modification_type == "html")
-						changedElement.setAttribute(
-							"contenteditable",
-							isShowingOriginalContent ? "false" : "true"
-						);
-
-					// Update info
-					changedElement.setAttribute("revisionary-content-edited", "1");
-					changedElement.setAttribute(
-						"revisionary-showing-content-changes",
-						isShowingOriginalContent ? "0" : "1"
-					);
-				});
-				//console.log("CONTENTS APPLIED: ");
 			},
 
 			// SELECTORS:
