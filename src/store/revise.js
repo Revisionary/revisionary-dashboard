@@ -3,7 +3,7 @@ export const state = () => ({
 	fetching: false,
 	iframeScale: 1,
 	iframeLoaded: false,
-	pinMode: "browse",
+	currentPinType: "browse",
 });
 
 export const getters = {
@@ -51,8 +51,11 @@ export const mutations = {
 	setLoaded(state, status) {
 		state.iframeLoaded = status;
 	},
-	setPinMode(state, mode) {
-		state.pinMode = mode;
+	setCurrentPinType(state, type) {
+		state.currentPinType = type;
+	},
+	setCurrentPinPrivate(state, status) {
+		state.currentPinPrivate = status;
 	},
 	setFetching(state, status) {
 		state.fetching = status;

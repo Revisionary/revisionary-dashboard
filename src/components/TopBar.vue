@@ -266,7 +266,7 @@
 			<div class="switch pin-modes">
 				<span
 					class="bottom-tooltip tooltip-not-contained browse"
-					:class="{ active: pinMode == 'browse' }"
+					:class="{ active: currentPinType == 'browse' }"
 					data-tooltip="Browse Mode"
 					@click="changePinMode('browse')"
 				>
@@ -274,7 +274,7 @@
 				</span>
 				<span
 					class="bottom-tooltip tooltip-not-contained comment"
-					:class="{ active: pinMode == 'comment' }"
+					:class="{ active: currentPinType == 'comment' }"
 					data-tooltip="Comment Mode"
 					@click="changePinMode('comment')"
 				>
@@ -282,15 +282,15 @@
 				</span>
 				<span
 					class="bottom-tooltip tooltip-not-contained content"
-					:class="{ active: pinMode == 'content' }"
+					:class="{ active: currentPinType == 'live' }"
 					data-tooltip="Content Mode"
-					@click="changePinMode('content')"
+					@click="changePinMode('live')"
 				>
 					<ContentIcon />
 				</span>
 				<span
 					class="bottom-tooltip tooltip-not-contained style"
-					:class="{ active: pinMode == 'style' }"
+					:class="{ active: currentPinType == 'style' }"
 					data-tooltip="Style Mode"
 					@click="changePinMode('style')"
 				>
@@ -444,13 +444,13 @@
 			deviceInfo() {
 				return this.$store.state.revise.device;
 			},
-			pinMode() {
-				return this.$store.state.revise.pinMode;
+			currentPinType() {
+				return this.$store.state.revise.currentPinType;
 			},
 		},
 		methods: {
-			changePinMode(mode = "browse") {
-				this.$store.commit("revise/setPinMode", mode);
+			changePinMode(type = "browse") {
+				this.$store.commit("revise/setCurrentPinType", type);
 			},
 			async getDevices(phaseID) {
 				this.$nuxt.$loading.start();
