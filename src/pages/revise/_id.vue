@@ -17,14 +17,14 @@
 			></iframe>
 			<div id="pins">
 				<span
-					v-for="(pin, index) in pins"
+					v-for="(pin, index) in Pins"
 					class="pin"
-					:type="pin.type"
-					:private="pin.private"
-					:complete="pin.complete"
+					:data-pin-type="pin.type"
+					:data-pin-private="pin.private"
+					:data-pin-complete="pin.complete"
 					:key="pin.ID"
-					:pin-id="pin.ID"
-					:revisionary-index="pin.element_index"
+					:data-pin-id="pin.ID"
+					:data-revisionary-index="pin.element_index"
 					:style="pinLocation(pin.element_index, pin.x, pin.y)"
 					@mouseover="outline(pin.element_index)"
 					@mouseout="removeOutline(pin.element_index)"
@@ -34,7 +34,7 @@
 				class="pin cursor"
 				:class="{ active: cursorActive }"
 				:style="cursorLocation"
-			>{{ pins.length + 1 }}</span>
+			>{{ Pins.length + 1 }}</span>
 		</div>
 
 		<div class="loading" v-if="!iframeLoaded">
@@ -83,23 +83,117 @@
 		},
 		data() {
 			return {
-				pins: [],
-				pinsFetching: false,
+				page_type: "url",
+				page_redirected: false,
+				page_colors: {},
+				colorsSorted: [],
+
+				// HTML Element Index
+				easy_html_elements: [
+					"A",
+					"B",
+					"I",
+					"U",
+					"EM",
+					"STRONG",
+					"STRIKE",
+					"SMALL",
+					"TEXTAREA",
+					"LABEL",
+					"BUTTON",
+					"TIME",
+					"DATE",
+					"ADDRESS",
+					"BLOCKQUOTE",
+					"P",
+					"DIV",
+					"SPAN",
+					"LI",
+					"H1",
+					"H2",
+					"H3",
+					"H4",
+					"H5",
+					"H6",
+					"TH",
+					"TD",
+				],
+
+				// Focused Element
+				focused_element: null,
+
+				// Pins
+				Pins: [],
 				pinLocations: {},
+				pinsFetching: false,
+				pinDragging: false,
+				autoRefreshInterval: 5000,
+				autoRefreshRequest: null,
+				pinsListOpen: false,
+				commentsGetRequest: null,
+				removePinProcess: [],
+				openPin: null,
+				hiddenElementOffsets: {},
+				pinSize: 35,
+
+				// Pin Window
+				pinWindowOpen: false,
+				pinWindowWasOpen: false,
+				pinWindowWidth: 350,
+				pinWindowHeight: 515,
+				selectionFromContentEditor: false,
+
+				// Pin Modes
+				pinModes: {
+					live: "Content and View Changes",
+					style: "View Changes",
+					comment: "Comment",
+					"private-live": "Private Content and View Changes",
+					private: "Private View Changes",
+					browse: "Browse Mode",
+				},
+
+				// Cursor
+				currentCursorType: "style",
+				cursorActive: false,
+				cursorWasActive: false,
+				currentPinType: "live",
+				currentPinPrivate: 0,
+				currentPinTypeWas: 0,
+				currentPinPrivateWas: 0,
+				shifted: false,
+				shiftToggle: false,
+
+				// Mouse
 				containerX: 0,
 				containerY: 0,
-				cursorActive: false,
-				currentAllowed: 27,
-				pinWindowOpen: false,
-				focused_element: null,
+
+				// Hovers
+				hoveringText: false,
+				hoveringImage: false,
+				hoveringButton: false,
 				hoveringPin: false,
-				page_redirected: false,
+				focusedPin: null,
+
+				// Scrolls
+				scrollOffset_top: 0,
+				scrollOffset_left: 0,
+				oldScrollOffset_top: 0,
+				oldScrollOffset_left: 0,
+				scrollX: 0,
+				scrollY: 0,
+				scrollOnPin: false,
+
+				// Limitations
+				currentAllowed: 0,
+				currentLimitLabel: "",
 			};
 		},
 		created() {
 			console.log("CREATED");
 		},
 		computed: {
+			// IFRAME VARIABLES
 			iframeSelector() {
 				return $("#the-page");
 			},
@@ -115,6 +209,8 @@
 			iframeLoaded() {
 				return this.$store.state.revise.iframeLoaded;
 			},
+
+			// DEVICE SIZES
 			device() {
 				return this.$store.getters["revise/get"];
 			},
@@ -137,9 +233,12 @@
 			iframeHeight() {
 				return this.deviceHeight * this.iframeScale;
 			},
-			pinMode() {
-				return this.$store.state.revise.pinMode;
+
+			easy_with_br() {
+				return [...this.easy_html_elements, "BR", "IMG", "SVG", "PATH"];
 			},
+
+			// CURSOR ACTIONS
 			cursorLocation() {
 				return (
 					"transform: translate(" +
@@ -149,6 +248,8 @@
 					"px);"
 				);
 			},
+
+			// Focus Variables
 			focused_element_index() {
 				return this.focused_element.getAttribute(
 					"data-revisionary-index"
@@ -177,11 +278,32 @@
 			focused_element_grand_children() {
 				return this.focused_element_children.children();
 			},
-			focused_element_grand_children() {
-				return this.focused_element_children.children();
-			},
 			focused_element_pin() {
-				return true; // !!!
+				return pinElement(this.focused_element_index, true);
+			},
+			focused_element_live_pin() {
+				return $(
+					'#pins > .pin[data-pin-type="live"][data-revisionary-index="' +
+						this.focused_element_index +
+						'"]'
+				);
+			},
+			focused_element_edited_parents() {
+				return this.focused_element.parents(
+					"[data-revisionary-index][data-revisionary-content-edited]"
+				);
+			},
+			focused_element_has_edited_child() {
+				return this.focused_element.find(
+					"[data-revisionary-index][data-revisionary-content-edited]"
+				).length;
+			},
+			focused_element_tagname() {
+				return this.focused_element.prop("tagName").toUpperCase();
+			},
+
+			pinMode() {
+				return this.$store.state.revise.pinMode;
 			},
 		},
 		async mounted() {
@@ -190,24 +312,13 @@
 			await this.$nextTick(async () => {
 				// Check frame scale
 				this.calculateScale();
-
-				setInterval(() => {
-					// !!! ONLY CHECK THE MODIFICATION OF PHASE !!!
-					//this.fetchPins(this.$route.params.id);
-				}, 5000);
 			});
-
-			await this.runTheInspector();
-
-			// Check iframe page load
-			// document.getElementById("the-page").onload = () => {
-			// 	console.log("IFRAME LOADED");
-			// 	this.$store.commit("revise/setLoaded", true);
-			// 	this.runTheInspector();
-			// };
 
 			// Resize check
 			await window.addEventListener("resize", this.calculateScale);
+
+			// Run the inspector
+			await this.runTheInspector();
 		},
 		methods: {
 			async fetchPins(phaseID, deviceID) {
@@ -217,7 +328,7 @@
 					.then(({ status, data }) => {
 						if (status === 200) {
 							console.log("PINS: ", data.pins);
-							this.pins = data.pins;
+							this.Pins = data.pins;
 							this.pinsFetching = false;
 						}
 					})
@@ -305,34 +416,37 @@
 
 							// From last option
 							if (clientPinType != null && clientPinPrivate != null) {
-								currentPinType = clientPinType;
-								currentPinPrivate = clientPinPrivate;
+								this.currentPinType = clientPinType;
+								this.currentPinPrivate = clientPinPrivate;
 
 								if (
-									page_type == "url" &&
+									this.page_type == "url" &&
 									clientPinType == "comment"
 								)
-									currentPinType = "live";
+									this.currentPinType = "live";
 							}
 
 							// From URL
 							if (getParameterByName("pinmode") == "style") {
-								currentPinType = "style";
-								currentPinPrivate = 0;
+								this.currentPinType = "style";
+								this.currentPinPrivate = 0;
 							}
 
 							if (getParameterByName("pinmode") == "comment") {
-								currentPinType = "comment";
-								currentPinPrivate = 0;
+								this.currentPinType = "comment";
+								this.currentPinPrivate = 0;
 							}
 
 							if (getParameterByName("pinmode") == "browse") {
-								currentPinType = "browse";
-								currentPinPrivate = 0;
+								this.currentPinType = "browse";
+								this.currentPinPrivate = 0;
 							}
 
 							// Update the pin type
-							switchPinType(currentPinType, currentPinPrivate);
+							this.switchPinType(
+								this.currentPinType,
+								this.currentPinPrivate
+							);
 
 							// PINS:
 							// Get latest pins and apply them to the page
@@ -358,7 +472,7 @@
 						this.iframeDocument.addEventListener(
 							"click",
 							function (e) {
-								if (currentPinType != "browse") {
+								if (this.currentPinType != "browse") {
 									console.log("MOUSE CLICKED");
 
 									e.stopPropagation();
@@ -722,7 +836,7 @@
 						);
 
 						// Detect the mouse clicks in frame
-						iframeDocument.addEventListener(
+						this.iframeDocument.addEventListener(
 							"mousedown",
 							function (e) {
 								//console.log('MOUSE DOWN');
@@ -737,7 +851,7 @@
 						);
 
 						// Detect the mouse clicks in frame
-						iframeDocument.addEventListener(
+						this.iframeDocument.addEventListener(
 							"mouseup",
 							function (e) {
 								// var code = e.keyCode || e.which;
@@ -803,7 +917,7 @@
 						);
 
 						// Detect the scroll to re-position pins
-						iframeDocument.addEventListener(
+						this.iframeDocument.addEventListener(
 							"scroll",
 							function (e) {
 								//console.log('SCROLLIIIIIIIING');
@@ -826,7 +940,7 @@
 						);
 
 						// Detect shift key press to toggle browse mode
-						iframeDocument.addEventListener(
+						this.iframeDocument.addEventListener(
 							"keydown",
 							function (e) {
 								if (e.shiftKey) shifted = true;
@@ -848,7 +962,7 @@
 						);
 
 						// Detect shift key press to toggle browse mode
-						iframeDocument.addEventListener(
+						this.iframeDocument.addEventListener(
 							"keyup",
 							function (e) {
 								if (
@@ -870,7 +984,7 @@
 						);
 
 						// REDIRECT DETECTION
-						$(iframeDocument).ready(function () {
+						$(this.iframeDocument).ready(function () {
 							$(childWindow).on("beforeunload", function () {
 								// Prevent leaving the page
 								if (processExists) return true;
@@ -911,7 +1025,7 @@
 
 						//window.frames["the-page"].location = page_URL;
 						$("#the-page").attr("src", page_URL);
-						page_redirected = true;
+						this.page_redirected = true;
 						iframeLoaded = false;
 
 						return;
@@ -922,28 +1036,22 @@
 					// SITE STYLES
 					iframeElement("body").append(
 						' \
-												<style> \
-													/* Auto-height edited images */ \
-													img[data-revisionary-showing-content-changes="1"] { height: auto !important; } \
-													iframe { pointer-events: none !important; } \
-													* { -webkit-user-select: none !important; -moz-user-select: none !important; user-select: none !important; } \
-													.revisionary-show { position: absolute !important; width: 0 !important; height: 0 !important; display: inline-block !important; } \
-												</style> \
-												'
+																																																																																																		<style> \
+																																																																																																			/* Auto-height edited images */ \
+																																																																																																			img[data-revisionary-showing-content-changes="1"] { height: auto !important; } \
+																																																																																																			iframe { pointer-events: none !important; } \
+																																																																																																			* { -webkit-user-select: none !important; -moz-user-select: none !important; user-select: none !important; } \
+																																																																																																			.revisionary-show { position: absolute !important; width: 0 !important; height: 0 !important; display: inline-block !important; } \
+																																																																																																		</style> \
+																																																																																																		'
 					);
-
-					// Update the title
-					if (iframeElement("title").length)
-						$("title").text(
-							"Revise Page: " + iframeElement("title").text()
-						);
 
 					// If new downloaded site, ask whether or not it's showing correctly
 					if ($(".ask-showing-correctly").length)
 						$(".ask-showing-correctly").addClass("open");
 
 					// MOUSE ACTIONS:
-					iframe
+					this.iframe
 						.on(
 							"input",
 							'[contenteditable="true"][data-revisionary-index]',
@@ -1228,8 +1336,240 @@
 					});
 
 					// Focus to the iframe
-					$(this).focus();
+					this.iframeSelector.focus();
 				});
+			},
+
+			// Detect colors in the page
+			detectColors() {
+				//console.log('Colors are being detected in the page...');
+
+				iframeElement("body *").each(function () {
+					var color = $(this).css("color");
+					if (color.indexOf("a") == -1)
+						color = color.replace(")", ", 1)").replace("rgb", "rgba");
+					if (color == "rgba(0, 0, 0, 1)") color = "rgba(0, 0, 0, 0)"; // Reduce whites
+
+					var bgColor = $(this).css("background-color");
+					if (bgColor.indexOf("a") == -1)
+						bgColor = bgColor
+							.replace(")", ", 1)")
+							.replace("rgb", "rgba");
+					if (bgColor == "rgba(0, 0, 0, 1)") bgColor = "rgba(0, 0, 0, 0)"; // Reduce whites
+
+					var colorCount = parseInt(page_colors[color]) || 0;
+					page_colors[color] = colorCount + 1;
+
+					var bgColorCount = parseInt(page_colors[bgColor]) || 0;
+					page_colors[bgColor] = bgColorCount + 1;
+				});
+
+				// Order the colors
+				this.colorsSorted = Object.keys(page_colors).sort(function (a, b) {
+					return page_colors[b] - page_colors[a];
+				});
+				$("input[type='color']").spectrum(
+					"option",
+					"palette",
+					colorsSorted
+				);
+
+				console.log("Color detection complete.", colorsSorted);
+			},
+
+			// OUTLINES:
+			// Color the element
+			outline(element, private_pin, pin_type = "live") {
+				if (!this.iframeLoaded) return false;
+
+				var block = pin_type == "live" ? false : true;
+
+				var elementColor = private_pin == 1 ? "#FC0FB3" : "#7ED321";
+				if (block) elementColor = private_pin == 1 ? "#6b95f3" : "#1DBCC9";
+
+				if (element != null)
+					element.css(
+						"outline",
+						"2px dashed " + elementColor,
+						"important"
+					);
+			},
+
+			// Color the element
+			removeOutline() {
+				if (!iframeLoaded) return false;
+
+				// Remove outlines from iframe
+				iframeElement("*:not(.revisionary-focused)").css("outline", "");
+
+				return true;
+			},
+
+			// CURSOR:
+			// Switch to a different pin mode
+			switchPinType(pinType, pinPrivate) {
+				console.log(
+					"Switched Pin Type: " + pinType,
+					"Private: " + pinPrivate
+				);
+
+				this.currentPinTypeWas = this.currentPinType;
+				this.currentPinPrivateWas = this.currentPinPrivate;
+
+				// Image mode
+				if (
+					(this.page_type == "image" || this.page_type == "capture") &&
+					(pinType == "live" || pinType == "style")
+				) {
+					pinType = "comment";
+				}
+
+				this.currentPinType = pinType;
+				this.currentPinPrivate = parseInt(pinPrivate);
+
+				// Change the cursor color
+				this.switchCursorType(
+					pinType == "live" ? "style" : pinType,
+					this.currentPinPrivate
+				);
+
+				// URL update
+				if (history.pushState) {
+					var newurl = queryParameter(
+						currentUrl(),
+						"pinmode",
+						currentPinType == "live" ? "" : currentPinType
+					);
+					newurl = queryParameter(
+						newurl,
+						"privatepin",
+						currentPinPrivate == 1 ? "1" : ""
+					);
+					window.history.pushState({ path: newurl }, "", newurl);
+				}
+
+				// Client settings
+				set_client_cache(user_ID + "_currentPinType", currentPinType);
+				set_client_cache(user_ID + "_currentPinPrivate", currentPinPrivate);
+
+				// Deactivate the cursor
+				if (pinType == "browse") deactivateCursor();
+				// Activate the cursor
+				else activateCursor();
+
+				// Close the pin window
+				if (pinWindowOpen && iframeLoaded) closePinWindow();
+
+				// Pin limitation popup
+				if (currentAllowed == "0") {
+					// Open the modal
+					openModal("limit-warning");
+				}
+			},
+
+			// Switch to a different cursor mode
+			switchCursorType(
+				cursorType,
+				pinPrivate = this.currentPinPrivate,
+				existing = false
+			) {
+				//console.log("New Cursor Type: ", cursorType, "Private: " + pinPrivate);
+
+				// Update cursor
+				cursor
+					.attr("data-pin-type", cursorType)
+					.attr("data-pin-private", pinPrivate);
+				currentCursorType = cursorType;
+
+				// Showing an existing pin on cursor?
+				if (existing) cursor.addClass("existing");
+				else cursor.removeClass("existing");
+
+				// Remove outlines from iframe
+				removeOutline();
+			},
+
+			// Toggle Inspect Mode
+			toggleCursorActive(forceClose, forceOpen) {
+				forceClose = assignDefault(forceClose, false);
+				forceOpen = assignDefault(forceOpen, false);
+
+				// Remove outlines from iframe
+				removeOutline();
+
+				if ((cursorActive || forceClose) && !forceOpen) deactivateCursor();
+				else activateCursor();
+
+				// Close the open pin window
+				if (pinWindowOpen && iframeLoaded) closePinWindow();
+			},
+
+			// Activate Cursor
+			activateCursor() {
+				if (!iframeLoaded) return false;
+
+				// If hit the limitations
+				if (currentAllowed == "0") {
+					deactivateCursor();
+					return false;
+				}
+
+				console.log("Activate Cursor");
+
+				// Activate
+				activator
+					.attr("data-pin-type", currentPinType)
+					.attr("data-pin-private", currentPinPrivate);
+
+				// Update the label
+				$(".current-mode .mode-label").text(currentPinLabel);
+
+				// Show the cursor
+				if (!cursor.hasClass("active") && !pinWindowOpen)
+					cursor.addClass("active");
+
+				// Hide the original cursor
+				if (!iframeElement("#revisionary-cursor").length)
+					iframeElement("body").append(
+						'<style id="revisionary-cursor"> * { cursor: crosshair !important; } </style>'
+					);
+
+				// Disable all the links
+				// ...
+
+				cursorActive = true;
+
+				return true;
+			},
+
+			// Deactivate Cursor
+			deactivateCursor() {
+				if (!iframeLoaded) return false;
+
+				console.log("Deactivate Cursor");
+
+				// Deactivate
+				activator
+					.attr("data-pin-type", "browse")
+					.attr("data-pin-private", "0");
+
+				// Update the label
+				$(".current-mode .mode-label").text(currentPinLabel);
+
+				// Hide the cursor
+				if (cursor.hasClass("active")) cursor.removeClass("active");
+
+				// Show the original cursor
+				if (iframeElement("#revisionary-cursor").length)
+					iframeElement("#revisionary-cursor").remove();
+
+				// Enable all the links
+				// ...
+
+				cursorActive = false;
+				focused_element = null;
+
+				return true;
 			},
 
 			getElementOffset(element_index) {
@@ -1287,7 +1627,7 @@
 			},
 			updatePinsLocations() {
 				//console.log("Locations updating...");
-				this.pins.forEach((pin) => {
+				this.Pins.forEach((pin) => {
 					var index = pin.element_index;
 					var elementOffsetData = this.getElementOffset(index);
 					if (!elementOffsetData) return true;
@@ -1309,7 +1649,7 @@
 			},
 			applyPinCSS() {
 				//console.log("Applying pins CSS...");
-				const stylePins = this.pins.filter((pin) => {
+				const stylePins = this.Pins.filter((pin) => {
 					return pin.css !== null;
 				});
 
@@ -1335,8 +1675,8 @@
 					// Update the CSS
 					if (!styleElement.length) {
 						style = document.createElement("style");
-						style.setAttribute("revisionary-index", element_index);
-						style.setAttribute("revisionary-pin-id", pin.ID);
+						style.setAttribute("data-revisionary-index", element_index);
+						style.setAttribute("data-revisionary-pin-id", pin.ID);
 					}
 
 					style.innerHTML =
@@ -1380,7 +1720,7 @@
 			},
 			applyPinContent() {
 				//console.log("Applying pins contents...");
-				const contentPins = this.pins.filter((pin) => {
+				const contentPins = this.Pins.filter((pin) => {
 					return pin.modification !== null;
 				});
 
@@ -1547,8 +1887,10 @@
 			pinElement(selector, byElementIndex = false) {
 				if ($.isNumeric(selector)) {
 					if (byElementIndex)
-						return pinElement('[revisionary-index="' + selector + '"]');
-					else return pinElement('[pin-id="' + selector + '"]');
+						return pinElement(
+							'[data-revisionary-index="' + selector + '"]'
+						);
+					else return pinElement('[data-pin-id="' + selector + '"]');
 				} else {
 					return $("#pins").children(selector);
 				}
