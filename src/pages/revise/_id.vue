@@ -761,26 +761,19 @@
 											this.focused_element_editable = false;
 											//console.log( '* Element editable but there are edited #'+focused_element_has_edited_child+' children: ' + focused_element_tagname + '.' + focused_element.attr('class') );
 										}
-
-										// Clean Other Outlines
-										this.removeOutline();
-
-										// Reset the pin opacity
-										$("#pins > .pin").css("opacity", "");
 									} // Live Pin
 									else if (this.currentPinType == "style") {
 										// Style Pin
-
-										// Clean Other Outlines
-										this.removeOutline();
-
-										// Reset the pin opacity
-										$("#pins > .pin").css("opacity", "");
 									} // Style Pin
 									else if (this.currentPinType == "comment") {
 										// Comment Pin
-										// Nothing to do...
 									} // Comment Pin
+
+									// Clean Other Outlines
+									this.removeOutline();
+
+									// Reset the pin opacity
+									$("#pins > .pin").css("opacity", "");
 
 									// // See what am I focusing
 									// console.log("###############################");
@@ -1075,14 +1068,14 @@
 					// SITE STYLES
 					this.iframeElement("body").append(
 						' \
-																							<style> \
-																								/* Auto-height edited images */ \
-																								img[data-revisionary-showing-content-changes="1"] { height: auto !important; } \
-																								iframe { pointer-events: none !important; } \
-																								* { -webkit-user-select: none !important; -moz-user-select: none !important; user-select: none !important; } \
-																								.revisionary-show { position: absolute !important; width: 0 !important; height: 0 !important; display: inline-block !important; } \
-																							</style> \
-																							'
+																										<style> \
+																											/* Auto-height edited images */ \
+																											img[data-revisionary-showing-content-changes="1"] { height: auto !important; } \
+																											iframe { pointer-events: none !important; } \
+																											* { -webkit-user-select: none !important; -moz-user-select: none !important; user-select: none !important; } \
+																											.revisionary-show { position: absolute !important; width: 0 !important; height: 0 !important; display: inline-block !important; } \
+																										</style> \
+																										'
 					);
 
 					// If new downloaded site, ask whether or not it's showing correctly
@@ -1373,9 +1366,6 @@
 							$("body").removeClass("scrolling");
 							scrollFlag = false;
 						}, 200);
-
-						// Re-Locate all the pins
-						relocatePins();
 					});
 
 					// Focus to the iframe
@@ -1724,6 +1714,149 @@
 				if (this.iframeLoaded) this.updatePinsLocations();
 				requestAnimationFrame(this.watchElementsPositions);
 			},
+
+			applyChanges() {
+				this.Pins.forEach((pin) => {
+					if (pin.modification !== null) this.updateChange(pin);
+					if (pin.css != null) this.updateCSS(pin);
+				});
+			},
+
+			// CONTENT
+			// Update a modification
+			updateChange(pin, modification, applyHTML = true) {
+				if (!pin) return false;
+
+				var changedElement = this.iframeElement(pin.element_index);
+				if (!changedElement) return false;
+
+				modification =
+					typeof modification !== "undefined"
+						? modification
+						: pin.modification;
+
+				console.log("Update Change of ", pin.element_index, modification);
+
+				if (modification == null || modification == "{%null%}") {
+					//this.revertChange(pin);
+				} else {
+					var isShowingOriginalContent = changedElement.is(
+						'[revisionary-showing-content-changes="0"]'
+					);
+
+					// Apply the change, if it was showing changes
+					if (!isShowingOriginalContent) {
+						// If the type is HTML content change
+						if (pin.modification_type == "html") {
+							//console.log('MODIFICATION ORIG:', pin.pin_modification);
+
+							// Apply the change
+							var newHTML = html_entity_decode(modification);
+							if (applyHTML) changedElement.html(newHTML);
+
+							// If edited element is a submit or reset input button
+							if (
+								changedElement.prop("tagName").toUpperCase() ==
+									"INPUT" &&
+								(changedElement.attr("type") == "text" ||
+									changedElement.attr("type") == "email" ||
+									changedElement.attr("type") == "url" ||
+									changedElement.attr("type") == "tel" ||
+									changedElement.attr("type") == "submit" ||
+									changedElement.attr("type") == "reset")
+							) {
+								changedElement.val(newHTML);
+							}
+
+							//console.log('MODIFICATION DECODED:', newHTML);
+
+							// If the type is image change
+						} else if (pin.modification_type == "image") {
+							// Apply the change
+							var newSrc = modification; //console.log('NEW', newHTML);
+
+							if (
+								changedElement.prop("tagName").toUpperCase() ==
+								"IMAGE"
+							)
+								changedElement.attr("xlink:href", newSrc);
+							else
+								changedElement
+									.attr("src", newSrc)
+									.removeAttr("srcset");
+						}
+					}
+
+					// Add the contenteditable attribute to the live elements
+					if (pin.modification_type == "html")
+						changedElement.attr(
+							"contenteditable",
+							isShowingOriginalContent ? "false" : "true"
+						);
+
+					// Update info
+					changedElement.attr("data-revisionary-content-edited", "1");
+					changedElement.attr(
+						"data-revisionary-showing-content-changes",
+						isShowingOriginalContent ? "0" : "1"
+					);
+				}
+			},
+
+			// CSS
+			// Update CSS
+			updateCSS(pin, cssCode) {
+				if (!pin) return false;
+
+				var element_index = pin.element_index;
+				var changedElement = this.iframeElement(element_index);
+				if (!changedElement) return false;
+
+				cssCode = typeof cssCode !== "undefined" ? cssCode : pin.css;
+
+				// Remove changed marks if null
+				if (cssCode == null) {
+					//this.revertCSS(pin_ID);
+				} else {
+					var isShowingOriginalStyles = changedElement.is(
+						'[revisionary-showing-style-changes="no"]'
+					);
+
+					// Mark the old one
+					this.iframeElement(
+						'style[data-pin-id="' + pin.ID + '"]'
+					).addClass("old");
+
+					// Add the new CSS codes
+					this.iframeElement("body").append(
+						'<style data-index="' +
+							element_index +
+							'" data-pin-id="' +
+							pin.ID +
+							'">[data-revisionary-index="' +
+							element_index +
+							'"]{' +
+							cssCode +
+							"}</style>"
+					);
+
+					// Remove the old ones
+					this.iframeElement(
+						'style.old[data-pin-id="' + pin.ID + '"]'
+					).remove();
+
+					// Disable CSS if showing original style
+					if (isShowingOriginalStyles) this.disableCSS(pin.ID);
+
+					// Update the info for pin, pin window and DOM element
+					changedElement.attr("data-revisionary-style-changed", "yes");
+					changedElement.attr(
+						"data-revisionary-showing-style-changes",
+						isShowingOriginalStyles ? "no" : "yes"
+					);
+				}
+			},
+
 			applyPinCSS() {
 				//console.log("Applying pins CSS...");
 				const stylePins = this.Pins.filter((pin) => {
@@ -1732,7 +1865,7 @@
 
 				stylePins.forEach((pin) => {
 					var element_index = pin.element_index;
-					var changedElement = this.iframeElement(element_index)[0];
+					var changedElement = this.iframeElement(element_index);
 					if (!changedElement) {
 						console.log("Skipped because of no element");
 						return true;
@@ -1983,11 +2116,10 @@
 					});
 				}
 			},
-			pins() {
+			Pins() {
 				console.log("PINS CHANGEEEEEEEEEED");
 
-				this.applyPinCSS();
-				this.applyPinContent();
+				this.applyChanges();
 			},
 			pinMode(to, from) {
 				console.log("Pin Mode Changed", from, to);

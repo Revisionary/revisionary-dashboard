@@ -901,6 +901,22 @@ details {
 	    transition: opacity 500ms !important;
 		opacity: 0;
 
+		&[type="live"] {
+			color: $color-content;
+		}
+
+		&[type="style"] {
+			color: $color-style;
+		}
+
+		&[type="comment"] {
+			color: $color-comment;
+		}
+
+		&[private="1"] {
+			color: $color-private;
+		}
+
 		&.active {
 			opacity: 1;
 		}
