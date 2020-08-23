@@ -650,7 +650,7 @@
 											// Also check the children's tagname
 											var hardToEdit = true;
 											this.focused_element_children.each(
-												(item) => {
+												(index, item) => {
 													// In easy HTML elements?
 													if (
 														this.easy_with_br.includes(
@@ -684,8 +684,8 @@
 											// Also check the children's tagname
 											var easyToEdit = false;
 											this.focused_element_children.each(
-												function () {
-													var child = $(this);
+												(index, item) => {
+													var child = $(item);
 													var grandChildren = child.children();
 
 													if (
@@ -1071,14 +1071,14 @@
 					// SITE STYLES
 					this.iframeElement("body").append(
 						' \
-					<style> \
-						/* Auto-height edited images */ \
-						img[data-revisionary-showing-content-changes="1"] { height: auto !important; } \
-						iframe { pointer-events: none !important; } \
-						* { -webkit-user-select: none !important; -moz-user-select: none !important; user-select: none !important; } \
-						.revisionary-show { position: absolute !important; width: 0 !important; height: 0 !important; display: inline-block !important; } \
-					</style> \
-					'
+						<style> \
+							/* Auto-height edited images */ \
+							img[data-revisionary-showing-content-changes="1"] { height: auto !important; } \
+							iframe { pointer-events: none !important; } \
+							* { -webkit-user-select: none !important; -moz-user-select: none !important; user-select: none !important; } \
+							.revisionary-show { position: absolute !important; width: 0 !important; height: 0 !important; display: inline-block !important; } \
+						</style> \
+						'
 					);
 
 					// If new downloaded site, ask whether or not it's showing correctly
