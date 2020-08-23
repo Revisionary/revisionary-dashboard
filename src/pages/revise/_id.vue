@@ -303,7 +303,7 @@
 				return this.focused_element_children.children();
 			},
 			focused_element_pin() {
-				return pinElement(this.focused_element_index, true);
+				return this.pinElement(this.focused_element_index, true);
 			},
 			focused_element_live_pin() {
 				return $(
@@ -1095,15 +1095,15 @@
 							(e) => {
 								// Detect changes on page text
 
-								var element_index = $(this).attr(
+								var element_index = $(e.target).attr(
 									"data-revisionary-index"
 								);
-								var pin_ID = pinElement(
+								var pin_ID = this.pinElement(
 									'[data-pin-type="live"][data-revisionary-index="' +
 										element_index +
 										'"]'
 								).attr("data-pin-id");
-								var changedElement = $(this);
+								var changedElement = $(e.target);
 								var modification = changedElement.html();
 
 								// If edited element is a submit or reset input button
@@ -1583,6 +1583,11 @@
 					this.iframeElement("body").append(
 						'<style id="revisionary-cursor"> * { cursor: crosshair !important; } </style>'
 					);
+
+				// Enable editability of edited elements
+				this.iframeElement(
+					"[data-revisionary-content-edited=1][data-revisionary-showing-content-changes=1]"
+				).attr("contenteditable", true);
 			},
 
 			// Deactivate Cursor
@@ -1597,6 +1602,12 @@
 
 				// Show the original cursor
 				this.iframeElement("#revisionary-cursor").remove();
+
+				// Disable editability of edited elements
+				this.iframeElement("[data-revisionary-content-edited=1]").attr(
+					"contenteditable",
+					false
+				);
 			},
 
 			// Get element offset
@@ -1815,7 +1826,10 @@
 					if (pin.modification_type == "html")
 						changedElement.attr(
 							"contenteditable",
-							isShowingOriginalContent ? "false" : "true"
+							isShowingOriginalContent ||
+								this.currentPinType == "browse"
+								? "false"
+								: "true"
 						);
 
 					// Update info
@@ -1933,10 +1947,10 @@
 			pinElement(selector, byElementIndex = false) {
 				if ($.isNumeric(selector)) {
 					if (byElementIndex)
-						return pinElement(
+						return this.pinElement(
 							'[data-revisionary-index="' + selector + '"]'
 						);
-					else return pinElement('[data-pin-id="' + selector + '"]');
+					else return this.pinElement('[data-pin-id="' + selector + '"]');
 				} else {
 					return $("#pins").children(selector);
 				}
