@@ -49,7 +49,7 @@
 						<span class="dot"></span>
 					</div>
 				</figure>
-				<p>Please wait a few seconds while we process this.</p>
+				<p>Please wait a few seconds while we prepare your page.</p>
 			</div>
 		</div>
 	</div>
@@ -89,6 +89,7 @@
 				page_redirected: false,
 				page_colors: {},
 				colorsSorted: [],
+				processExists: false,
 
 				// HTML Element Index
 				easy_html_elements: [
@@ -1018,7 +1019,7 @@
 						$(this.iframeDocument).ready(() => {
 							$(this.childWindow).on("beforeunload", () => {
 								// Prevent leaving the page
-								if (processExists) return true;
+								if (this.processExists) return true;
 
 								console.log("REDIRECTING DETECTED...");
 								this.$store.commit("revise/setLoaded", false);
@@ -1070,14 +1071,14 @@
 					// SITE STYLES
 					this.iframeElement("body").append(
 						' \
-		<style> \
-			/* Auto-height edited images */ \
-			img[data-revisionary-showing-content-changes="1"] { height: auto !important; } \
-			iframe { pointer-events: none !important; } \
-			* { -webkit-user-select: none !important; -moz-user-select: none !important; user-select: none !important; } \
-			.revisionary-show { position: absolute !important; width: 0 !important; height: 0 !important; display: inline-block !important; } \
-		</style> \
-		'
+					<style> \
+						/* Auto-height edited images */ \
+						img[data-revisionary-showing-content-changes="1"] { height: auto !important; } \
+						iframe { pointer-events: none !important; } \
+						* { -webkit-user-select: none !important; -moz-user-select: none !important; user-select: none !important; } \
+						.revisionary-show { position: absolute !important; width: 0 !important; height: 0 !important; display: inline-block !important; } \
+					</style> \
+					'
 					);
 
 					// If new downloaded site, ask whether or not it's showing correctly
