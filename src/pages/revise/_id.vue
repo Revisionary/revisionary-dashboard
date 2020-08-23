@@ -508,6 +508,51 @@
 							true
 						);
 
+						// Browse mode shift callbacks
+						var shiftedCallBack = (e) => {
+							if (e.shiftKey) this.shifted = true;
+
+							if (
+								this.shifted &&
+								!this.pinWindowOpen &&
+								this.currentPinType != "browse"
+							) {
+								this.shiftToggle = true;
+								console.log("SHIFTED");
+
+								this.switchPinType("browse");
+							}
+
+							// Escape
+							if (e.keyCode == 27 && this.pinWindowOpen) {
+								console.log("CLOSE PIN WINDOW via ESC");
+								this.closePinWindow();
+
+								e.preventDefault();
+								return false;
+							}
+						};
+
+						var unShiftedCallBack = (e) => {
+							if (
+								this.shifted &&
+								this.shiftToggle &&
+								!this.pinWindowOpen &&
+								this.currentPinType == "browse" &&
+								!e.shiftKey
+							) {
+								this.shiftToggle = false;
+								console.log("UNSHIFTED");
+
+								this.switchPinType(
+									this.currentPinTypeWas,
+									this.currentPinPrivateWas
+								);
+							}
+
+							this.shifted = false;
+						};
+
 						// Detect the mouse moves in frame
 						this.iframeDocument.addEventListener(
 							"mousemove",
@@ -957,49 +1002,6 @@
 							},
 							true
 						);
-
-						var shiftedCallBack = (e) => {
-							if (e.shiftKey) this.shifted = true;
-
-							if (
-								this.shifted &&
-								!this.pinWindowOpen &&
-								this.currentPinType != "browse"
-							) {
-								this.shiftToggle = true;
-								console.log("SHIFTED");
-
-								this.switchPinType("browse");
-							}
-
-							// Escape
-							if (e.keyCode == 27 && this.pinWindowOpen) {
-								console.log("CLOSE PIN WINDOW via ESC");
-								this.closePinWindow();
-
-								e.preventDefault();
-								return false;
-							}
-						};
-
-						var unShiftedCallBack = (e) => {
-							if (
-								this.shifted &&
-								this.shiftToggle &&
-								!this.pinWindowOpen &&
-								this.currentPinType == "browse"
-							) {
-								this.shiftToggle = false;
-								console.log("UNSHIFTED");
-
-								this.switchPinType(
-									this.currentPinTypeWas,
-									this.currentPinPrivateWas
-								);
-							}
-
-							this.shifted = false;
-						};
 
 						// Detect shift key press to toggle browse mode
 						this.iframeDocument.addEventListener(
