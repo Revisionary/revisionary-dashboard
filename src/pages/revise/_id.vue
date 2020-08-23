@@ -402,10 +402,7 @@
 
 				// WHEN IFRAME HAS LOADED
 				this.iframeSelector.on("load", () => {
-					console.log(
-						"IFRAME DOCUMENT LOADED!",
-						canAccessIFrame(this.iframeSelector)
-					);
+					console.log("IFRAME DOCUMENT LOADED!", canAccessIFrame(this.iframeSelector));
 
 					// If we have access on this iframe (CORS Check)
 					if (canAccessIFrame(this.iframeSelector)) {
@@ -458,8 +455,6 @@
 								)
 									this.currentPinType = "content";
 							}
-
-							console.log("HEYYYY", getParameterByName("pinmode"));
 
 							// From URL
 							if (getParameterByName("pinmode") != null) {
@@ -1756,10 +1751,17 @@
 			},
 
 			applyChanges() {
+
+				console.log('Applying changes...');
+
+				// Reset current device CSS
+				this.deleteAllCSS();
+
 				this.Pins.forEach((pin) => {
 					if (pin.modification !== null) this.updateChange(pin);
 					if (pin.css != null) this.updateCSS(pin);
 				});
+
 			},
 
 			// CONTENT
@@ -1911,21 +1913,16 @@
 			},
 
 			deleteAllCSS() {
-				var elements = this.iframeElement("style[revisionary-pin-id]");
+				var elements = this.iframeElement("style[data-pin-id]");
 				if (!elements.length) return false;
 
-				Array.prototype.forEach.call(elements, (el, i) => {
-					el.parentNode.removeChild(el);
-				});
+				elements.remove();
 			},
 
 			// SELECTORS:
 			// Find iframe element
 			iframeElement(selector) {
-				if (!this.iframeLoaded) {
-					//console.log("Iframe not loaded yet");
-					return false;
-				}
+				if (!this.iframeLoaded || !this.iframe) return false;
 
 				var element = false;
 
@@ -1998,9 +1995,6 @@
 					await this.$nextTick(async () => {
 						// Check frame scale
 						this.calculateScale();
-
-						// Reset current device CSS
-						await this.deleteAllCSS();
 
 						// Fetch pins
 						this.$nuxt.$loading.start();
