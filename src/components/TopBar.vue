@@ -454,6 +454,7 @@
 			},
 			async getDevices(phaseID) {
 				this.$nuxt.$loading.start();
+				this.devices = [];
 				this.devicesFetching = phaseID;
 				await this.$axios
 					.get("phase/" + phaseID + "/devices")
