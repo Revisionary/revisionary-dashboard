@@ -29,10 +29,10 @@
 		</li>
 		<li>
 			<span>
-				<span class="left">Live Pins</span>
+				<span class="left">Content Pins</span>
 				<span class="right">
 					<LoadingIcon v-if="fetching" />
-					<span v-else>{{ usage.livePins }}/{{ maxLivePins }}</span>
+					<span v-else>{{ usage.contentPins }}/{{ maxContentPins }}</span>
 				</span>
 			</span>
 		</li>
@@ -72,7 +72,7 @@
 					pages: 0,
 					phases: 0,
 					devices: 0,
-					livePins: 0,
+					contentPins: 0,
 					commentPins: 0,
 				},
 			};
@@ -127,10 +127,10 @@
 					? "∞"
 					: this.currentUser.max_screens;
 			},
-			maxLivePins() {
-				return this.currentUser.max_live_pins == "99999"
+			maxContentPins() {
+				return this.currentUser.max_content_pins == "99999"
 					? "∞"
-					: this.currentUser.max_live_pins;
+					: this.currentUser.max_content_pins;
 			},
 			maxCommentPins() {
 				return this.currentUser.max_comment_pins == "99999"

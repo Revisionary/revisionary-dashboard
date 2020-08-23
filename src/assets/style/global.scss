@@ -835,7 +835,7 @@ details {
 	box-sizing: content-box;
 	transition: width 500ms, height 500ms, font-size 500ms, line-height 500ms, opacity 1000ms;
 
-	&[type="live"] {
+	&[type="content"] {
 		background-color: $color-content;
 		border-color: transparentize($color-content, 0.4);
 	}
@@ -901,7 +901,7 @@ details {
 	    transition: opacity 500ms !important;
 		opacity: 0;
 
-		&[type="live"] {
+		&[type="content"] {
 			color: $color-content;
 		}
 
@@ -924,6 +924,10 @@ details {
 		&.existing {
 			background:url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAYAAAAGCAYAAADgzO9IAAAALElEQVQYV2NkwAJEptr7MqKLgwTfZB/cjCIBEwQphksgC8Il0AXBEtgEQRIAbs0VPBlQrL8AAAAASUVORK5CYII=);
 			background-color: #fff;
+
+			&.disabled {
+				opacity: 0.6;
+			}
 		}
 	}
 }

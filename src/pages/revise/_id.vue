@@ -34,7 +34,11 @@
 				class="pin cursor"
 				:type="currentCursorType"
 				:private="currentCursorPrivate"
-				:class="{ active: cursorActive && currentCursorType != 'browse' && !cursorHidden && !hoveringPin, existing: cursorExisting }"
+				:class="{
+					active: cursorActive && currentCursorType != 'browse' && !cursorHidden && !hoveringPin,
+					existing: cursorExisting,
+					disabled: cursorDisabled,
+				}"
 				:style="cursorLocation"
 			>{{ currentPinNumber }}</span>
 		</div>
@@ -150,10 +154,10 @@
 
 				// Pin Mode
 				pinModes: {
-					live: "Content and View Changes",
+					content: "Content and View Changes",
 					style: "View Changes",
 					comment: "Comment",
-					"private-live": "Private Content and View Changes",
+					"private-content": "Private Content and View Changes",
 					private: "Private View Changes",
 					browse: "Browse Mode",
 				},
@@ -165,10 +169,11 @@
 				// Cursor
 				cursorActive: false,
 				cursorWasActive: false,
-				currentCursorType: "style",
+				currentCursorType: "comment",
 				currentCursorPrivate: 0,
 				cursorHidden: false,
 				cursorExisting: false,
+				cursorDisabled: false,
 
 				shifted: false,
 				shiftToggle: false,
@@ -305,15 +310,15 @@
 			focused_element_pin() {
 				return this.pinElement(this.focused_element_index, true);
 			},
-			focused_element_live_pin() {
+			focused_element_content_pin() {
 				return $(
-					'#pins > .pin[type="live"][index="' +
+					'#pins > .pin[type="content"][index="' +
 						this.focused_element_index +
 						'"]'
 				);
 			},
-			focused_element_has_live_pin() {
-				return this.focused_element_live_pin.length;
+			focused_element_has_content_pin() {
+				return this.focused_element_content_pin.length;
 			},
 			focused_element_edited_parents() {
 				return this.focused_element.parents(
@@ -451,22 +456,14 @@
 									this.page_type == "url" &&
 									clientPinType == "comment"
 								)
-									this.currentPinType = "live";
+									this.currentPinType = "content";
 							}
+
+							console.log("HEYYYY", getParameterByName("pinmode"));
 
 							// From URL
-							if (getParameterByName("pinmode") == "style") {
-								this.currentPinType = "style";
-								this.currentPinPrivate = 0;
-							}
-
-							if (getParameterByName("pinmode") == "comment") {
-								this.currentPinType = "comment";
-								this.currentPinPrivate = 0;
-							}
-
-							if (getParameterByName("pinmode") == "browse") {
-								this.currentPinType = "browse";
+							if (getParameterByName("pinmode") != null) {
+								this.currentPinType = getParameterByName("pinmode");
 								this.currentPinPrivate = 0;
 							}
 
@@ -587,8 +584,8 @@
 
 								// Work only if cursor is active
 								if (this.cursorActive && !this.hoveringPin) {
-									// Live Pin Focus Updates
-									if (this.currentPinType == "live") {
+									// Content Pin Focus Updates
+									if (this.currentPinType == "content") {
 										// REFOCUS WORKS:
 										// Re-focus if the focused element has no index
 										if (
@@ -802,7 +799,7 @@
 											this.focused_element_editable = false;
 											//console.log( '* Element editable but there are edited #'+focused_element_has_edited_child+' children: ' + focused_element_tagname + '.' + focused_element.attr('class') );
 										}
-									} // Live Pin
+									} // Content Pin
 
 									// Clean Other Outlines
 									this.removeOutline();
@@ -822,10 +819,10 @@
 
 									// REACTIONS:
 
-									// If current element already has a live pin
-									if (this.focused_element_has_live_pin) {
+									// If current element already has a content pin
+									if (this.focused_element_has_content_pin) {
 										// Point to the pin
-										this.focused_element_live_pin.css(
+										this.focused_element_content_pin.css(
 											"opacity",
 											"1"
 										);
@@ -836,14 +833,14 @@
 										).css("opacity", "0.2");
 
 										// Update the cursor
-										this.currentPinNumber = this.focused_element_live_pin.text();
+										this.currentPinNumber = this.focused_element_content_pin.text();
 
 										// Update cursor type
 										this.switchCursorType(
-											this.focused_element_live_pin.attr(
+											this.focused_element_content_pin.attr(
 												"type"
 											),
-											this.focused_element_live_pin.attr(
+											this.focused_element_content_pin.attr(
 												"private"
 											),
 											true
@@ -852,17 +849,17 @@
 										// Outline
 										this.outline(
 											this.focused_element,
-											this.focused_element_live_pin.attr(
+											this.focused_element_content_pin.attr(
 												"type"
 											),
-											this.focused_element_live_pin.attr(
+											this.focused_element_content_pin.attr(
 												"private"
 											)
 										);
 
-										//console.log('This element already has a live pin.');
+										//console.log('This element already has a content pin.');
 									} else {
-										// UPDATE CURSOR ACCORDING TO PIN MODES (currentPinType: live | style | browse)
+										// UPDATE CURSOR ACCORDING TO PIN MODES (currentPinType: content | style | browse)
 
 										// Re-update the cursor number
 										this.currentPinNumber =
@@ -872,7 +869,10 @@
 										this.switchCursorType(
 											this.currentPinType,
 											this.currentPinPrivate,
-											this.currentPinType == "live"
+											this.currentPinType == "content"
+												? !this.focused_element_editable
+												: false,
+											this.currentPinType == "content"
 												? !this.focused_element_editable
 												: false
 										);
@@ -880,7 +880,7 @@
 										// Outline
 										if (this.focused_element_has_index) {
 											if (
-												(this.currentPinType == "live" &&
+												(this.currentPinType == "content" &&
 													this
 														.focused_element_editable) ||
 												this.currentPinType == "style"
@@ -907,7 +907,7 @@
 								// While editing a content on page
 								mouseDownOnContentEdit =
 									this.cursorActive &&
-									this.focused_element_has_live_pin;
+									this.focused_element_has_content_pin;
 
 								//$('#the-page').css('pointer-events', 'none');
 							},
@@ -925,8 +925,8 @@
 
 								// If cursor is active
 								if (this.cursorActive) {
-									// If focused element has a live pin
-									if (this.focused_element_has_live_pin) {
+									// If focused element has a content pin
+									if (this.focused_element_has_content_pin) {
 										// Open the new pin window if already open one or clicking an image editable
 										if (
 											this.pinWindowOpen ||
@@ -1073,14 +1073,14 @@
 					// SITE STYLES
 					this.iframeElement("body").append(
 						' \
-						<style> \
-							/* Auto-height edited images */ \
-							img[data-revisionary-showing-content-changes="1"] { height: auto !important; } \
-							iframe { pointer-events: none !important; } \
-							* { -webkit-user-select: none !important; -moz-user-select: none !important; user-select: none !important; } \
-							.revisionary-show { position: absolute !important; width: 0 !important; height: 0 !important; display: inline-block !important; } \
-						</style> \
-						'
+																				<style> \
+																					/* Auto-height edited images */ \
+																					img[data-revisionary-showing-content-changes="1"] { height: auto !important; } \
+																					iframe { pointer-events: none !important; } \
+																					* { -webkit-user-select: none !important; -moz-user-select: none !important; user-select: none !important; } \
+																					.revisionary-show { position: absolute !important; width: 0 !important; height: 0 !important; display: inline-block !important; } \
+																				</style> \
+																				'
 					);
 
 					// If new downloaded site, ask whether or not it's showing correctly
@@ -1099,7 +1099,7 @@
 									"data-revisionary-index"
 								);
 								var pin_ID = this.pinElement(
-									'[data-pin-type="live"][data-revisionary-index="' +
+									'[data-pin-type="content"][data-revisionary-index="' +
 										element_index +
 										'"]'
 								).attr("data-pin-id");
@@ -1201,7 +1201,7 @@
 								// Outline this focused element
 								this.outline(
 									this.focused_element,
-									this.focused_element_live_pin.attr(
+									this.focused_element_content_pin.attr(
 										"data-pin-private"
 									)
 								);
@@ -1212,13 +1212,13 @@
 								// Open the new pin window if already open
 								if (
 									this.pinWindowOpen &&
-									this.focused_element_live_pin != null &&
-									this.focused_element_has_live_pin &&
+									this.focused_element_content_pin != null &&
+									this.focused_element_has_content_pin &&
 									pinWindow().attr("data-revisionary-index") !=
 										this.focused_element_index
 								)
 									openPinWindow(
-										this.focused_element_live_pin.attr(
+										this.focused_element_content_pin.attr(
 											"data-pin-id"
 										)
 									);
@@ -1442,7 +1442,7 @@
 
 				// Default
 				var elementColor = "red";
-				if (pin_type == "live") elementColor = "#74B65C";
+				if (pin_type == "content") elementColor = "#74B65C";
 				if (pin_type == "style") elementColor = "#F39754";
 				if (pin_type == "comment") elementColor = "#0363F3";
 				if (private_pin == 1) elementColor = "#D16262";
@@ -1471,20 +1471,20 @@
 				// Image mode
 				if (
 					(this.page_type == "image" || this.page_type == "capture") &&
-					(pinType == "live" || pinType == "style")
+					(pinType == "content" || pinType == "style")
 				) {
 					pinType = "comment";
 				}
 
-				// Change the cursor color (By default, existing mark if live)
-				this.switchCursorType(pinType, pinPrivate, pinType == "live");
+				// Change the cursor color (By default, existing mark if content)
+				this.switchCursorType(pinType, pinPrivate, pinType == "content");
 
 				// URL update
 				if (history.pushState) {
 					var newurl = queryParameter(
 						currentUrl(),
 						"pinmode",
-						this.currentPinType == "live" ? "" : this.currentPinType
+						this.currentPinType == "browse" ? "" : this.currentPinType
 					);
 					newurl = queryParameter(
 						newurl,
@@ -1527,7 +1527,7 @@
 				// Image mode
 				if (
 					(this.page_type == "image" || this.page_type == "capture") &&
-					(pinType == "live" || pinType == "style")
+					(pinType == "content" || pinType == "style")
 				) {
 					pinType = "comment";
 				}
@@ -1542,7 +1542,8 @@
 			switchCursorType(
 				cursorType = this.currentPinTypeWas,
 				cursorPrivate = this.currentPinPrivateWas,
-				cursorExisting = false
+				cursorExisting = false,
+				cursorDisabled = false
 			) {
 				//console.log("New Cursor Type: ", cursorType, "Private: " + pinPrivate);
 
@@ -1550,6 +1551,7 @@
 				this.currentCursorType = cursorType;
 				this.currentCursorPrivate = cursorPrivate;
 				this.cursorExisting = cursorExisting;
+				this.cursorDisabled = cursorDisabled;
 
 				// Cursor Activation
 				if (this.currentCursorType != "browse" && !this.cursorActive)
@@ -1970,7 +1972,7 @@
 				this.removeOutline();
 
 				// Outline the element
-				if (pin.type == "live" || pin.type == "style")
+				if (pin.type == "content" || pin.type == "style")
 					this.outline(pin.element_index, pin.type, pin.private);
 			},
 			pinUnHover() {

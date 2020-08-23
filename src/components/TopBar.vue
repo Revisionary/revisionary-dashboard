@@ -281,10 +281,10 @@
 					<CommentIcon />
 				</span>
 				<span
-					class="bottom-tooltip tooltip-not-contained live"
-					:class="{ active: currentPinType == 'live' }"
+					class="bottom-tooltip tooltip-not-contained content"
+					:class="{ active: currentPinType == 'content' }"
 					data-tooltip="Content Mode"
-					@click="changePinMode('live')"
+					@click="changePinMode('content')"
 				>
 					<ContentIcon />
 				</span>
@@ -298,7 +298,7 @@
 				</span>
 			</div>
 
-			<div class="limitations" @click="$store.commit('toggleTab', 'usage')">27 Live Pins Left</div>
+			<div class="limitations" @click="$store.commit('toggleTab', 'usage')">27 Content Pins Left</div>
 		</div>
 
 		<div class="right-side">
@@ -632,7 +632,7 @@
 			& > .comment.active {
 				background-color: $color-comment;
 			}
-			& > .live.active {
+			& > .content.active {
 				background-color: $color-content;
 			}
 			& > .style.active {

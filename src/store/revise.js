@@ -3,7 +3,7 @@ export const state = () => ({
 	fetching: false,
 	iframeScale: 1,
 	iframeLoaded: false,
-	currentPinType: "browse",
+	currentPinType: "comment",
 	currentPinPrivate: 0
 });
 
