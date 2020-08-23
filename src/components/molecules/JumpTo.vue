@@ -289,6 +289,11 @@
 							console.log("PHASES of Page #" + pageID, phases);
 							this.phases = phases;
 							this.phasesFetching = false;
+
+							// Auto fetch devices if only one phase
+							if (this.phases.length == 1) {
+								this.bringDevices(this.phases[0].ID);
+							}
 						}
 					})
 					.catch((error) => {
