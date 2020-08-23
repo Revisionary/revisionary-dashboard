@@ -4,6 +4,7 @@ export const state = () => ({
 	iframeScale: 1,
 	iframeLoaded: false,
 	currentPinType: "browse",
+	currentPinPrivate: 0
 });
 
 export const getters = {

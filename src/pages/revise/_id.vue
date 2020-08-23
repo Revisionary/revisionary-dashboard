@@ -33,10 +33,10 @@
 			<span
 				class="pin cursor"
 				:type="currentCursorType"
-				:private="currentPinPrivate"
-				:class="{ active: cursorActive, existing: cursorExisting }"
+				:private="currentCursorPrivate"
+				:class="{ active: cursorActive && currentCursorType != 'browse' && !cursorHidden && !hoveringPin, existing: cursorExisting }"
 				:style="cursorLocation"
-			>{{ pinNumber }}</span>
+			>{{ currentPinNumber }}</span>
 		</div>
 
 		<div class="loading" v-if="!iframeLoaded">
@@ -147,7 +147,7 @@
 				pinWindowHeight: 515,
 				selectionFromContentEditor: false,
 
-				// Pin Modes
+				// Pin Mode
 				pinModes: {
 					live: "Content and View Changes",
 					style: "View Changes",
@@ -157,20 +157,23 @@
 					browse: "Browse Mode",
 				},
 
-				// Cursor
-				currentCursorType: "style",
-				cursorActive: false,
-				cursorWasActive: false,
-				cursorExisting: false,
-				currentPinType: "live",
-				currentPinPrivate: 0,
 				currentPinTypeWas: 0,
 				currentPinPrivateWas: 0,
 				currentPinNumber: 1,
+
+				// Cursor
+				cursorActive: false,
+				cursorWasActive: false,
+				currentCursorType: "style",
+				currentCursorPrivate: 0,
+				cursorHidden: false,
+				cursorExisting: false,
+
 				shifted: false,
 				shiftToggle: false,
 
 				// Mouse
+				offset: {},
 				containerX: 0,
 				containerY: 0,
 
@@ -245,6 +248,22 @@
 			},
 
 			// CURSOR ACTIONS
+			currentPinType: {
+				get: function () {
+					return this.$store.state.revise.currentPinType;
+				},
+				set: function (newValue) {
+					this.$store.commit("revise/setCurrentPinType", newValue);
+				},
+			},
+			currentPinPrivate: {
+				get: function () {
+					return this.$store.state.revise.currentPinPrivate;
+				},
+				set: function (newValue) {
+					this.$store.commit("revise/setCurrentPinPrivate", newValue);
+				},
+			},
 			cursorLocation() {
 				return (
 					"transform: translate(" +
@@ -254,9 +273,11 @@
 					"px);"
 				);
 			},
+			//currentCursorType() {},
 
 			// Focus Variables
 			focused_element_index() {
+				if (!this.focused_element) return 0;
 				return this.focused_element.attr("data-revisionary-index");
 			},
 			focused_element_has_index() {
@@ -307,22 +328,9 @@
 				return this.focused_element.prop("tagName").toUpperCase();
 			},
 
-			pinMode() {
-				return this.$store.state.revise.currentPinType;
-			},
-
-			// currentPinNumber() {
-			// 	return this.Pins.length + 1;
+			// pinMode() {
+			// 	return this.$store.state.revise.currentPinType;
 			// },
-
-			pinNumber: {
-				get: function () {
-					return this.currentPinNumber;
-				},
-				set: function (newValue) {
-					this.currentPinNumber = newValue;
-				},
-			},
 		},
 		async mounted() {
 			console.log("MOUNTED");
@@ -404,7 +412,7 @@
 							console.log("LOAD PAGE REOPENED");
 							this.page_redirected = false;
 
-							setTimeout(function () {
+							setTimeout(() => {
 								// Does not work sometimes, and needs improvement !!!
 
 								this.iframe.scrollTop(this.oldScrollOffset_top);
@@ -435,24 +443,14 @@
 
 							// From last option
 							if (clientPinType != null && clientPinPrivate != null) {
-								//this.currentPinType = clientPinType;
-								this.$store.commit(
-									"revise/setCurrentPinType",
-									clientPinType
-								);
-								this.$store.commit(
-									"revise/setCurrentPinPrivate",
-									clientPinPrivate
-								);
+								this.currentPinType = clientPinType;
+								this.currentPinPrivate = clientPinPrivate;
 
 								if (
 									this.page_type == "url" &&
 									clientPinType == "comment"
 								)
-									this.$store.commit(
-										"revise/setCurrentPinType",
-										"live"
-									);
+									this.currentPinType = "live";
 							}
 
 							// From URL
@@ -472,12 +470,8 @@
 							}
 
 							// Update the pin type
-							this.$store.commit(
-								"revise/setCurrentPinType",
-								this.currentPinType
-							);
-							this.$store.commit(
-								"revise/setCurrentPinPrivate",
+							this.switchPinType(
+								this.currentPinType,
 								this.currentPinPrivate
 							);
 
@@ -533,8 +527,10 @@
 									this.shiftToggle = false;
 									console.log("UNSHIFTED");
 
-									this.currentPinType = this.currentPinTypeWas;
-									toggleCursorActive(false, true); // Force Open
+									this.switchPinType(
+										this.currentPinTypeWas,
+										this.currentPinPrivateWas
+									);
 
 									this.shifted = false;
 								}
@@ -545,9 +541,8 @@
 
 								// Work only if cursor is active
 								if (this.cursorActive && !this.hoveringPin) {
+									// Live Pin Focus Updates
 									if (this.currentPinType == "live") {
-										// Live Pin
-
 										// REFOCUS WORKS:
 										// Re-focus if the focused element has no index
 										if (
@@ -762,12 +757,6 @@
 											//console.log( '* Element editable but there are edited #'+focused_element_has_edited_child+' children: ' + focused_element_tagname + '.' + focused_element.attr('class') );
 										}
 									} // Live Pin
-									else if (this.currentPinType == "style") {
-										// Style Pin
-									} // Style Pin
-									else if (this.currentPinType == "comment") {
-										// Comment Pin
-									} // Comment Pin
 
 									// Clean Other Outlines
 									this.removeOutline();
@@ -790,11 +779,10 @@
 									// If current element already has a live pin
 									if (this.focused_element_has_live_pin) {
 										// Point to the pin
-										$(
-											'#pins > .pin[index="' +
-												this.focused_element_index +
-												'"]'
-										).css("opacity", "1");
+										this.focused_element_live_pin.css(
+											"opacity",
+											"1"
+										);
 										$(
 											'#pins > .pin:not([index="' +
 												this.focused_element_index +
@@ -814,6 +802,8 @@
 											),
 											true
 										);
+
+										// Outline
 										this.outline(
 											this.focused_element,
 											this.focused_element_live_pin.attr(
@@ -823,6 +813,7 @@
 												"private"
 											)
 										);
+
 										//console.log('This element already has a live pin.');
 									} else {
 										// UPDATE CURSOR ACCORDING TO PIN MODES (currentPinType: live | style | browse)
@@ -831,34 +822,29 @@
 										this.currentPinNumber =
 											this.Pins.length + 1;
 
-										// Editable check
-										if (this.currentPinType == "live") {
-											this.switchCursorType(
-												"live",
-												0,
-												!this.focused_element_editable
-											);
+										// Update Cursor Type
+										this.switchCursorType(
+											this.currentPinType,
+											this.currentPinPrivate,
+											this.currentPinType == "live"
+												? !this.focused_element_editable
+												: false
+										);
+
+										// Outline
+										if (this.focused_element_has_index) {
 											if (
-												this.focused_element_has_index &&
-												this.focused_element_editable
-											)
+												(this.currentPinType == "live" &&
+													this
+														.focused_element_editable) ||
+												this.currentPinType == "style"
+											) {
 												this.outline(
 													this.focused_element,
-													"live",
+													this.currentPinType,
 													this.currentPinPrivate
 												);
-										} else if (this.currentPinType == "style") {
-											this.switchCursorType("style");
-											if (this.focused_element_has_index)
-												this.outline(
-													this.focused_element,
-													"style",
-													this.currentPinPrivate
-												);
-										} else if (
-											this.currentPinType == "comment"
-										) {
-											this.switchCursorType("comment");
+											}
 										}
 									}
 								} // If cursor active
@@ -874,7 +860,7 @@
 
 								// While editing a content on page
 								mouseDownOnContentEdit =
-									cursorActive &&
+									this.cursorActive &&
 									this.focused_element_has_live_pin;
 
 								//$('#the-page').css('pointer-events', 'none');
@@ -971,47 +957,60 @@
 							true
 						);
 
+						var shiftedCallBack = (e) => {
+							if (e.shiftKey) this.shifted = true;
+
+							if (
+								this.shifted &&
+								!this.pinWindowOpen &&
+								this.currentPinType != "browse"
+							) {
+								this.shiftToggle = true;
+								console.log("SHIFTED");
+
+								this.switchPinType("browse");
+							}
+
+							// Escape
+							if (e.keyCode == 27 && this.pinWindowOpen) {
+								console.log("CLOSE PIN WINDOW via ESC");
+								this.closePinWindow();
+
+								e.preventDefault();
+								return false;
+							}
+						};
+
+						var unShiftedCallBack = (e) => {
+							if (
+								this.shifted &&
+								this.shiftToggle &&
+								!this.pinWindowOpen &&
+								this.currentPinType == "browse"
+							) {
+								this.shiftToggle = false;
+								console.log("UNSHIFTED");
+
+								this.switchPinType(
+									this.currentPinTypeWas,
+									this.currentPinPrivateWas
+								);
+							}
+
+							this.shifted = false;
+						};
+
 						// Detect shift key press to toggle browse mode
 						this.iframeDocument.addEventListener(
 							"keydown",
-							(e) => {
-								if (e.shiftKey) this.shifted = true;
-
-								if (
-									this.shifted &&
-									!this.pinWindowOpen &&
-									this.currentPinType != "browse"
-								) {
-									this.shiftToggle = true;
-									console.log("SHIFTED");
-
-									this.currentPinTypeWas = this.currentPinType;
-									toggleCursorActive(true); // Force close
-									this.currentPinType = "browse";
-								}
-							},
+							shiftedCallBack,
 							true
 						);
 
 						// Detect shift key press to toggle browse mode
 						this.iframeDocument.addEventListener(
 							"keyup",
-							(e) => {
-								if (
-									this.shifted &&
-									this.shiftToggle &&
-									!this.pinWindowOpen &&
-									this.currentPinType == "browse"
-								) {
-									this.shiftToggle = false;
-									console.log("UNSHIFTED");
-
-									this.currentPinType = this.currentPinTypeWas;
-									toggleCursorActive(false, true); // Force Open
-								}
-
-								this.shifted = false;
-							},
+							unShiftedCallBack,
 							true
 						);
 
@@ -1063,19 +1062,22 @@
 						return;
 					}
 
-					console.log("Load Complete", canAccessIFrame($(this)));
+					console.log(
+						"Load Complete",
+						canAccessIFrame(this.iframeSelector)
+					);
 
 					// SITE STYLES
 					this.iframeElement("body").append(
 						' \
-																																<style> \
-																																	/* Auto-height edited images */ \
-																																	img[data-revisionary-showing-content-changes="1"] { height: auto !important; } \
-																																	iframe { pointer-events: none !important; } \
-																																	* { -webkit-user-select: none !important; -moz-user-select: none !important; user-select: none !important; } \
-																																	.revisionary-show { position: absolute !important; width: 0 !important; height: 0 !important; display: inline-block !important; } \
-																																</style> \
-																																'
+		<style> \
+			/* Auto-height edited images */ \
+			img[data-revisionary-showing-content-changes="1"] { height: auto !important; } \
+			iframe { pointer-events: none !important; } \
+			* { -webkit-user-select: none !important; -moz-user-select: none !important; user-select: none !important; } \
+			.revisionary-show { position: absolute !important; width: 0 !important; height: 0 !important; display: inline-block !important; } \
+		</style> \
+		'
 					);
 
 					// If new downloaded site, ask whether or not it's showing correctly
@@ -1194,7 +1196,7 @@
 								this.removeOutline();
 
 								// Outline this focused element
-								outline(
+								this.outline(
 									this.focused_element,
 									this.focused_element_live_pin.attr(
 										"data-pin-private"
@@ -1351,9 +1353,10 @@
 								return false;
 							}
 						});
-					$(window).on("resize", (e) => {
-						// Detect the window resizing to re-position pins
 
+					// PAGE EVENTS
+					// Detect the window resizing to re-position pins ???
+					window.addEventListener("resize", (e) => {
 						//console.log('RESIZIIIIIIIING');
 
 						// Add scrolling class to the body
@@ -1367,6 +1370,21 @@
 							scrollFlag = false;
 						}, 200);
 					});
+
+					// Detect cursor moves from outside of iframe
+					window.addEventListener("mousemove", (e) => {
+						// Iframe offset
+						this.offset = $("#the-page").offset();
+
+						this.containerX = e.clientX - this.offset.left;
+						this.containerY = e.clientY - this.offset.top;
+
+						//console.log(hoveringPin);
+					});
+
+					// Keyboard bindings
+					document.addEventListener("keydown", shiftedCallBack);
+					document.addEventListener("keyup", unShiftedCallBack);
 
 					// Focus to the iframe
 					this.iframeSelector.focus();
@@ -1412,7 +1430,7 @@
 
 			// OUTLINES:
 			// Color the element
-			outline(element, pin_type = "live", private_pin = 0) {
+			outline(element, pin_type, private_pin) {
 				if (!this.iframeLoaded) return false;
 				if ($.isNumeric(element)) element = this.iframeElement(element);
 				if (!element.length) return false;
@@ -1439,16 +1457,12 @@
 			},
 
 			// CURSOR:
-			// Switch to a different pin mode
-			switchPinType(pinType, pinPrivate = this.currentPinPrivate) {
-				console.log(
-					"Switched Pin Type: " + pinType,
-					"Private: " + pinPrivate
-				);
 
-				this.currentPinTypeWas = this.currentPinType;
-				this.currentPinPrivateWas = this.currentPinPrivate;
-
+			// PinType Update
+			pinTypeUpdate(
+				pinType = this.currentPinType,
+				pinPrivate = this.currentPinPrivate
+			) {
 				// Image mode
 				if (
 					(this.page_type == "image" || this.page_type == "capture") &&
@@ -1457,15 +1471,8 @@
 					pinType = "comment";
 				}
 
-				this.currentPinType = pinType;
-				this.currentPinPrivate = parseInt(pinPrivate);
-
-				// Change the cursor color
-				this.switchCursorType(
-					pinType,
-					this.currentPinPrivate,
-					pinType == "live"
-				);
+				// Change the cursor color (By default, existing mark if live)
+				this.switchCursorType(pinType, pinPrivate, pinType == "live");
 
 				// URL update
 				if (history.pushState) {
@@ -1492,11 +1499,6 @@
 					this.currentPinPrivate
 				);
 
-				// Deactivate the cursor
-				if (pinType == "browse") this.deactivateCursor();
-				// Activate the cursor
-				else this.activateCursor();
-
 				// Close the pin window
 				if (this.pinWindowOpen && this.iframeLoaded) this.closePinWindow();
 
@@ -1507,33 +1509,52 @@
 				}
 			},
 
+			// Switch to a different pin mode
+			switchPinType(
+				pinType = this.currentPinType,
+				pinPrivate = this.currentPinPrivate
+			) {
+				console.log(
+					"Switch Pin Type: " + pinType,
+					"Private: " + pinPrivate
+				);
+
+				// Image mode
+				if (
+					(this.page_type == "image" || this.page_type == "capture") &&
+					(pinType == "live" || pinType == "style")
+				) {
+					pinType = "comment";
+				}
+
+				this.currentPinTypeWas = this.currentPinType;
+				this.currentPinPrivateWas = this.currentPinPrivate;
+				this.currentPinType = pinType;
+				this.currentPinPrivate = pinPrivate;
+			},
+
 			// Switch to a different cursor mode
 			switchCursorType(
-				cursorType,
-				pinPrivate = this.currentPinPrivate,
-				existing = false
+				cursorType = this.currentPinTypeWas,
+				cursorPrivate = this.currentPinPrivateWas,
+				cursorExisting = false
 			) {
 				//console.log("New Cursor Type: ", cursorType, "Private: " + pinPrivate);
 
 				// Update cursor
 				this.currentCursorType = cursorType;
-				this.cursorExisting = existing;
+				this.currentCursorPrivate = cursorPrivate;
+				this.cursorExisting = cursorExisting;
+
+				// Cursor Activation
+				if (this.currentCursorType != "browse" && !this.cursorActive)
+					this.activateCursor();
+
+				if (this.currentCursorType == "browse" && this.cursorActive)
+					this.deactivateCursor();
 
 				// Remove outlines from iframe
 				this.removeOutline();
-			},
-
-			// Toggle Inspect Mode
-			toggleCursorActive(forceClose = false, forceOpen = false) {
-				// Remove outlines from iframe
-				this.removeOutline();
-
-				if ((this.cursorActive || forceClose) && !forceOpen)
-					deactivateCursor();
-				else activateCursor();
-
-				// Close the open pin window
-				if (this.pinWindowOpen && this.iframeLoaded) closePinWindow();
 			},
 
 			// Activate Cursor
@@ -1541,7 +1562,8 @@
 				if (!this.iframeLoaded) return false;
 
 				// If hit the limitations
-				if (this.currentAllowed == "0") {
+				if (this.currentAllowed == 0) {
+					console.log("Could not activate the cursor, hit the limit");
 					this.deactivateCursor();
 					return false;
 				}
@@ -1549,7 +1571,7 @@
 				console.log("Activate Cursor");
 
 				// Show the cursor
-				if (!this.pinWindowOpen) this.cursorActive = true;
+				this.cursorActive = true;
 
 				// Hide the original cursor
 				if (!this.iframeElement("#revisionary-cursor").length)
@@ -1563,9 +1585,6 @@
 				if (!this.iframeLoaded) return false;
 
 				console.log("Deactivate Cursor");
-
-				// Deactivate
-				this.currentPinType = "browse";
 
 				// Hide the cursor
 				this.cursorActive = false;
@@ -1926,7 +1945,7 @@
 				if (!this.pinWindowOpen) $("#pins > .pin").css("opacity", "");
 
 				// Hide the cursor
-				this.cursorActive = false;
+				this.cursorHidden = true;
 
 				// Clear all outlines
 				this.removeOutline();
@@ -1943,7 +1962,7 @@
 				this.removeOutline();
 
 				// Show the cursor
-				if (!this.pinDragging) this.cursorActive = true;
+				if (!this.pinDragging) this.cursorHidden = false;
 			},
 		},
 		watch: {
@@ -1976,10 +1995,18 @@
 
 				this.applyChanges();
 			},
-			pinMode(to, from) {
+
+			currentPinType(to, from) {
 				console.log("Pin Mode Changed", from, to);
 
-				this.switchPinType(to);
+				//this.currentPinTypeWas = from;
+				this.pinTypeUpdate(to);
+			},
+
+			currentPinPrivate(to, from) {
+				console.log("Pin Private Mode Changed", from, to);
+
+				//this.currentPinPrivateWas = from;
 			},
 		},
 	};
