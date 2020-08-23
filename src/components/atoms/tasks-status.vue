@@ -22,9 +22,14 @@
 			compact: {
 				default: true,
 			},
+			showTooltip: {
+				default: true,
+			},
 		},
 		computed: {
 			tooltip() {
+				if (!this.showTooltip) return null;
+
 				return (
 					"Incompleted: " +
 					this.incompletedCount +

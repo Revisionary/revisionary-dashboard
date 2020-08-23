@@ -243,6 +243,7 @@
 				:incompletedCount="blockData.incomplete_tasks"
 				:completedCount="blockData.complete_tasks"
 				:compact="false"
+				:showTooltip="false"
 				v-if="blockData.incomplete_tasks > 0 || blockData.complete_tasks > 0"
 			/>
 		</div>
