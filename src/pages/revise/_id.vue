@@ -820,7 +820,10 @@
 									// REACTIONS:
 
 									// If current element already has a content pin
-									if (this.focused_element_has_content_pin) {
+									if (
+										this.focused_element_has_content_pin &&
+										this.currentPinType != "comment"
+									) {
 										// Point to the pin
 										this.focused_element_content_pin.css(
 											"opacity",
@@ -1073,14 +1076,14 @@
 					// SITE STYLES
 					this.iframeElement("body").append(
 						' \
-																				<style> \
-																					/* Auto-height edited images */ \
-																					img[data-revisionary-showing-content-changes="1"] { height: auto !important; } \
-																					iframe { pointer-events: none !important; } \
-																					* { -webkit-user-select: none !important; -moz-user-select: none !important; user-select: none !important; } \
-																					.revisionary-show { position: absolute !important; width: 0 !important; height: 0 !important; display: inline-block !important; } \
-																				</style> \
-																				'
+		<style> \
+			/* Auto-height edited images */ \
+			img[data-revisionary-showing-content-changes="1"] { height: auto !important; } \
+			iframe { pointer-events: none !important; } \
+			* { -webkit-user-select: none !important; -moz-user-select: none !important; user-select: none !important; } \
+			.revisionary-show { position: absolute !important; width: 0 !important; height: 0 !important; display: inline-block !important; } \
+		</style> \
+		'
 					);
 
 					// If new downloaded site, ask whether or not it's showing correctly
