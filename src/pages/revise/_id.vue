@@ -313,8 +313,8 @@
 			focused_element_content_pin() {
 				return $(
 					'#pins > .pin[type="content"][index="' +
-						this.focused_element_index +
-						'"]'
+					this.focused_element_index +
+					'"]'
 				);
 			},
 			focused_element_has_content_pin() {
@@ -606,7 +606,7 @@
 										while (
 											this.focused_element_text == "" && // Focused element has no content
 											this.focused_element_children.length ==
-												1 // Has only one child
+											1 // Has only one child
 											//focused_element_grand_children.length != 0 && // No grand child
 											//focused_element_children.first().text().trim() == "" // Grand child should have content
 										) {
@@ -638,11 +638,11 @@
 												this.focused_element_tagname
 											) && // In easy HTML elements?
 											this.focused_element_text.trim() !=
-												"" && // Has to have text
+											"" && // Has to have text
 											this.focused_element.html() !=
-												"&nbsp;" && // Text shouldn't be blank
+											"&nbsp;" && // Text shouldn't be blank
 											this.focused_element_children.length ==
-												0 // No child element
+											0 // No child element
 										) {
 											this.hoveringText = true;
 											this.focused_element_editable = true; // Obviously Text Editable
@@ -683,7 +683,7 @@
 										// Check if element has children but doesn't have grand children: <p>Lorem ipsum <a href="#">dolor</a> sit amet...
 										if (
 											this.focused_element_children.length >
-												0 && // Has child
+											0 && // Has child
 											this.focused_element_grand_children
 												.length == 0 && // No grand child
 											this.focused_element_text != "" && // Has to have text
@@ -716,11 +716,11 @@
 										// Chech if element has only one grand child and it doesn't have any child: <p>Lorem ipsum <a href="#"><strong>dolor</strong></a> sit amet... !!!
 										if (
 											this.focused_element_children.length >
-												0 && // Has child
+											0 && // Has child
 											this.focused_element_grand_children
 												.length > 0 && // Has grand child
 											this.focused_element_text.trim() !=
-												"" && // And, also have to have text
+											"" && // And, also have to have text
 											this.focused_element.html() != "&nbsp;" // And, also have to have text
 										) {
 											// Also check the children's tagname
@@ -760,19 +760,19 @@
 										this.hoveringButton = false;
 										if (
 											this.focused_element_tagname ==
-												"INPUT" &&
+											"INPUT" &&
 											(this.focused_element.attr("type") ==
 												"text" ||
 												this.focused_element.attr("type") ==
-													"email" ||
+												"email" ||
 												this.focused_element.attr("type") ==
-													"url" ||
+												"url" ||
 												this.focused_element.attr("type") ==
-													"tel" ||
+												"tel" ||
 												this.focused_element.attr("type") ==
-													"submit" ||
+												"submit" ||
 												this.focused_element.attr("type") ==
-													"reset")
+												"reset")
 										) {
 											this.hoveringButton = true;
 											this.hoveringText = true;
@@ -831,8 +831,8 @@
 										);
 										$(
 											'#pins > .pin:not([index="' +
-												this.focused_element_index +
-												'"])'
+											this.focused_element_index +
+											'"])'
 										).css("opacity", "0.2");
 
 										// Update the cursor
@@ -1076,14 +1076,14 @@
 					// SITE STYLES
 					this.iframeElement("body").append(
 						' \
-		<style> \
-			/* Auto-height edited images */ \
-			img[data-revisionary-showing-content-changes="1"] { height: auto !important; } \
-			iframe { pointer-events: none !important; } \
-			* { -webkit-user-select: none !important; -moz-user-select: none !important; user-select: none !important; } \
-			.revisionary-show { position: absolute !important; width: 0 !important; height: 0 !important; display: inline-block !important; } \
-		</style> \
-		'
+						<style> \
+							/* Auto-height edited images */ \
+							img[data-revisionary-showing-content-changes="1"] { height: auto !important; } \
+							iframe { pointer-events: none !important; } \
+							* { -webkit-user-select: none !important; -moz-user-select: none !important; user-select: none !important; } \
+							.revisionary-show { position: absolute !important; width: 0 !important; height: 0 !important; display: inline-block !important; } \
+						</style> \
+						'
 					);
 
 					// If new downloaded site, ask whether or not it's showing correctly
@@ -1103,8 +1103,8 @@
 								);
 								var pin_ID = this.pinElement(
 									'[data-pin-type="content"][data-revisionary-index="' +
-										element_index +
-										'"]'
+									element_index +
+									'"]'
 								).attr("data-pin-id");
 								var changedElement = $(e.target);
 								var modification = changedElement.html();
@@ -1112,7 +1112,7 @@
 								// If edited element is a submit or reset input button
 								if (
 									changedElement.prop("tagName").toUpperCase() ==
-										"INPUT" &&
+									"INPUT" &&
 									(changedElement.attr("type") == "text" ||
 										changedElement.attr("type") == "email" ||
 										changedElement.attr("type") == "url" ||
@@ -1218,7 +1218,7 @@
 									this.focused_element_content_pin != null &&
 									this.focused_element_has_content_pin &&
 									pinWindow().attr("data-revisionary-index") !=
-										this.focused_element_index
+									this.focused_element_index
 								)
 									openPinWindow(
 										this.focused_element_content_pin.attr(
@@ -1295,7 +1295,7 @@
 								var pageFound = myPages.find(function (page) {
 									return (
 										urlStandardize(page.page_url, true) ==
-											urlStandardize(absoluteLink, true) &&
+										urlStandardize(absoluteLink, true) &&
 										page.project_ID == project_ID
 									);
 								});
@@ -1797,7 +1797,7 @@
 							// If edited element is a submit or reset input button
 							if (
 								changedElement.prop("tagName").toUpperCase() ==
-									"INPUT" &&
+								"INPUT" &&
 								(changedElement.attr("type") == "text" ||
 									changedElement.attr("type") == "email" ||
 									changedElement.attr("type") == "url" ||
@@ -1873,14 +1873,14 @@
 					// Add the new CSS codes
 					this.iframeElement("body").append(
 						'<style data-index="' +
-							element_index +
-							'" data-pin-id="' +
-							pin.ID +
-							'">[data-revisionary-index="' +
-							element_index +
-							'"]{' +
-							cssCode +
-							"}</style>"
+						element_index +
+						'" data-pin-id="' +
+						pin.ID +
+						'">[data-revisionary-index="' +
+						element_index +
+						'"]{' +
+						cssCode +
+						"}</style>"
 					);
 
 					// Remove the old ones
@@ -2074,13 +2074,13 @@
 		useTable = !isNaN(table)
 			? constMappingTable[table]
 			: table
-			? table.toUpperCase()
-			: "HTML_SPECIALCHARS";
+				? table.toUpperCase()
+				: "HTML_SPECIALCHARS";
 		useQuoteStyle = !isNaN(quote_style)
 			? constMappingQuoteStyle[quote_style]
 			: quote_style
-			? quote_style.toUpperCase()
-			: "ENT_COMPAT";
+				? quote_style.toUpperCase()
+				: "ENT_COMPAT";
 
 		if (useTable !== "HTML_SPECIALCHARS" && useTable !== "HTML_ENTITIES") {
 			throw new Error("Table: " + useTable + " not supported");
@@ -2379,9 +2379,9 @@
 		//   returns 2: 'foo&#039;bar'
 
 		var hash_map = this.get_html_translation_table(
-				"HTML_ENTITIES",
-				quote_style
-			),
+			"HTML_ENTITIES",
+			quote_style
+		),
 			symbol = "";
 
 		string = string == null ? "" : string + "";
@@ -2398,11 +2398,11 @@
 
 		var regex = new RegExp(
 			"&(?:#\\d+|#x[\\da-f]+|[a-zA-Z][\\da-z]*);|[" +
-				Object.keys(hash_map)
-					.join("")
-					// replace regexp special chars
-					.replace(/([()[\]{}\-.*+?^$|\/\\])/g, "\\$1") +
-				"]",
+			Object.keys(hash_map)
+				.join("")
+				// replace regexp special chars
+				.replace(/([()[\]{}\-.*+?^$|\/\\])/g, "\\$1") +
+			"]",
 			"g"
 		);
 
