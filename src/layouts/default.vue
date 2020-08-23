@@ -30,8 +30,8 @@
 		auth: false,
 		components: {
 			Logo,
-			ArrowLeftIcon
-		}
+			ArrowLeftIcon,
+		},
 	};
 </script>
 
@@ -83,7 +83,8 @@
 			}
 
 			& > .content-side {
-				background-image: url("~assets/images/landing-bg-pattern.svg");
+				background-image: url("~assets/images/landing-bg-pattern.png");
+				background-size: contain;
 				background-color: #020b1d;
 				background-position: 100% 100%;
 				background-repeat: no-repeat;
