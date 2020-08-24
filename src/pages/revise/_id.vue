@@ -1663,7 +1663,7 @@
 						parentOffset.top + parentElement.height() - 25;
 					parentOffset.left = parentOffset.left + 25;
 
-					console.log("Invisible Element #", element_index);
+					// console.log("Invisible Element #", element_index);
 					return parentOffset;
 				}
 
