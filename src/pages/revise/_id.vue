@@ -177,7 +177,6 @@
 				shiftToggle: false,
 
 				// Mouse
-				offset: {},
 				containerX: 0,
 				containerY: 0,
 
@@ -1380,8 +1379,6 @@
 
 					// Detect cursor moves from outside of iframe
 					window.addEventListener("mousemove", (e) => {
-						// Iframe offset
-						this.offset = this.iframeSelector.offset();
 
 						this.containerX = e.clientX - this.offset.left;
 						this.containerY = e.clientY - this.offset.top;
