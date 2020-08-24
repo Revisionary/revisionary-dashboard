@@ -189,12 +189,8 @@
 				focusedPin: null,
 
 				// Scrolls
-				scrollOffset_top: 0,
-				scrollOffset_left: 0,
 				oldScrollOffset_top: 0,
 				oldScrollOffset_left: 0,
-				scrollX: 0,
-				scrollY: 0,
 				scrollOnPin: false,
 
 				// Limitations
@@ -225,6 +221,24 @@
 			user_ID() {
 				return this.$auth.user.ID;
 			},
+
+			// LOCATION
+			offset() {
+				return this.iframeSelector.offset();
+			},
+			scrollOffset_top() {
+				return this.iframe.scrollTop();
+			},
+			scrollOffset_left() {
+				return this.iframe.scrollLeft();
+			},
+			scrollX() {
+				return this.scrollOffset_left * this.iframeScale;
+			},
+			scrollY() {
+				return this.scrollOffset_top * this.iframeScale;
+			},
+
 
 			// DEVICE SIZES
 			device() {
@@ -1034,8 +1048,8 @@
 								// Hide the pins
 								$("#pins").css("opacity", "0");
 
-								oldScrollOffset_top = scrollOffset_top;
-								oldScrollOffset_left = scrollOffset_left;
+								this.oldScrollOffset_top = this.scrollOffset_top;
+								this.oldScrollOffset_left = this.scrollOffset_left;
 
 								return;
 							});
@@ -1621,19 +1635,20 @@
 						this.disableCSS(pin_ID);
 						selectedElement.addClass("revisionary-show");
 
-						hiddenElementOffset = selectedElement.getBoundingClientRect();
-						this.$set(this.hiddenElementOffsets, element_index, hiddenElementOffset);
+						hiddenElementOffset = selectedElement.offset();
 
 						selectedElement.removeClass("revisionary-show");
 						this.activateCSS(pin_ID);
 					}
 
-					// var elementLeft =
-					// 	this.hiddenElementOffsets[element_index].left -
-					// 	scrollX / iframeScale;
-					// var elementTop =
-					// 	this.hiddenElementOffsets[element_index].top -
-					// 	scrollY / iframeScale;
+					var elementLeft = this.hiddenElementOffsets[element_index].left - this.scrollX / this.iframeScale;
+					var elementTop = this.hiddenElementOffsets[element_index].top - this.scrollY / this.iframeScale;
+					hiddenElementOffset = {
+						top: elementTop,
+						left: elementLeft
+					}
+
+					this.$set(this.hiddenElementOffsets, element_index, hiddenElementOffset);
 
 					console.log(
 						"Hidden element #" + element_index,
