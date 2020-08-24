@@ -1964,7 +1964,7 @@
 				).attr("media", "max-width: 1px;");
 			},
 			activateCSS(pin_ID) {
-				return iframeElement(
+				return this.iframeElement(
 					'style[data-pin-id="' + pin_ID + '"]'
 				).removeAttr("media");
 			},
