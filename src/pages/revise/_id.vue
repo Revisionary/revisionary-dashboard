@@ -1626,13 +1626,12 @@
 					var pin_ID = pin.ID;
 
 					// Check the cache first
-					var hiddenElementOffset;
 					if (this.hiddenElementOffsets[element_index] === undefined) {
 						// Disabled temporarily
 						this.disableCSS(pin_ID);
 						selectedElement.addClass("revisionary-show");
 
-						hiddenElementOffset = selectedElement.offset();
+						this.$set(this.hiddenElementOffsets, element_index, selectedElement.offset());
 
 						selectedElement.removeClass("revisionary-show");
 						this.activateCSS(pin_ID);
@@ -1640,18 +1639,16 @@
 
 					var elementLeft = this.hiddenElementOffsets[element_index].left - this.scrollX / this.iframeScale;
 					var elementTop = this.hiddenElementOffsets[element_index].top - this.scrollY / this.iframeScale;
-					hiddenElementOffset = {
-						top: elementTop,
-						left: elementLeft
-					}
 
-					this.$set(this.hiddenElementOffsets, element_index, hiddenElementOffset);
 
 					console.log(
 						"Hidden element #" + element_index,
-						hiddenElementOffset
+						this.hiddenElementOffsets[element_index]
 					);
-					return hiddenElementOffset;
+					return {
+						top: elementTop,
+						left: elementLeft
+					};
 				}
 
 				// If not on the screen
