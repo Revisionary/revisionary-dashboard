@@ -1615,32 +1615,31 @@
 					var pin_ID = pin.ID;
 
 					// Check the cache first
+					var hiddenElementOffset;
 					if (this.hiddenElementOffsets[element_index] === undefined) {
 						// Disabled temporarily
 						this.disableCSS(pin_ID);
 						selectedElement.addClass("revisionary-show");
 
-						this.hiddenElementOffsets[element_index] = selectedElement.offset();
+						hiddenElementOffset = selectedElement.getBoundingClientRect();
+						this.$set(this.hiddenElementOffsets, element_index, hiddenElementOffset);
 
 						selectedElement.removeClass("revisionary-show");
 						this.activateCSS(pin_ID);
 					}
 
-					var elementLeft =
-						this.hiddenElementOffsets[element_index].left -
-						scrollX / iframeScale;
-					var elementTop =
-						this.hiddenElementOffsets[element_index].top -
-						scrollY / iframeScale;
+					// var elementLeft =
+					// 	this.hiddenElementOffsets[element_index].left -
+					// 	scrollX / iframeScale;
+					// var elementTop =
+					// 	this.hiddenElementOffsets[element_index].top -
+					// 	scrollY / iframeScale;
 
 					console.log(
 						"Hidden element #" + element_index,
-						this.hiddenElementOffsets[element_index]
+						hiddenElementOffset
 					);
-					return {
-						top: elementTop,
-						left: elementLeft,
-					};
+					return hiddenElementOffset;
 				}
 
 				// If not on the screen
