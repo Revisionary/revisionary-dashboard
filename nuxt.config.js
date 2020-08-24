@@ -124,7 +124,6 @@ export default {
 	 ** Build configuration
 	 */
 	build: {
-		vendor: ["jQuery"],
 		plugins: [
 			new webpack.ProvidePlugin({
 				$: "jquery"
