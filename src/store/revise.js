@@ -1,6 +1,8 @@
 export const state = () => ({
 	device: {},
 	fetching: false,
+	Pins: [],
+	fetchingPins: false,
 	iframe: null,
 	iframeScale: 1,
 	iframeLoaded: false,
@@ -41,11 +43,36 @@ export const actions = {
 
 	},
 
+	// Fetch Pins
+	async fetchPins({ commit }, { phaseID, deviceID }) {
+		commit("setPinsFetching", true);
+		await this.$axios
+			.get("phase/" + phaseID + "/pins/" + deviceID)
+			.then(({ status, data }) => {
+				if (status === 200) {
+					console.log("PINS: ", data.pins);
+					commit("setPins", data.pins);
+					commit("setPinsFetching", false);
+					//this.currentPinNumber = this.Pins.length + 1;
+				}
+			})
+			.catch((error) => {
+				console.log("ERROR: ", error);
+				commit("setPinsFetching", false);
+			});
+	},
+
 };
 
 export const mutations = {
 	set(state, device) {
 		state.device = device;
+	},
+	setPins(state, pins) {
+		state.Pins = pins;
+	},
+	setPinsFetching(state, status) {
+		state.fetchingPins = status;
 	},
 	setIframe(state, iframe) {
 		state.iframe = iframe;

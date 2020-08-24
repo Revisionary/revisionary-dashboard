@@ -131,7 +131,6 @@
 				focused_element_editable: false,
 
 				// Pins
-				Pins: [],
 				pinLocations: {},
 				pinsFetching: false,
 				pinDragging: false,
@@ -336,6 +335,10 @@
 				return this.focused_element.prop("tagName").toUpperCase();
 			},
 
+			Pins() {
+				return this.$store.state.revise.Pins;
+			}
+
 			// pinMode() {
 			// 	return this.$store.state.revise.currentPinType;
 			// },
@@ -355,23 +358,6 @@
 			await this.runTheInspector();
 		},
 		methods: {
-			async fetchPins(phaseID, deviceID) {
-				this.pinsFetching = true;
-				await this.$axios
-					.get("phase/" + phaseID + "/pins/" + deviceID)
-					.then(({ status, data }) => {
-						if (status === 200) {
-							console.log("PINS: ", data.pins);
-							this.Pins = data.pins;
-							this.pinsFetching = false;
-							this.currentPinNumber = this.Pins.length + 1;
-						}
-					})
-					.catch((error) => {
-						console.log("ERROR: ", error);
-						this.pinsFetching = false;
-					});
-			},
 			calculateScale() {
 				let page = this.$refs.site;
 				if (!page) return 1;
@@ -392,9 +378,6 @@
 			},
 
 			// Initiate the inspector
-			inspector() {
-
-			},
 			runTheInspector() {
 				console.log("INSPECTOR RUNNING");
 
@@ -477,10 +460,11 @@
 							// PINS:
 							// Get latest pins and apply them to the page
 							this.$nuxt.$loading.start();
-							this.fetchPins(
-								this.device.phase_ID,
-								this.$route.params.id
-							);
+							this.$store.dispatch("revise/fetchPins", {
+								phaseID: this.device.phase_ID,
+								deviceID: this.$route.params.id
+							});
+							this.currentPinNumber = this.Pins.length + 1;
 							this.openPin = null;
 						}
 
@@ -1619,10 +1603,7 @@
 			// Get element offset
 			getElementOffset(element_index, noScroll = false) {
 				var selectedElement = this.iframeElement(element_index);
-				if (!selectedElement.length) {
-					//console.log("Iframe element not found.", element_index);
-					return false;
-				}
+				if (!selectedElement.length) return false;
 
 				//console.log("ELEMENT OFFSET: ", selectedElement.offset());
 				//console.log('VISIBILITY: ', selectedElement.is(':visible') );
@@ -1631,7 +1612,7 @@
 				if (selectedElement.css("display") == "none") {
 					var pin = this.getPin(element_index, true);
 					if (!pin) return false;
-					var pin_ID = pin.pin_ID;
+					var pin_ID = pin.ID;
 
 					// Check the cache first
 					if (this.hiddenElementOffsets[element_index] === undefined) {
@@ -1639,9 +1620,7 @@
 						this.disableCSS(pin_ID);
 						selectedElement.addClass("revisionary-show");
 
-						this.hiddenElementOffsets[
-							element_index
-						] = selectedElement.offset();
+						this.hiddenElementOffsets[element_index] = selectedElement.offset();
 
 						selectedElement.removeClass("revisionary-show");
 						this.activateCSS(pin_ID);
@@ -1760,13 +1739,86 @@
 
 				console.log('Applying changes...');
 
-				// Reset current device CSS
-				this.deleteAllCSS();
+				// Reset all the changes first
+				this.resetChanges();
 
 				this.Pins.forEach((pin) => {
 					if (pin.modification !== null) this.updateChange(pin);
 					if (pin.css != null) this.updateCSS(pin);
 				});
+
+			},
+			resetChanges() {
+
+				this.deleteAllCSS();
+
+			},
+
+			// MODIFICATIONS:
+			// Update originals !!!
+			updateOriginals(pinsList, oldPinsList) {
+
+
+				$(pinsList).each((i, pin) => {
+
+
+					// Skip style and unmodified pins
+					if (pin.pin_type != "content" || pin.pin_modification_original != null) return true;
+
+
+					var theOriginal = null;
+					var pin_ID = pin.pin_ID;
+					var oldPin = oldPinsList.find(function (p) { return p.pin_ID == pin_ID; });
+					var element = iframeElement(pin.pin_element_index);
+
+
+					// Check from the existing Pins global
+					if (oldPin && oldPin.pin_modification_original != null)
+						theOriginal = oldPin.pin_modification_original;
+
+
+					// Check if it's an untouched dom
+					else if (element.is(':not([data-revisionary-showing-content-changes="1"])')) {
+
+						if (pin.pin_modification_type == "html") {
+
+							theOriginal = htmlentities(element.html(), "ENT_QUOTES");
+
+
+							// If edited element is a submit or reset input button
+							if (
+								element.prop('tagName').toUpperCase() == "INPUT" &&
+								(
+									element.attr("type") == "text" ||
+									element.attr("type") == "email" ||
+									element.attr("type") == "url" ||
+									element.attr("type") == "tel" ||
+									element.attr("type") == "submit" ||
+									element.attr("type") == "reset"
+								)
+							) {
+								theOriginal = htmlentities(element.val(), "ENT_QUOTES");
+							}
+
+
+						} else if (pin.pin_modification_type == "image") {
+
+							theOriginal = element.prop('src');
+
+							// For SVG images
+							if (element.prop('tagName').toUpperCase() == 'IMAGE')
+								theOriginal = getAbsoluteUrl(element.attr('xlink:href'), iframeDocument);
+
+						}
+
+					}
+
+
+					pinsList[i].pin_modification_original = theOriginal;
+
+				});
+
+				return pinsList;
 
 			},
 
@@ -1788,12 +1840,11 @@
 				if (modification == null || modification == "{%null%}") {
 					//this.revertChange(pin);
 				} else {
-					var isShowingOriginalContent = changedElement.is(
-						'[revisionary-showing-content-changes="0"]'
-					);
+					var isShowingOriginalContent = changedElement.is('[revisionary-showing-content-changes="0"]');
 
 					// Apply the change, if it was showing changes
 					if (!isShowingOriginalContent) {
+
 						// If the type is HTML content change
 						if (pin.modification_type == "html") {
 							//console.log('MODIFICATION ORIG:', pin.pin_modification);
@@ -1909,12 +1960,12 @@
 			},
 			disableCSS(pin_ID) {
 				return this.iframeElement(
-					'style[data-pin-id="' + pin.pin_ID + '"]'
+					'style[data-pin-id="' + pin_ID + '"]'
 				).attr("media", "max-width: 1px;");
 			},
 			activateCSS(pin_ID) {
 				return iframeElement(
-					'style[data-pin-id="' + pin.pin_ID + '"]'
+					'style[data-pin-id="' + pin_ID + '"]'
 				).removeAttr("media");
 			},
 
@@ -1964,6 +2015,16 @@
 				}
 			},
 
+
+			// Get pin from the Pins global
+			getPin(pin_ID, byElementIndex = false) {
+
+				var pin = this.Pins.find((pin) => { return pin.ID == pin_ID || (byElementIndex && pin.element_index == pin_ID); });
+				if (typeof pin === 'undefined') return false;
+
+				return pin;
+			},
+
 			// PIN ACTIONS
 			pinHover(pin) {
 				this.hoveringPin = true;
@@ -2004,10 +2065,11 @@
 
 						// Fetch pins
 						this.$nuxt.$loading.start();
-						await this.fetchPins(
-							this.device.phase_ID,
-							this.$route.params.id
-						);
+						await this.$store.dispatch("revise/fetchPins", {
+							phaseID: this.device.phase_ID,
+							deviceID: this.$route.params.id
+						});
+						this.currentPinNumber = this.Pins.length + 1;
 
 						// Set the loaded true
 						this.$store.commit("revise/setLoaded", true);
