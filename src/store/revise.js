@@ -1,6 +1,7 @@
 export const state = () => ({
 	device: {},
 	fetching: false,
+	iframe: null,
 	iframeScale: 1,
 	iframeLoaded: false,
 	currentPinType: "comment",
@@ -45,6 +46,9 @@ export const actions = {
 export const mutations = {
 	set(state, device) {
 		state.device = device;
+	},
+	setIframe(state, iframe) {
+		state.iframe = iframe;
 	},
 	setScale(state, scale) {
 		state.iframeScale = scale;

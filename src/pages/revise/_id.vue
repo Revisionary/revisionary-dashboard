@@ -127,7 +127,6 @@
 				],
 
 				// Focused Element
-				iframe: null,
 				focused_element: null,
 				focused_element_editable: false,
 
@@ -211,6 +210,9 @@
 			// IFRAME VARIABLES
 			iframeSelector() {
 				return $("#the-page");
+			},
+			iframe() {
+				return this.$store.state.revise.iframe;
 			},
 			childWindow() {
 				return this.iframeSelector.prop("contentWindow");
@@ -390,6 +392,9 @@
 			},
 
 			// Initiate the inspector
+			inspector() {
+
+			},
 			runTheInspector() {
 				console.log("INSPECTOR RUNNING");
 
@@ -406,8 +411,9 @@
 
 					// If we have access on this iframe (CORS Check)
 					if (canAccessIFrame(this.iframeSelector)) {
+
 						// Iframe element
-						this.iframe = this.iframeSelector.contents();
+						this.$store.commit("revise/setIframe", this.iframeSelector.contents());
 						this.$store.commit("revise/setLoaded", true);
 
 						// After coming back to the real page
@@ -1056,7 +1062,7 @@
 						console.log("*** LOAD REDIRECTING BACK TO...", page_URL);
 
 						//window.frames["the-page"].location = page_URL;
-						$("#the-page").attr("src", page_URL);
+						this.iframeSelector.attr("src", page_URL);
 						this.page_redirected = true;
 						this.$store.commit("revise/setLoaded", false);
 
@@ -1377,7 +1383,7 @@
 					// Detect cursor moves from outside of iframe
 					window.addEventListener("mousemove", (e) => {
 						// Iframe offset
-						this.offset = $("#the-page").offset();
+						this.offset = this.iframeSelector.offset();
 
 						this.containerX = e.clientX - this.offset.left;
 						this.containerY = e.clientY - this.offset.top;
