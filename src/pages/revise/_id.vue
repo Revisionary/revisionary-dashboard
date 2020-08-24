@@ -1641,10 +1641,10 @@
 					var elementTop = this.hiddenElementOffsets[element_index].top - this.scrollY / this.iframeScale;
 
 
-					console.log(
-						"Hidden element #" + element_index,
-						this.hiddenElementOffsets[element_index]
-					);
+					// console.log(
+					// 	"Hidden element #" + element_index,
+					// 	this.hiddenElementOffsets[element_index]
+					// );
 					return {
 						top: elementTop,
 						left: elementLeft
