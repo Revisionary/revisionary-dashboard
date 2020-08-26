@@ -8,11 +8,8 @@
 </template>
 <style lang="scss">
 	footer {
-		// position: absolute;
-		// right: 0;
-		// bottom: 0;
 		width: 100%;
-		padding: 0 55px;
+		padding: 0 36px;
 
 		& > .container {
 			display: flex;
@@ -25,9 +22,6 @@
 			font-size: 12px;
 			line-height: 14px;
 			letter-spacing: 0.1px;
-		}
-
-		.sidebarClosed & {
 		}
 	}
 </style>
