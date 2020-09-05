@@ -134,6 +134,7 @@
 				pinLocations: {},
 				pinsFetching: false,
 				pinDragging: false,
+				autoRefreshTimer: null,
 				autoRefreshInterval: 5000,
 				autoRefreshRequest: null,
 				pinsListOpen: false,
@@ -476,6 +477,9 @@
 							});
 							this.currentPinNumber = this.Pins.length + 1;
 							this.openPin = null;
+
+							// Start AutoRefresh
+							this.startAutoRefresh();
 						}
 
 						// IFRAME EVENTS:
@@ -1009,7 +1013,7 @@
 								}
 
 								// Stop Autorefresh
-								stopAutoRefresh();
+								this.stopAutoRefresh();
 
 								$("#wait").show();
 
@@ -1090,7 +1094,7 @@
 							//console.log('REGISTERED CHANGES', modification);
 
 							// Stop the auto-refresh
-							stopAutoRefresh();
+							this.stopAutoRefresh();
 
 							// Update the element, pin and pin window status
 							updateAttributes(
@@ -1567,6 +1571,52 @@
 					"contenteditable",
 					false
 				);
+			},
+
+
+			// AUTO REFRESH:
+			// Start auto-refresh
+			startAutoRefresh(interval = this.autoRefreshInterval) {
+
+				console.log('AUTO-REFRESH PINS STARTED');
+
+				this.autoRefreshTimer = setInterval(() => {
+
+					console.log('Auto checking the pins...');
+
+
+					// Abort if the iframe is not loaded
+					if (!this.iframeLoaded) return false;
+
+
+					// Abort the latest request if not finalized
+					if (this.autoRefreshRequest && this.autoRefreshRequest.readyState != 4) {
+						console.log('Latest request aborted');
+						this.autoRefreshRequest.abort();
+					}
+
+
+					// Get the up-to-date pins
+					this.$store.dispatch("revise/fetchPins", {
+						phaseID: this.device.phase_ID,
+						deviceID: this.$route.params.id,
+						progress: false
+					});
+
+
+				}, interval);
+
+			},
+
+
+			// Stop auto-refresh
+			stopAutoRefresh() {
+
+				console.log('AUTO-REFRESH PINS STOPPED');
+
+				if (this.autoRefreshRequest) this.autoRefreshRequest.abort();
+				clearInterval(this.autoRefreshTimer);
+
 			},
 
 
@@ -2061,6 +2111,7 @@
 			Pins() {
 				console.log("PINS CHANGEEEEEEEEEED");
 
+				// ADD DIFF CHECKER !!!
 				this.applyChanges();
 			},
 

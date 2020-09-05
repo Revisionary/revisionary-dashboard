@@ -44,10 +44,10 @@ export const actions = {
 	},
 
 	// Fetch Pins
-	async fetchPins({ commit }, { phaseID, deviceID }) {
+	async fetchPins({ commit }, { phaseID, deviceID, progress = true }) {
 		commit("setPinsFetching", true);
 		await this.$axios
-			.get("phase/" + phaseID + "/pins/" + deviceID)
+			.get("phase/" + phaseID + "/pins/" + deviceID, { progress })
 			.then(({ status, data }) => {
 				if (status === 200) {
 					console.log("PINS: ", data.pins);
