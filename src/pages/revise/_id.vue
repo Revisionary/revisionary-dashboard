@@ -2654,7 +2654,7 @@
 
 		.loading {
 			position: absolute;
-			z-index: 5;
+			z-index: 0;
 			top: 0;
 			left: 0;
 			width: 100%;
