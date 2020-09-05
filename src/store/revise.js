@@ -6,7 +6,7 @@ export const state = () => ({
 	iframe: null,
 	iframeScale: 1,
 	iframeLoaded: false,
-	currentPinType: "comment",
+	currentPinType: "browse",
 	currentPinPrivate: 0
 });
 
