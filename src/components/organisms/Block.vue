@@ -1,6 +1,9 @@
 <template>
 	<div class="card">
-		<div class="top" :style="'background-image: url(' + blockData.image_url + ');'">
+		<div
+			class="top"
+			:style="'background-image: url(' + blockData.image_url + ');'"
+		>
 			<div class="actions">
 				<div class="top">
 					<div class="left">
@@ -13,7 +16,11 @@
 									:email="ownerInfo.email"
 								/>
 							</span>
-							<span class="shared" v-for="(user_ID, index) in blockData.users" :key="user_ID">
+							<span
+								class="shared"
+								v-for="(user_ID, index) in blockData.users"
+								:key="user_ID"
+							>
 								<ProfilePic
 									v-if="index < 2 || (index == 2 && blockData.users.length == 3)"
 									:firstName="userInfo(user_ID).first_name"
@@ -37,24 +44,24 @@
 					</div>
 					<div class="center"></div>
 					<div class="right">
-						<details class="block-actions">
-							<summary>
-								<MoreIcon />
-							</summary>
-							<div class="details-menu right">
-								<ul class="menu boxed compact">
-									<li>
-										<a href="#">Edit</a>
-									</li>
-									<li>
-										<a href="#">Archive</a>
-									</li>
-									<li>
-										<a href="#">Delete</a>
-									</li>
-								</ul>
-							</div>
-						</details>
+						<div
+							class="tasks-count"
+							v-if="blockData.incomplete_tasks > 0 || blockData.complete_tasks > 0"
+						>
+							<div
+								class="left tooltip-not-contained"
+								data-tooltip="Incomplete"
+								v-if="blockData.incomplete_tasks > 0"
+							>{{ blockData.incomplete_tasks }}</div>
+							<div
+								class="done tooltip-not-contained"
+								data-tooltip="Solved"
+								v-if="blockData.complete_tasks > 0"
+							>{{ blockData.complete_tasks }}</div>
+						</div>
+						<div v-else>
+							<small>No Tasks</small>
+						</div>
 					</div>
 				</div>
 				<div class="middle">
@@ -84,7 +91,11 @@
 									<li v-if="devicesFetching">
 										<span>Loading...</span>
 									</li>
-									<li v-else v-for="device in devices" :key="device.ID">
+									<li
+										v-else
+										v-for="device in devices"
+										:key="device.ID"
+									>
 										<span>
 											<div class="left">
 												<TasksStatus
@@ -109,10 +120,16 @@
 											</div>
 										</span>
 									</li>
-									<li class="add-new" v-if="!devicesFetching">
+									<li
+										class="add-new"
+										v-if="!devicesFetching"
+									>
 										<span>
 											<div class="left">
-												<TasksStatus :incompletedCount="0" :completedCount="0" />
+												<TasksStatus
+													:incompletedCount="0"
+													:completedCount="0"
+												/>
 												<span>
 													<PlusIcon />
 													<span>Add New Screen</span>
@@ -130,10 +147,16 @@
 					<div class="right"></div>
 				</div>
 				<div class="bottom">
-					<div class="left" v-if="$route.name !== 'projects' && $route.name !== 'projects-category'">
+					<div
+						class="left"
+						v-if="$route.name !== 'projects' && $route.name !== 'projects-category'"
+					>
 						<details>
 							<summary>
-								<div class="button radius" @click="getPhases(blockData.ID)">
+								<div
+									class="button radius"
+									@click="getPhases(blockData.ID)"
+								>
 									<VersionIcon />
 									v{{blockData.versions.length}}
 									<ChevronDownIcon />
@@ -151,7 +174,10 @@
 										:class="{ active: index == blockData.versions.length - 1 }"
 									>
 										<span>
-											<div class="left" @click="getDevices(phase.ID)">
+											<div
+												class="left"
+												@click="getDevices(phase.ID)"
+											>
 												<TasksStatus
 													:incompletedCount="phase.incomplete_tasks"
 													:completedCount="phase.complete_tasks"
@@ -218,24 +244,24 @@
 					</div>
 					<div class="center"></div>
 					<div class="right">
-						<div
-							class="tasks-count"
-							v-if="blockData.incomplete_tasks > 0 || blockData.complete_tasks > 0"
-						>
-							<div
-								class="left tooltip-not-contained"
-								data-tooltip="Incomplete"
-								v-if="blockData.incomplete_tasks > 0"
-							>{{ blockData.incomplete_tasks }}</div>
-							<div
-								class="done tooltip-not-contained"
-								data-tooltip="Solved"
-								v-if="blockData.complete_tasks > 0"
-							>{{ blockData.complete_tasks }}</div>
-						</div>
-						<div v-else>
-							<small>No Tasks</small>
-						</div>
+						<details class="block-actions">
+							<summary>
+								<MoreIcon />
+							</summary>
+							<div class="details-menu right">
+								<ul class="menu boxed">
+									<li>
+										<a href="#">Edit</a>
+									</li>
+									<li>
+										<a href="#">Archive</a>
+									</li>
+									<li>
+										<a href="#">Delete</a>
+									</li>
+								</ul>
+							</div>
+						</details>
 					</div>
 				</div>
 			</div>
