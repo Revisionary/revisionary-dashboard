@@ -36,7 +36,10 @@
 					<span v-if="notification.type == 'new'">
 						Task #{{ notification.notification }} on
 						<span>
-							<nuxt-link :to="'/revise/' + notification.device_ID" v-if="notification.page_name">
+							<nuxt-link
+								:to="'/revise/' + notification.device_ID"
+								v-if="notification.page_name"
+							>
 								<span>{{ notification.page_name }}</span>
 								<span v-if="notification.project_name">[{{ notification.project_name }}]</span>
 							</nuxt-link>
@@ -45,7 +48,10 @@
 					<span v-else-if="notification.type == 'complete'">
 						Task #{{ notification.notification }} on
 						<span>
-							<nuxt-link :to="'/revise/' + notification.device_ID" v-if="notification.page_name">
+							<nuxt-link
+								:to="'/revise/' + notification.device_ID"
+								v-if="notification.page_name"
+							>
 								<span>{{ notification.page_name }}</span>
 								<span v-if="notification.project_name">[{{ notification.project_name }}]</span>
 							</nuxt-link>
@@ -54,7 +60,10 @@
 					<span v-else-if="notification.type == 'incomplete'">
 						Task #{{ notification.notification }} on
 						<span>
-							<nuxt-link :to="'/revise/' + notification.device_ID" v-if="notification.page_name">
+							<nuxt-link
+								:to="'/revise/' + notification.device_ID"
+								v-if="notification.page_name"
+							>
 								<span>{{ notification.page_name }}</span>
 								<span v-if="notification.project_name">[{{ notification.project_name }}]</span>
 							</nuxt-link>
@@ -65,7 +74,10 @@
 						<div>
 							on
 							<span>
-								<nuxt-link :to="'/revise/' + notification.device_ID" v-if="notification.page_name">
+								<nuxt-link
+									:to="'/revise/' + notification.device_ID"
+									v-if="notification.page_name"
+								>
 									<span>{{ notification.page_name }}</span>
 									<span v-if="notification.project_name">[{{ notification.project_name }}]</span>
 								</nuxt-link>
@@ -79,9 +91,7 @@
 						<span v-if="notification.page_name">
 							<nuxt-link :to="'/project/' + notification.project_ID">
 								{{ notification.page_name }}
-								<span
-									v-if="notification.project_name"
-								>[{{ notification.project_name }}]</span>
+								<span v-if="notification.project_name">[{{ notification.project_name }}]</span>
 							</nuxt-link>Page
 						</span>
 					</span>
@@ -172,7 +182,7 @@
 										document
 											.getElementById(
 												"notification-" +
-													notifications[0].ID
+												notifications[0].ID
 											)
 											.scrollIntoView(false);
 								});
@@ -283,6 +293,8 @@
 				}
 
 				& > .info {
+					word-break: break-all;
+
 					a {
 						color: $color-primary;
 					}
