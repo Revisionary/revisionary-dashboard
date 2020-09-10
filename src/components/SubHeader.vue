@@ -1,5 +1,8 @@
 <template>
-	<header id="sub-header" :class="{ loading: isLoading }">
+	<header
+		id="sub-header"
+		:class="{ loading: isLoading }"
+	>
 		<div class="top">
 			<div class="left">
 				<details class="unselectable-when-loading title">
@@ -12,19 +15,13 @@
 					<div class="details-menu left">
 						<ul class="menu boxed">
 							<li :class="{ active: $route.params.category == null }">
-								<nuxt-link
-									:to="currentPath + '/'"
-								>All {{ $route.name == 'projects' || $route.name == 'projects-category' ? 'Projects' : 'Pages' }} ({{ blocksData.filter(block => !block.archived && !block.deleted).length }})</nuxt-link>
+								<nuxt-link :to="currentPath + '/'">All {{ $route.name == 'projects' || $route.name == 'projects-category' ? 'Projects' : 'Pages' }} ({{ blocksData.filter(block => !block.archived && !block.deleted).length }})</nuxt-link>
 							</li>
 							<li :class="{ active: $route.params.category == 'archived' }">
-								<nuxt-link
-									:to="currentPath + '/archived/'"
-								>Archived {{ $route.name == 'projects' || $route.name == 'projects-category' ? 'Projects' : 'Pages' }} ({{ blocksData.filter(block => block.archived).length }})</nuxt-link>
+								<nuxt-link :to="currentPath + '/archived/'">Archived {{ $route.name == 'projects' || $route.name == 'projects-category' ? 'Projects' : 'Pages' }} ({{ blocksData.filter(block => block.archived).length }})</nuxt-link>
 							</li>
 							<li :class="{ active: $route.params.category == 'deleted' }">
-								<nuxt-link
-									:to="currentPath + '/deleted/'"
-								>Deleted {{ $route.name == 'projects' || $route.name == 'projects-category' ? 'Projects' : 'Pages' }} ({{ blocksData.filter(block => block.deleted).length }})</nuxt-link>
+								<nuxt-link :to="currentPath + '/deleted/'">Deleted {{ $route.name == 'projects' || $route.name == 'projects-category' ? 'Projects' : 'Pages' }} ({{ blocksData.filter(block => block.deleted).length }})</nuxt-link>
 							</li>
 						</ul>
 					</div>
@@ -34,11 +31,14 @@
 					class="project-actions"
 					v-if="$route.name !== 'projects' && $route.name !== 'projects-category'"
 				>
-					<div class="edit-project" data-tooltip="Edit Project">
+					<div
+						class="edit-project bottom-tooltip"
+						data-tooltip="Edit Project"
+					>
 						<InfoIcon />
 					</div>
 					<div
-						class="favorite"
+						class="favorite bottom-tooltip"
 						:data-tooltip="blockData.favorite ? 'Remove from Favorites' : 'Add to Favorites'"
 						@click="toggleFavorite"
 					>
@@ -46,21 +46,27 @@
 					</div>
 				</div>
 
-				<div class="tasks-count" v-if="blockData.incomplete_tasks > 0 || blockData.complete_tasks > 0">
+				<div
+					class="tasks-count"
+					v-if="blockData.incomplete_tasks > 0 || blockData.complete_tasks > 0"
+				>
 					<div
-						class="left tooltip-not-contained"
+						class="left tooltip-not-contained bottom-tooltip"
 						data-tooltip="Incomplete"
 						v-if="blockData.incomplete_tasks > 0"
 					>{{ blockData.incomplete_tasks }}</div>
 					<div
-						class="done tooltip-not-contained"
+						class="done tooltip-not-contained bottom-tooltip"
 						data-tooltip="Solved"
 						v-if="blockData.complete_tasks > 0"
 					>{{ blockData.complete_tasks }}</div>
 				</div>
 			</div>
 			<div class="right">
-				<div class="shares" v-if="$route.name !== 'projects' && $route.name !== 'projects-category'">
+				<div
+					class="shares"
+					v-if="$route.name !== 'projects' && $route.name !== 'projects-category'"
+				>
 					<div class="multiple-profiles">
 						<span class="owner">
 							<ProfilePic
@@ -70,7 +76,11 @@
 								:email="ownerInfo.email"
 							/>
 						</span>
-						<span class="shared" v-for="(user_ID, index) in blockData.users" :key="user_ID">
+						<span
+							class="shared"
+							v-for="(user_ID, index) in blockData.users"
+							:key="user_ID"
+						>
 							<ProfilePic
 								v-if="index < 2 || (index == 2 && blockData.users.length == 3)"
 								:firstName="userInfo(user_ID).first_name"
@@ -101,10 +111,18 @@
 					>
 						<SearchIcon />
 					</a>
-					<a href="#" class="tooltip-not-contained bottom-tooltip" data-tooltip="Settings">
+					<a
+						href="#"
+						class="tooltip-not-contained bottom-tooltip"
+						data-tooltip="Settings"
+					>
 						<SortIcon />
 					</a>
-					<a href="#" class="dark tooltip-not-contained left-tooltip" data-tooltip="Add New Project">
+					<a
+						href="#"
+						class="dark tooltip-not-contained left-tooltip"
+						data-tooltip="Add New Project"
+					>
 						<PlusIcon />
 					</a>
 				</div>
@@ -132,7 +150,10 @@
 				>+</a>
 			</div>
 
-			<div class="page-info" v-if="$route.name !== 'projects' && $route.name !== 'projects-category'">
+			<div
+				class="page-info"
+				v-if="$route.name !== 'projects' && $route.name !== 'projects-category'"
+			>
 				<span>
 					Created
 					<strong>{{ $timeSince(blockData.date_created) }} ago</strong>, last modified
