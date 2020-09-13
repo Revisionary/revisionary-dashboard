@@ -43,6 +43,8 @@
 			>{{ currentPinNumber }}</span>
 		</div>
 
+		<PinWindow/>
+
 		<div class="loading" v-if="!iframeLoaded">
 			<div>
 				<figure>
@@ -61,6 +63,7 @@
 
 <script>
 	import WaitingIcon from "~/components/atoms/svg/icon-waiting.svg";
+	import PinWindow from "~/components/organisms/PinWindow.vue";
 
 	export default {
 		async validate({ params, store }) {
@@ -77,6 +80,7 @@
 		},
 		components: {
 			WaitingIcon,
+			PinWindow
 		},
 		head() {
 			return {
@@ -384,11 +388,12 @@
 					iframeScale = 1;
 
 				this.$store.commit("revise/setScale", iframeScale);
-				console.log("SCALE: ", iframeScale, width, height);
+				console.log("SCALE: ", iframeScale, width, height, width * iframeScale, height * iframeScale);
 			},
 
 			// Initiate the inspector
 			runTheInspector() {
+
 				console.log("INSPECTOR RUNNING");
 
 				// // WHEN IFRAME DOCUMENT READY !!! ?
@@ -398,7 +403,8 @@
 
 				// WHEN IFRAME HAS LOADED
 				this.iframeSelector.on("load", () => {
-					console.log("IFRAME DOCUMENT LOADED!", canAccessIFrame(this.iframeSelector));
+
+					console.log("IFRAME DOCUMENT LOADED!");
 
 					// If we have access on this iframe (CORS Check)
 					if (canAccessIFrame(this.iframeSelector)) {
@@ -408,7 +414,7 @@
 						this.$store.commit("revise/setLoaded", true);
 
 						// Watch the pin positions
-						this.watchElementsPositions();
+						//this.watchElementsPositions();
 
 						// After coming back to the real page
 						if (this.page_redirected) {
@@ -434,39 +440,41 @@
 								);
 							}, 2000);
 						} else {
-							// UPDATE INITIAL CURSOR TYPE
 
-							// Check for the client settings
-							var clientPinType = get_client_cache(
-								this.user_ID + "_currentPinType"
-							);
-							var clientPinPrivate = get_client_cache(
-								this.user_ID + "_currentPinPrivate"
-							);
 
-							// From last option
-							if (clientPinType != null && clientPinPrivate != null) {
-								this.currentPinType = clientPinType;
-								this.currentPinPrivate = clientPinPrivate;
+							// // UPDATE INITIAL CURSOR TYPE
+							// // Check for the client settings
+							// var clientPinType = get_client_cache(
+							// 	this.user_ID + "_currentPinType"
+							// );
+							// var clientPinPrivate = get_client_cache(
+							// 	this.user_ID + "_currentPinPrivate"
+							// );
 
-								if (
-									this.page_type == "url" &&
-									clientPinType == "comment"
-								)
-									this.currentPinType = "content";
-							}
+							// // From last option
+							// if (clientPinType != null && clientPinPrivate != null) {
+							// 	this.currentPinType = clientPinType;
+							// 	this.currentPinPrivate = clientPinPrivate;
 
-							// From URL
-							if (getParameterByName("pinmode") != null) {
-								this.currentPinType = getParameterByName("pinmode");
-								this.currentPinPrivate = 0;
-							}
+							// 	if (
+							// 		this.page_type == "url" &&
+							// 		clientPinType == "comment"
+							// 	)
+							// 		this.currentPinType = "content";
+							// }
 
-							// Update the pin type
-							this.switchPinType(
-								this.currentPinType,
-								this.currentPinPrivate
-							);
+							// // From URL
+							// if (getParameterByName("pinmode") != null) {
+							// 	this.currentPinType = getParameterByName("pinmode");
+							// 	this.currentPinPrivate = 0;
+							// }
+
+							// // Update the pin type
+							// this.switchPinType(
+							// 	this.currentPinType,
+							// 	this.currentPinPrivate
+							// );
+
 
 							// PINS:
 							// Get latest pins and apply them to the page
@@ -479,7 +487,7 @@
 							this.openPin = null;
 
 							// Start AutoRefresh
-							this.startAutoRefresh();
+							//this.startAutoRefresh();
 						}
 
 						// IFRAME EVENTS:
@@ -569,6 +577,11 @@
 								);
 
 								this.shifted = false;
+							}
+
+							if (!this.cursorActive) {
+								//console.log('CURSOR NOT ACTIVE');
+								return false;
 							}
 
 							// FOCUSING:
@@ -1004,9 +1017,7 @@
 								if (this.pinWindowOpen) {
 									// Register the open pin
 									this.openPin = pinWindow().attr("data-pin-id");
-									console.log(
-										"AFTER REDIRECT, OPEN PIN ID #" + openPin
-									);
+									console.log("AFTER REDIRECT, OPEN PIN ID #" + openPin);
 
 									// Close pin window
 									this.closePinWindow(false);
@@ -1026,6 +1037,7 @@
 								return;
 							});
 						});
+
 					} else {
 						// IF NO ACCESS OF IFRAME
 
@@ -1321,6 +1333,7 @@
 							}
 						});
 
+
 					// PAGE EVENTS
 					// Detect the window resizing to re-position pins ???
 					window.addEventListener("resize", (e) => {
@@ -1392,6 +1405,7 @@
 
 				console.log("Color detection complete.", colorsSorted);
 			},
+
 
 			// OUTLINES:
 			// Color the element
@@ -1607,7 +1621,6 @@
 				}, interval);
 
 			},
-
 
 			// Stop auto-refresh
 			stopAutoRefresh() {
@@ -2108,11 +2121,12 @@
 					});
 				}
 			},
+
 			Pins() {
 				console.log("PINS CHANGEEEEEEEEEED");
 
 				// ADD DIFF CHECKER !!!
-				this.applyChanges();
+				//this.applyChanges();
 			},
 
 			currentPinType(to, from) {
@@ -2120,13 +2134,7 @@
 
 				//this.currentPinTypeWas = from;
 				this.pinTypeUpdate(to);
-			},
-
-			currentPinPrivate(to, from) {
-				console.log("Pin Private Mode Changed", from, to);
-
-				//this.currentPinPrivateWas = from;
-			},
+			}
 		},
 	};
 

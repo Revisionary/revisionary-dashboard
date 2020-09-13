@@ -658,7 +658,7 @@
 					font-weight: 700;
 
 					&.done {
-						background-color: #79838c;
+						//background-color: #79838c;
 					}
 				}
 			}
