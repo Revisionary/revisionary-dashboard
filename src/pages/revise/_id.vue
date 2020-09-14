@@ -555,6 +555,13 @@
 
 						// Detect the mouse moves in frame
 						this.iframeDocument.addEventListener("mousemove", (e) => {
+
+							if (!this.cursorActive) {
+								//console.log('CURSOR NOT ACTIVE');
+								return false;
+							}
+
+
 							// Mouse coordinates according to the iframe container
 							this.containerX = e.clientX * this.iframeScale;
 							this.containerY = e.clientY * this.iframeScale;
@@ -577,11 +584,6 @@
 								);
 
 								this.shifted = false;
-							}
-
-							if (!this.cursorActive) {
-								//console.log('CURSOR NOT ACTIVE');
-								return false;
 							}
 
 							// FOCUSING:
@@ -1852,7 +1854,7 @@
 
 							// For SVG images
 							if (element.prop('tagName').toUpperCase() == 'IMAGE')
-								theOriginal = getAbsoluteUrl(element.attr('xlink:href'), iframeDocument);
+								theOriginal = getAbsoluteUrl(element.attr('xlink:href'), this.iframeDocument);
 
 						}
 
