@@ -17,15 +17,17 @@
 			</details>
 
 			<div class="right">
-				<span class="global">
+				<span class="global" data-tooltip="Make The Pin Global">
 					<WindowIcon />
 				</span>
-				<span class="close">
+				<span class="close tooltip-not-contained" data-tooltip="Close">
 					<CloseIcon />
 				</span>
 			</div>
 		</div>
+
 		<div class="middle">MIDDLE</div>
+
 		<div class="bottom">
 			<span class="mark">
 				<MarkIcon />MARK
@@ -71,7 +73,10 @@
 			DoneIcon
 		},
 		props: {
-
+			pin: {
+				type: Object,
+				default: null
+			}
 		}
 	}
 </script>
@@ -127,7 +132,7 @@
 				.right {
 					display: flex;
 					align-items: center;
-					gap: 10px;
+					gap: 12px;
 
 					.global {
 						width: 25px;
@@ -143,6 +148,20 @@
 						svg {
 							width: 11px;
 						}
+
+						&:hover {
+							background-color: $color-primary;
+
+							svg {
+								path {
+									stroke: white;
+								}
+							}
+						}
+					}
+
+					.close {
+						cursor: pointer;
 					}
 
 				}
