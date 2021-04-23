@@ -80,7 +80,7 @@ export default {
 		// https: true,
 		// host: "dapi.revisionary.co",
 		// baseURL: "http://backend/v1/",
-		baseURL: process.env.API_ENDPOINT || 'https://new.revisionaryapp.com/v1/',
+		baseURL: process.env.API_ENDPOINT || 'https://npi.revisionary.co/v1/',
 		//baseURL: "/v1/",
 		// browserBaseURL: "https://new.revisionaryapp.com/v1/",
 		port: 80,
