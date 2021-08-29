@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+    dashboard:
+        build: .
+        image: revisionary_dashboard:latest
+        container_name: revisionary_dashboard
+        restart: "always"
+        ports:
+            - 3000:3000
+        # depends_on:
+        #     - backend
+        # volumes:
+        #     - ./dashboard/src:/dashboard/src
+        # networks:
+        #     - backend-network
+        environment:
+            HOST: 0.0.0.0
+            PORT: 3000
+            # API_ENDPOINT: https://${API_SUBDOMAIN}.${API_DOMAIN}/v1/
+
+
+# networks:
+#     proxy-network: {}
+#     backend-network: {}
+
+# volumes:
+#     mysql: {}
