@@ -16,11 +16,9 @@ services:
             HOST: 0.0.0.0
             PORT: 3000
             # API_ENDPOINT: https://${API_SUBDOMAIN}.${API_DOMAIN}/v1/
+        networks:
+            - proxy-network
 
 
-# networks:
-#     proxy-network: {}
-#     backend-network: {}
-
-# volumes:
-#     mysql: {}
+networks:
+    proxy-network: {}
