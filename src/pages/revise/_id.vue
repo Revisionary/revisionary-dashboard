@@ -43,7 +43,7 @@
 			>{{ currentPinNumber }}</span>
 		</div>
 
-		<PinWindow/>
+		<!-- <PinWindow/> -->
 
 		<div class="loading" v-if="!iframeLoaded">
 			<div>
@@ -360,13 +360,13 @@
 		async mounted() {
 			console.log("MOUNTED");
 
-			await this.$nextTick(async () => {
+			this.$nextTick(async () => {
 				// Check frame scale
 				this.calculateScale();
 			});
 
 			// Resize check
-			await window.addEventListener("resize", this.calculateScale);
+			window.addEventListener("resize", this.calculateScale);
 
 			// Run the inspector
 			await this.runTheInspector();
@@ -412,9 +412,6 @@
 						// Iframe element
 						this.$store.commit("revise/setIframe", this.iframeSelector.contents());
 						this.$store.commit("revise/setLoaded", true);
-
-						// Watch the pin positions
-						//this.watchElementsPositions();
 
 						// After coming back to the real page
 						if (this.page_redirected) {
@@ -489,6 +486,9 @@
 							// Start AutoRefresh
 							//this.startAutoRefresh();
 						}
+
+						// Watch the pin positions
+						this.watchElementsPositions();
 
 						// IFRAME EVENTS:
 						var doChangeOnPage = {};
@@ -2128,7 +2128,7 @@
 				console.log("PINS CHANGEEEEEEEEEED");
 
 				// ADD DIFF CHECKER !!!
-				//this.applyChanges();
+				this.applyChanges();
 			},
 
 			currentPinType(to, from) {
