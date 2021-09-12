@@ -19,6 +19,7 @@ RUN yarn build
 # Environment Variables
 ENV HOST 0.0.0.0
 ENV PORT 3000
+ENV START_COMMAND start
 
 # Entrypoint
-ENTRYPOINT [ "yarn", "start" ]
+ENTRYPOINT yarn ${START_COMMAND}
