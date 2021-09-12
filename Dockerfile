@@ -10,7 +10,6 @@ COPY package.json ${APP_ROOT}
 COPY yarn.lock ${APP_ROOT}
 COPY nuxt.config.js ${APP_ROOT}
 COPY jsconfig.json ${APP_ROOT}
-COPY README.md ${APP_ROOT}
 RUN yarn --frozen-lockfile --production
 
 # Source Files
